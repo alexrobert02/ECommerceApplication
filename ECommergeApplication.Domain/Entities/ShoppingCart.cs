@@ -1,5 +1,4 @@
 ﻿using ECommerceApplication.Domain.Common;
-using ECommerceApplication.Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +19,21 @@ namespace ECommerceApplication.Domain.Entities
         public Guid ShoppingCartId { get; private set; }
         public Guid UserId { get; private set; }
         public List<Product>? Products { get; private set; }
+        public static Result<ShoppingCart> Create(Guid userId)
+        {
+            if (userId == default)
+            {
+                return Result<ShoppingCart>.Failure("User id is required.");
+            }
+            return Result<ShoppingCart>.Success(new ShoppingCart(userId));
+        }
 
         public void AddProduct(Product product)
         {
+            if(Products == null)
+            {
+                Products = new List<Product>();
+            }
             Products.Add(product);
         }
 

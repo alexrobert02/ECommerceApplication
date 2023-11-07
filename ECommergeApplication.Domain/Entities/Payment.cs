@@ -1,5 +1,4 @@
 ﻿using ECommerceApplication.Domain.Common;
-using ECommerceApplication.Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +23,26 @@ namespace ECommerceApplication.Domain.Entities
         public DateTime PaymentDate { get; private set; }
         public string PaymentMethod { get; private set; }
         public string PaymentStatus { get; private set; }
+        public static Result<Payment> Create(Guid orderId, decimal amount, DateTime paymentDate, string paymentMethod)
+        {
+            if (orderId == default)
+            {
+                return Result<Payment>.Failure("Order id is required.");
+            }
+            if (amount == default)
+            {
+                return Result<Payment>.Failure("Amount is required.");
+            }
+            if (paymentDate == default)
+            {
+                return Result<Payment>.Failure("Payment date is required.");
+            }
+            if (string.IsNullOrWhiteSpace(paymentMethod))
+            {
+                return Result<Payment>.Failure("Payment method is required.");
+            }
+            return Result<Payment>.Success(new Payment(Guid.NewGuid(), orderId, amount, paymentDate, paymentMethod));
+        }
 
         public bool IsPaymentValid()
         {
