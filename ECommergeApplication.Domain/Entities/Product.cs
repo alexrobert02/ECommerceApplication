@@ -4,6 +4,7 @@ namespace ECommerceApplication.Domain.Entities
 {
     public class Product : AuditableEntity
     {
+        private Product() { }
         private Product(string productName, decimal price,Manufacturer manufacturer)
         {
             ProductId = Guid.NewGuid();
