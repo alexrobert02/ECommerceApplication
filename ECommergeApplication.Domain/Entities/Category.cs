@@ -12,7 +12,7 @@ namespace ECommerceApplication.Domain.Entities
 
         public Guid CategoryId { get; private set; }
         public string CategoryName { get; private set; } = string.Empty;
-        public List<Product>? Events { get; private set; }
+        public List<Product>? Products { get; private set; }
 
         public static Result<Category> Create(string categoryName)
         {
@@ -23,13 +23,13 @@ namespace ECommerceApplication.Domain.Entities
             return Result<Category>.Success(new Category(categoryName));
         }
 
-        public void AttachEvent(Product eventItem)
+        public void AttachProduct(Product productItem)
         {
-            if (Events == null)
+            if (Products == null)
             {
-                Events = new List<Product>();
+                Products = new List<Product>();
             }
-            Events.Add(eventItem);
+            Products.Add(productItem);
         }
     }
 }
