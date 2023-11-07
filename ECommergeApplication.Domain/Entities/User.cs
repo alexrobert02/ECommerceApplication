@@ -9,7 +9,7 @@ namespace ECommerceApplication.Domain.Entities
 {
     public class User : AuditableEntity
     {
-        private User(Guid userId, string username, string email, string passwordHash, string firstName, string lastName, string address, string phoneNumber, List<Order>? orders)
+        private User(Guid userId, string username, string email, string passwordHash, string firstName, string lastName, string address, string phoneNumber)
         {
             UserId = userId;
             Username = username;
@@ -19,7 +19,6 @@ namespace ECommerceApplication.Domain.Entities
             LastName = lastName;
             Address = address;
             PhoneNumber = phoneNumber;
-            Orders = orders;
         }
 
         public Guid UserId { get; private set; }
@@ -63,7 +62,7 @@ namespace ECommerceApplication.Domain.Entities
             {
                 return Result<User>.Failure("Phone number is required.");
             }
-            return Result<User>.Success(new User(Guid.NewGuid(), username, email, passwordhash, firstname, lastname, address, phonenumber, null));
+            return Result<User>.Success(new User(Guid.NewGuid(), username, email, passwordhash, firstname, lastname, address, phonenumber));
         }
 
         public void UpdateProfile(string firstName, string lastName, string address, string phoneNumber)
@@ -73,6 +72,14 @@ namespace ECommerceApplication.Domain.Entities
             LastName = lastName;
             Address = address;
             PhoneNumber = phoneNumber;
+        }
+        public void AddOrder(Order order)
+        {
+            if (Orders == null)
+            {
+                Orders = new List<Order>();
+            }
+            Orders.Add(order);
         }
     }
 }
