@@ -28,7 +28,7 @@ namespace ECommerceApplication.Domain.Entities
                 return Result<Order>.Failure("User id should not be default");
             }
             return Result<Order>.Success(new Order(shoppingCart, orderPlaced, userId));
-        }
+        }   
         public Guid OrderId { get; private set; }
         public Guid UserId { get; private set; }
         public ShoppingCart ShoppingCart { get; private set; }
