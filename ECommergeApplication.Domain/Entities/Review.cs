@@ -4,7 +4,7 @@ namespace ECommerceApplication.Domain.Entities
 {
     public class Review
     {
-        private Review(Guid reviewId, Guid productId, Guid userId, string reviewText, int rating)
+        private Review(Guid reviewId, Guid productId, Guid userId, string reviewText, decimal rating)
         {
             ReviewId = reviewId;
             ProductId = productId;
@@ -16,7 +16,7 @@ namespace ECommerceApplication.Domain.Entities
         public Guid ProductId { get; set;} 
         public Guid UserId { get; set; } 
         public string ReviewText { get; set; } 
-        public int Rating { get; set; }    
+        public decimal Rating { get; set; }    
         public static Result<Review> Create(Guid productId, Guid userId, string reviewText, int rating)
         {
             if (productId == default)
