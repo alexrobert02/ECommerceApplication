@@ -31,5 +31,59 @@ namespace ECommerceApplication.Domain.Entities
             }
             Products.Add(productItem);
         }
+
+        public Product GetProductById(Guid productId)
+        {
+            if (Products == null)
+            {
+                return null;
+            }
+
+            var product = Products.FirstOrDefault(p => p.ProductId == productId);
+
+            return product;
+        }
+
+        public IEnumerable<Product> GetProducts()
+        {
+            if (Products == null || !Products.Any())
+            {
+                return Enumerable.Empty<Product>();
+            }
+
+            return Products.AsEnumerable();
+        }
+
+        public bool UpdateCategoryName(string newCategoryName)
+        {
+            if (string.IsNullOrWhiteSpace(newCategoryName))
+            {
+                return false;
+            }
+
+            CategoryName = newCategoryName;
+            return true;
+        }
+
+        public bool RemoveProduct(Guid productId)
+        {
+            if (Products == null || !Products.Any())
+            {
+                return false;
+            }
+
+            var productToRemove = Products.FirstOrDefault(p => p.ProductId == productId);
+
+            if (productToRemove != null)
+            {
+                Products.Remove(productToRemove);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
     }
 }

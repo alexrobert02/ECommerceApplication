@@ -53,5 +53,34 @@ namespace ECommerceApplication.Domain.Entities
 
             return total;
         }
+
+        public void ClearCart()
+        {
+            Products?.Clear();
+        }
+
+        public int GetProductCount()
+        {
+            return Products?.Count ?? 0;
+        }
+
+        public bool IsEmpty()
+        {
+            return Products == null || !Products.Any();
+        }
+
+        public void MergeCarts(ShoppingCart otherCart)
+        {
+            if (otherCart != null && otherCart.Products != null && otherCart.Products.Any())
+            {
+                if (Products == null)
+                {
+                    Products = new List<Product>();
+                }
+
+                Products.AddRange(otherCart.Products);
+                otherCart.ClearCart();
+            }
+        }
     }
 }

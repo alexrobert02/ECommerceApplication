@@ -1,5 +1,4 @@
 ﻿using ECommerceApplication.Application.Persistence;
-using ECommerceApplication.Domain.Entities;
 using MediatR;
 
 namespace ECommerceApplication.Application.Features.Users.Commands.UpdateUser
