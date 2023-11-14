@@ -9,6 +9,6 @@ namespace ECommerceApplication.Application.Features.Categories.Commands.GetAllCa
     public class GetAllCategoryDto
     {
         public Guid CategoryId { get; set;}
-        public required string CategoryName { get; set; }
+        public string? CategoryName { get; set; }
     }
 }

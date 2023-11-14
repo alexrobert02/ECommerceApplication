@@ -1,6 +1,7 @@
 ﻿using ECommerceApplication.Application.Features.Categories.Commands.CreateCategory;
 using ECommerceApplication.Application.Features.Categories.Commands.GetAllCategory;
 using ECommerceApplication.Application.Features.Categories.Commands.GetByIdCategory;
+using ECommerceApplication.Application.Features.Categories.Commands.DeleteCategory;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerceApplication.API.Controllers
@@ -38,6 +39,22 @@ namespace ECommerceApplication.API.Controllers
         public async Task<IActionResult> GetById(Guid categoryId)
         {
             var command = new GetByIdCategoryCommand { CategoryId = categoryId };
+            var result = await Mediator.Send(command);
+
+            if (!result.Success)
+            {
+                return NotFound(result);
+            }
+
+            return Ok(result);
+        }
+
+        [HttpDelete("{categoryId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(DeleteCategoryCommand), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Delete(Guid categoryId)
+        {
+            var command = new DeleteCategoryCommand { CategoryId = categoryId };
             var result = await Mediator.Send(command);
 
             if (!result.Success)
