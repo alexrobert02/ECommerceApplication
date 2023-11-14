@@ -1,7 +1,6 @@
 ﻿using ECommerceApplication.Domain.Common;
 using ECommerceApplication.Application.Persistence;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 
 namespace Infrastructure.Repositories
 {
