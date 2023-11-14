@@ -1,5 +1,6 @@
 ﻿using ECommerceApplication.API.Controllers;
 using ECommerceApplication.Application.Features.Categories.Commands.CreateCategory;
+using ECommerceApplication.Application.Features.Categories.Commands.GetAllCategory;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,6 +17,14 @@ namespace ECommerceApplication.API.Controllers
             {
                 return BadRequest(result);
             }
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAll(GetAllCategoryCommand command)
+        {
+            var result = await Mediator.Send(command);
             return Ok(result);
         }
     }
