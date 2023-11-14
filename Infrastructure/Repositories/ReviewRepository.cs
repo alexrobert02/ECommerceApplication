@@ -5,7 +5,7 @@ namespace Infrastructure.Repositories
 {
     public class ReviewRepository : BaseRepository<Review>, IReviewRepository
     {
-        public ReviewRepository(ECommergeApplicationContext context) : base(context)
+        public ReviewRepository(ECommerceApplicationContext context) : base(context)
         {
         }
     }

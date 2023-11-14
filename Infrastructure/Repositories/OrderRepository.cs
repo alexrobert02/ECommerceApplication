@@ -5,7 +5,7 @@ namespace Infrastructure.Repositories
 {
     public class OrderRepository : BaseRepository<Order>, IOrderRepository
     {
-        public OrderRepository(ECommergeApplicationContext context) : base(context)
+        public OrderRepository(ECommerceApplicationContext context) : base(context)
         {
         }
     }

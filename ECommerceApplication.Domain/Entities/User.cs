@@ -4,9 +4,9 @@ namespace ECommerceApplication.Domain.Entities
 {
     public class User : AuditableEntity
     {
-        private User(Guid userId, string username, string email, string passwordHash, string firstName, string lastName, string address, string phoneNumber)
+        private User(string username, string email, string passwordHash, string firstName, string lastName, string address, string phoneNumber)
         {
-            UserId = userId;
+            UserId = Guid.NewGuid();
             Username = username;
             Email = email;
             PasswordHash = passwordHash;
@@ -57,7 +57,7 @@ namespace ECommerceApplication.Domain.Entities
             {
                 return Result<User>.Failure("Phone number is required.");
             }
-            return Result<User>.Success(new User(Guid.NewGuid(), username, email, passwordhash, firstname, lastname, address, phonenumber));
+            return Result<User>.Success(new User(username, email, passwordhash, firstname, lastname, address, phonenumber));
         }
 
         public void UpdateProfile(string firstName, string lastName, string address, string phoneNumber)

@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure
 {
-    public class ECommergeApplicationContext : DbContext
+    public class ECommerceApplicationContext : DbContext
     {
-        public ECommergeApplicationContext(
-            DbContextOptions<ECommergeApplicationContext> options) :
+        public ECommerceApplicationContext(
+            DbContextOptions<ECommerceApplicationContext> options) :
             base(options)
         {
 

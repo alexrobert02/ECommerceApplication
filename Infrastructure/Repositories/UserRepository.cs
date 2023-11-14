@@ -5,7 +5,7 @@ namespace Infrastructure.Repositories
 {
     public class UserRepository : BaseRepository<User>, IUserRepository
     {
-        public UserRepository(ECommergeApplicationContext context) : base(context)
+        public UserRepository(ECommerceApplicationContext context) : base(context)
         {
         }
     }
