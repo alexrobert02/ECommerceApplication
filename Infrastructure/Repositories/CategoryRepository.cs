@@ -5,7 +5,7 @@ namespace Infrastructure.Repositories
 {
     public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
     {
-        public CategoryRepository(ECommergeApplicationContext context) : base(context)
+        public CategoryRepository(ECommerceApplicationContext context) : base(context)
         {
         }
     }

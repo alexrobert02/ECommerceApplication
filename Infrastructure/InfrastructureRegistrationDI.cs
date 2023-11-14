@@ -12,14 +12,14 @@ namespace Infrastructure
             this IServiceCollection services,
             IConfiguration configuration)
         {
-            services.AddDbContext<ECommergeApplicationContext>(
+            services.AddDbContext<ECommerceApplicationContext>(
                 options =>
                 options.UseNpgsql(
                     configuration.GetConnectionString
                     ("ECommerceApplicationConnection"),
                     builder =>
                     builder.MigrationsAssembly(
-                        typeof(ECommergeApplicationContext)
+                        typeof(ECommerceApplicationContext)
                         .Assembly.FullName)));
             services.AddScoped
                 (typeof(IAsyncRepository<>),

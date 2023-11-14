@@ -5,7 +5,7 @@ namespace Infrastructure.Repositories
 {
     public class ShoppingCartRepository : BaseRepository<ShoppingCart>, IShoppingCartRepository
     {
-        public ShoppingCartRepository(ECommergeApplicationContext context) : base(context)
+        public ShoppingCartRepository(ECommerceApplicationContext context) : base(context)
         {
         }
     }

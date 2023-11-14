@@ -5,7 +5,7 @@ namespace Infrastructure.Repositories
 {
     public class ManufacturerRepository : BaseRepository<Manufacturer>, IManufacturerRepository
     {
-        public ManufacturerRepository(ECommergeApplicationContext context) : base(context)
+        public ManufacturerRepository(ECommerceApplicationContext context) : base(context)
         {
         }
     }

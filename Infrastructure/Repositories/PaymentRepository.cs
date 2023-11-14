@@ -5,7 +5,7 @@ namespace Infrastructure.Repositories
 {
     public class PaymentRepository : BaseRepository<Payment>, IPaymentRepository
     {
-        public PaymentRepository(ECommergeApplicationContext context) : base(context)
+        public PaymentRepository(ECommerceApplicationContext context) : base(context)
         {
         }
     }

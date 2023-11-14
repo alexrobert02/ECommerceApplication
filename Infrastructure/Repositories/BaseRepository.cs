@@ -7,9 +7,9 @@ namespace Infrastructure.Repositories
 {
     public class BaseRepository<T> : IAsyncRepository<T> where T : class
     {
-        private readonly ECommergeApplicationContext context;
+        private readonly ECommerceApplicationContext context;
 
-        public BaseRepository(ECommergeApplicationContext context)
+        public BaseRepository(ECommerceApplicationContext context)
         {
             this.context = context;
         }

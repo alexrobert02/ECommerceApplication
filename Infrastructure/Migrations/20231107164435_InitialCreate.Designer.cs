@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Infrastructure.Migrations
 {
-    [DbContext(typeof(ECommergeApplicationContext))]
+    [DbContext(typeof(ECommerceApplicationContext))]
     [Migration("20231107164435_InitialCreate")]
     partial class InitialCreate
     {
