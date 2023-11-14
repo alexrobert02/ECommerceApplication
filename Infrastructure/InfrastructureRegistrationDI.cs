@@ -26,6 +26,7 @@ namespace Infrastructure
                 typeof(BaseRepository<>));
             services.AddScoped<
                 ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             return services;
         }
     }
