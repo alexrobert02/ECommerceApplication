@@ -1,4 +1,5 @@
 ﻿using ECommerceApplication.Domain.Common;
+using System.Reflection.Metadata;
 
 namespace ECommerceApplication.Domain.Entities
 {
@@ -60,14 +61,24 @@ namespace ECommerceApplication.Domain.Entities
             return Result<User>.Success(new User(username, email, passwordhash, firstname, lastname, address, phonenumber));
         }
 
-        public void UpdateProfile(string firstName, string lastName, string address, string phoneNumber)
+        public Result<User> Update(string username, string email, string passwordhash, string firstName, string lastName, string address, string phoneNumber)
         {
-
+            // Perform any additional validation if needed
+            if (string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName) || string.IsNullOrWhiteSpace(address) || string.IsNullOrWhiteSpace(phoneNumber))
+            {
+                return Result<User>.Failure("Invalid input for updating profile.");
+            }
+            Username = username;
+            Email = email;
+            PasswordHash = passwordhash;
             FirstName = firstName;
             LastName = lastName;
             Address = address;
             PhoneNumber = phoneNumber;
+
+            return Result<User>.Success(this);
         }
+
         public void AddOrder(Order order)
         {
             if (Orders == null)
