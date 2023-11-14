@@ -1,4 +1,5 @@
-﻿using ECommerceApplication.Application.Persistence;
+﻿using ECommerceApplication.Application.Features.Categories.Queries;
+using ECommerceApplication.Application.Persistence;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -6,29 +7,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECommerceApplication.Application.Features.Categories.Commands.DeleteCategory
+namespace ECommerceApplication.Application.Features.Categories.Queries.DeleteCategory
 {
-    public class DeleteCategoryCommandHandler : IRequestHandler <DeleteCategoryCommand, DeleteCategoryCommandResponse>
+    public class DeleteCategoryQueryHandler : IRequestHandler <DeleteCategoryQuery, DeleteCategoryResponse>
     {
        private readonly ICategoryRepository _categoryRepository;
-        public DeleteCategoryCommandHandler(ICategoryRepository categoryRepository)
+        public DeleteCategoryQueryHandler(ICategoryRepository categoryRepository)
         {
             _categoryRepository = categoryRepository;
         }
-        public async Task<DeleteCategoryCommandResponse> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
+        public async Task<DeleteCategoryResponse> Handle(DeleteCategoryQuery request, CancellationToken cancellationToken)
         {
-            var response = new DeleteCategoryCommandResponse();
+            var response = new DeleteCategoryResponse();
             var category = await _categoryRepository.FindByIdAsync(request.CategoryId);
             if (category == null)
             {
                 response.Success = false;
-                response.Message = "Category not found";
+                response.ValidationsErrors = new List<string> { "Category not found" };
                 return response;
             }
             await _categoryRepository.DeleteAsync(category.Value.CategoryId);
             response.Success = true;
             response.Message = "Category deleted successfully";
             return response;
+
         }
     }
 }

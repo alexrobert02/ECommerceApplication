@@ -1,8 +1,8 @@
-﻿using ECommerceApplication.Application.Features.Categories.Commands.CreateCategory;
-using ECommerceApplication.Application.Features.Categories.Commands.GetAllCategory;
-using ECommerceApplication.Application.Features.Categories.Commands.GetByIdCategory;
-using ECommerceApplication.Application.Features.Categories.Commands.DeleteCategory;
+﻿using ECommerceApplication.Application.Features.Categories.Queries.CreateCategory;
+using ECommerceApplication.Application.Features.Categories.Queries.GetAllCategory;
 using Microsoft.AspNetCore.Mvc;
+using ECommerceApplication.Application.Features.Categories.Queries.GetByIdCategory;
+using ECommerceApplication.Application.Features.Categories.Queries.DeleteCategory;
 
 namespace ECommerceApplication.API.Controllers
 {
@@ -24,7 +24,7 @@ namespace ECommerceApplication.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll()
         {
-            var command = new GetAllCategoryCommand();
+            var command = new GetAllCategoryQuery();
             var result = await Mediator.Send(command);
             if (!result.Success)
             {
@@ -35,33 +35,21 @@ namespace ECommerceApplication.API.Controllers
 
         [HttpGet("{categoryId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(GetByIdCategoryCommand), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(GetByIdCategoryQuery), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(Guid categoryId)
         {
-            var command = new GetByIdCategoryCommand { CategoryId = categoryId };
+            var command = new GetByIdCategoryQuery { CategoryId = categoryId };
             var result = await Mediator.Send(command);
-
-            if (!result.Success)
-            {
-                return NotFound(result);
-            }
-
             return Ok(result);
         }
 
         [HttpDelete("{categoryId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(DeleteCategoryCommand), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(DeleteCategoryQuery), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(Guid categoryId)
         {
-            var command = new DeleteCategoryCommand { CategoryId = categoryId };
+            var command = new DeleteCategoryQuery { CategoryId = categoryId };
             var result = await Mediator.Send(command);
-
-            if (!result.Success)
-            {
-                return NotFound(result);
-            }
-
             return Ok(result);
         }
     }

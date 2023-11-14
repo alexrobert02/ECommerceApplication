@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECommerceApplication.Application.Features.Categories.Commands.DeleteCategory
+namespace ECommerceApplication.Application.Features.Categories.Queries.DeleteCategory
 {
-    public class DeleteCategoryCommand : IRequest<DeleteCategoryCommandResponse>
+    public class DeleteCategoryQuery : IRequest<DeleteCategoryResponse>
     {
         public Guid CategoryId { get; set; } = default!;
 

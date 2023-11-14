@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECommerceApplication.Application.Features.Categories.Commands.DeleteCategory
+namespace ECommerceApplication.Application.Features.Categories.Queries.DeleteCategory
 {
-    public class DeleteCategoryCommandValidator : AbstractValidator<DeleteCategoryCommand>
+    public class DeleteCategoryValidator : AbstractValidator<DeleteCategoryQuery>
     {
-        public DeleteCategoryCommandValidator()
+        public DeleteCategoryValidator()
         {
             RuleFor(p => p.CategoryId)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
