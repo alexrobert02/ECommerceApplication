@@ -21,5 +21,6 @@
         {
             return new Result<T>(false, null!, error);
         }
+
     }
 }
