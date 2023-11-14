@@ -21,9 +21,14 @@ namespace ECommerceApplication.API.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAll(GetAllCategoryCommand command)
+        public async Task<IActionResult> GetAll()
         {
+            var command = new GetAllCategoryCommand();
             var result = await Mediator.Send(command);
+            if (!result.Success)
+            {
+                return NotFound(result);
+            }
             return Ok(result);
         }
 
