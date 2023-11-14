@@ -1,8 +1,6 @@
-﻿using ECommerceApplication.API.Controllers;
-using ECommerceApplication.Application.Features.Categories.Commands.CreateCategory;
+﻿using ECommerceApplication.Application.Features.Categories.Commands.CreateCategory;
 using ECommerceApplication.Application.Features.Categories.Commands.GetAllCategory;
 using ECommerceApplication.Application.Features.Categories.Commands.GetByIdCategory;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerceApplication.API.Controllers
@@ -31,6 +29,7 @@ namespace ECommerceApplication.API.Controllers
 
         [HttpGet("{categoryId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GetByIdCategoryCommand), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(Guid categoryId)
         {
             var command = new GetByIdCategoryCommand { CategoryId = categoryId };
