@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace ECommerceApplication.Application.Features.Categories.Commands.CreateCategory
+namespace ECommerceApplication.Application.Features.Categories.Queries.CreateCategory
 {
     public class CreateCategoryCommand : IRequest<CreateCategoryCommandResponse>
     {

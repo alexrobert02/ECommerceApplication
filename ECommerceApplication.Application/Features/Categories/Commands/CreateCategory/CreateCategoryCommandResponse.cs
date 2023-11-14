@@ -1,6 +1,6 @@
 ﻿using ECommerceApplication.Application.Responses;
 
-namespace ECommerceApplication.Application.Features.Categories.Commands.CreateCategory
+namespace ECommerceApplication.Application.Features.Categories.Queries.CreateCategory
 {
     public class CreateCategoryCommandResponse : BaseResponse
     {
