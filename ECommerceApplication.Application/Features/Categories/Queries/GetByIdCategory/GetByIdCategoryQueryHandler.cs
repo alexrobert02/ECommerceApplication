@@ -1,5 +1,4 @@
-﻿using ECommerceApplication.Application.Features.Categories.Queries.GetByIdCategory;
-using ECommerceApplication.Application.Persistence;
+﻿using ECommerceApplication.Application.Persistence;
 using MediatR;
 
 namespace ECommerceApplication.Application.Features.Categories.Queries.GetByIdCategory

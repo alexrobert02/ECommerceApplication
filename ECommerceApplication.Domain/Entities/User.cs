@@ -1,5 +1,4 @@
 ﻿using ECommerceApplication.Domain.Common;
-using System.Reflection.Metadata;
 
 namespace ECommerceApplication.Domain.Entities
 {
@@ -27,6 +26,9 @@ namespace ECommerceApplication.Domain.Entities
         public string PhoneNumber { get; private set; }
 
         public List<Order>? Orders { get; private set; }
+        public List<Review>? Reviews { get; private set; }
+        public List<Address>? Addresses { get; private set; }
+        public List<Product>? FavoriteProducts { get; private set; }
 
         public static Result<User> Create(string username, string email, string passwordhash, string firstname, string lastname, string address, string phonenumber)
         {
@@ -86,6 +88,72 @@ namespace ECommerceApplication.Domain.Entities
                 Orders = new List<Order>();
             }
             Orders.Add(order);
+        }
+
+        public bool HasOrders()
+        {
+            return Orders != null && Orders.Count > 0;
+        }
+
+        public void ChangePassword(string newPasswordHash)
+        {
+            PasswordHash = newPasswordHash;
+        }
+
+        public bool IsPasswordCorrect(string enteredPassword)
+        {
+            return PasswordHash == enteredPassword;
+        }
+
+        public void UpdateEmailAddress(string newEmail)
+        {
+            Email = newEmail;
+        }
+
+        public void UpdatePhoneNumber(string newPhoneNumber)
+        {
+            PhoneNumber = newPhoneNumber;
+        }
+
+        public void AddAddress(Address address)
+        {
+            if (Addresses == null)
+            {
+                Addresses = new List<Address>();
+            }
+            Addresses.Add(address);
+        }
+
+        public void RemoveAddress(Guid addressId)
+        {
+            var addressToRemove = Addresses?.FirstOrDefault(a => a.AddressId == addressId);
+            Addresses?.Remove(addressToRemove);
+        }
+
+        public bool HasAddresses()
+        {
+            return Addresses != null && Addresses.Count > 0;
+        }
+
+
+        public void AddToFavorites(Product product)
+        {
+            if (FavoriteProducts == null)
+            {
+                FavoriteProducts = new List<Product>();
+            }
+            FavoriteProducts.Add(product);
+        }
+
+        public void RemoveFromFavorites(Guid productId)
+        {
+            var productToRemove = FavoriteProducts?.FirstOrDefault(p => p.ProductId == productId);
+            FavoriteProducts?.Remove(productToRemove);
+        }
+
+        public bool IsFavorite(Product product)
+        {
+            return FavoriteProducts?.Any(p => p.ProductId == product.ProductId) ?? false;
         }
     }
 }

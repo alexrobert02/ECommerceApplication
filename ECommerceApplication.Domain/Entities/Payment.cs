@@ -11,13 +11,16 @@ namespace ECommerceApplication.Domain.Entities
             Amount = amount;
             PaymentDate = paymentDate;
             PaymentMethod = paymentMethod;
+            PaymentStatus = "Pending";
         }
+
         public Guid PaymentId { get; private set; }
         public Guid OrderId { get; private set; }
         public decimal Amount { get; private set; }
         public DateTime PaymentDate { get; private set; }
         public string PaymentMethod { get; private set; }
         public string PaymentStatus { get; private set; }
+
         public static Result<Payment> Create(Guid orderId, decimal amount, DateTime paymentDate, string paymentMethod)
         {
             if (orderId == default)
@@ -46,6 +49,50 @@ namespace ECommerceApplication.Domain.Entities
                 return true;
             }
             return false;
+        }
+
+        public void MarkAsPaid()
+        {
+            if (PaymentStatus == "Pending")
+            {
+                PaymentStatus = "Paid";
+            }
+            else
+            {
+                throw new InvalidOperationException("Payment has already been processed or is invalid.");
+            }
+        }
+
+        public void MarkAsFailed()
+        {
+            if (PaymentStatus == "Pending")
+            {
+                PaymentStatus = "Failed";
+            }
+            else
+            {
+                throw new InvalidOperationException("Payment has already been processed or is invalid.");
+            }
+        }
+
+        public void UpdatePaymentMethod(string newPaymentMethod)
+        {
+            if (string.IsNullOrWhiteSpace(newPaymentMethod))
+            {
+                throw new ArgumentException("New payment method is required.", nameof(newPaymentMethod));
+            }
+
+            PaymentMethod = newPaymentMethod;
+        }
+
+        public void UpdatePaymentAmount(decimal newAmount)
+        {
+            if (newAmount == default)
+            {
+                throw new ArgumentException("New amount is required.", nameof(newAmount));
+            }
+
+            Amount = newAmount;
         }
     }
 }
