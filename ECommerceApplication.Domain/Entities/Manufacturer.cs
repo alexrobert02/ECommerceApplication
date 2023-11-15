@@ -2,11 +2,11 @@
 
 namespace ECommerceApplication.Domain.Entities
 {
-    public class Manufacturer
+    public class Manufacturer : AuditableEntity
     {
-        private Manufacturer(Guid manufacturerId, string name, string address, string phoneNumber, string email)
+        private Manufacturer(string name, string address, string phoneNumber, string email)
         {
-            ManufacturerId = manufacturerId;
+            ManufacturerId = Guid.NewGuid();
             Name = name;
             Address = address;
             PhoneNumber = phoneNumber;
@@ -39,7 +39,7 @@ namespace ECommerceApplication.Domain.Entities
                 return Result<Manufacturer>.Failure("Email is required.");
             }
 
-            return Result<Manufacturer>.Success(new Manufacturer(Guid.NewGuid(), name, address, phoneNumber, email));
+            return Result<Manufacturer>.Success(new Manufacturer(name, address, phoneNumber, email));
         }
 
         public void Update(string name, string address, string phoneNumber, string email)
