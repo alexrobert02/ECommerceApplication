@@ -2,7 +2,7 @@
 using ECommerceApplication.Domain.Entities;
 using MediatR;
 
-namespace ECommerceApplication.Application.Features.Categories.Queries.CreateCategory
+namespace ECommerceApplication.Application.Features.Categories.Commands.CreateCategory
 {
     public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, CreateCategoryCommandResponse>
     {
