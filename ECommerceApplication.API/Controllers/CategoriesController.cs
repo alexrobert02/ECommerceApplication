@@ -1,4 +1,4 @@
-﻿using ECommerceApplication.Application.Features.Categories.Queries.CreateCategory;
+﻿using ECommerceApplication.Application.Features.Categories.Commands.CreateCategory;
 using ECommerceApplication.Application.Features.Categories.Queries.GetAllCategory;
 using Microsoft.AspNetCore.Mvc;
 using ECommerceApplication.Application.Features.Categories.Queries.GetByIdCategory;
