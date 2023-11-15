@@ -136,3 +136,4 @@ $RECYCLE.BIN/
 # User-specific files
 *.suo
 *.user
+ECommerceApplication.API/appsettings.json
