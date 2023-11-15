@@ -18,7 +18,7 @@ namespace ECommerceApplication.Domain.Entities
         public string? Description { get; private set; }
         public string? ImageUrl { get; private set; }
         public List<Review>? Reviews { get; private set; }
-        public Manufacturer Manufacturer { get; private set; }
+        public Manufacturer? Manufacturer { get; private set; }
 
         public static Result<Product> Create(string productName, decimal price, Manufacturer manufacturer)
         {
@@ -34,7 +34,7 @@ namespace ECommerceApplication.Domain.Entities
             {
                 return Result<Product>.Failure("Manufacturer is required.");
             }
-            return Result<Product>.Success(new Product(productName, price,manufacturer));
+            return Result<Product>.Success(new Product(productName, price, manufacturer));
         }
         public Guid CategoryId { get; private set; }
 
