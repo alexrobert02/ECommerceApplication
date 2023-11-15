@@ -23,6 +23,18 @@ namespace ECommerceApplication.Domain.Entities
             return Result<Category>.Success(new Category(categoryName));
         }
 
+        public Result<Category> Update(string categoryName, List<Product> products)
+        {
+            if (string.IsNullOrWhiteSpace(categoryName) || products == default)
+            {
+                return Result<Category>.Failure("Invalid input for updating profile.");
+            }
+            CategoryName = categoryName;
+            Products = products;
+
+            return Result<Category>.Success(this);
+        }
+
         public void AttachProduct(Product productItem)
         {
             if (Products == null)

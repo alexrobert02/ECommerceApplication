@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ECommerceApplicationContext))]
-    [Migration("20231114153611_InitialCreate")]
+    [Migration("20231115142004_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -24,6 +24,53 @@ namespace Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("ECommerceApplication.Domain.Entities.Address", b =>
+                {
+                    b.Property<Guid>("AddressId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("LastModifiedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("AddressId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Address");
+                });
 
             modelBuilder.Entity("ECommerceApplication.Domain.Entities.Category", b =>
                 {
@@ -62,9 +109,21 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("LastModifiedDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -116,6 +175,43 @@ namespace Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("ECommerceApplication.Domain.Entities.OrderItem", b =>
+                {
+                    b.Property<Guid>("OrderItemId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("LastModifiedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal>("PricePerUnit")
+                        .HasColumnType("numeric");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid?>("ShoppingCartId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("OrderItemId");
+
+                    b.HasIndex("ShoppingCartId");
+
+                    b.ToTable("OrderItem");
                 });
 
             modelBuilder.Entity("ECommerceApplication.Domain.Entities.Payment", b =>
@@ -188,7 +284,7 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("LastModifiedDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("ManufacturerId")
+                    b.Property<Guid?>("ManufacturerId")
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("Price")
@@ -198,7 +294,7 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("ShoppingCartId")
+                    b.Property<Guid?>("UserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("ProductId");
@@ -207,7 +303,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("ManufacturerId");
 
-                    b.HasIndex("ShoppingCartId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Products");
                 });
@@ -234,6 +330,8 @@ namespace Infrastructure.Migrations
                     b.HasKey("ReviewId");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Review");
                 });
@@ -315,6 +413,15 @@ namespace Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("ECommerceApplication.Domain.Entities.Address", b =>
+                {
+                    b.HasOne("ECommerceApplication.Domain.Entities.User", null)
+                        .WithMany("Addresses")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("ECommerceApplication.Domain.Entities.Order", b =>
                 {
                     b.HasOne("ECommerceApplication.Domain.Entities.ShoppingCart", "ShoppingCart")
@@ -330,6 +437,13 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("ShoppingCart");
+                });
+
+            modelBuilder.Entity("ECommerceApplication.Domain.Entities.OrderItem", b =>
+                {
+                    b.HasOne("ECommerceApplication.Domain.Entities.ShoppingCart", null)
+                        .WithMany("OrderItems")
+                        .HasForeignKey("ShoppingCartId");
                 });
 
             modelBuilder.Entity("ECommerceApplication.Domain.Entities.Payment", b =>
@@ -351,13 +465,11 @@ namespace Infrastructure.Migrations
 
                     b.HasOne("ECommerceApplication.Domain.Entities.Manufacturer", "Manufacturer")
                         .WithMany("Products")
-                        .HasForeignKey("ManufacturerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ManufacturerId");
 
-                    b.HasOne("ECommerceApplication.Domain.Entities.ShoppingCart", null)
-                        .WithMany("Products")
-                        .HasForeignKey("ShoppingCartId");
+                    b.HasOne("ECommerceApplication.Domain.Entities.User", null)
+                        .WithMany("FavoriteProducts")
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Manufacturer");
                 });
@@ -367,6 +479,12 @@ namespace Infrastructure.Migrations
                     b.HasOne("ECommerceApplication.Domain.Entities.Product", null)
                         .WithMany("Reviews")
                         .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ECommerceApplication.Domain.Entities.User", null)
+                        .WithMany("Reviews")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -394,12 +512,18 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("ECommerceApplication.Domain.Entities.ShoppingCart", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("OrderItems");
                 });
 
             modelBuilder.Entity("ECommerceApplication.Domain.Entities.User", b =>
                 {
+                    b.Navigation("Addresses");
+
+                    b.Navigation("FavoriteProducts");
+
                     b.Navigation("Orders");
+
+                    b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618
         }
