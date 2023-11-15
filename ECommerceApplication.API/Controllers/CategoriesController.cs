@@ -3,6 +3,7 @@ using ECommerceApplication.Application.Features.Categories.Queries.GetAllCategor
 using Microsoft.AspNetCore.Mvc;
 using ECommerceApplication.Application.Features.Categories.Queries.GetByIdCategory;
 using ECommerceApplication.Application.Features.Categories.Queries.DeleteCategory;
+using ECommerceApplication.Application.Features.Categories.Commands.UpdateCategory;
 
 namespace ECommerceApplication.API.Controllers
 {
@@ -17,6 +18,28 @@ namespace ECommerceApplication.API.Controllers
             {
                 return BadRequest(result);
             }
+            return Ok(result);
+        }
+
+        [HttpPut("{categoryId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Update(Guid categoryId, UpdateCategoryCommand command)
+        {
+            // Ensure the categoryId in the path matches the one in the request body
+            if (categoryId != command.CategoryId)
+            {
+                return BadRequest("The provided categoryId in the path does not match the one in the request body.");
+            }
+
+            var result = await Mediator.Send(command);
+
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+
             return Ok(result);
         }
 
