@@ -13,7 +13,8 @@ namespace ECommerceApplication.Application.Features.Users.Commands.CreateUser
             RuleFor(p => p.Email)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull()
-                .MaximumLength(100).WithMessage("{PropertyName} must not exceed 100 characters.");
+                .MaximumLength(100).WithMessage("{PropertyName} must not exceed 100 characters.")
+                .EmailAddress().WithMessage("Invalid email format.");
             RuleFor(p => p.PasswordHash)
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull()
