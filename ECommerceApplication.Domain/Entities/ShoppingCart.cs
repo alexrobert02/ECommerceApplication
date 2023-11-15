@@ -8,12 +8,12 @@ namespace ECommerceApplication.Domain.Entities
         {
             ShoppingCartId = Guid.NewGuid();
             UserId = userId;
-            Products = new List<Product>();
+            OrderItems = new List<OrderItem>();
         }
 
         public Guid ShoppingCartId { get; private set; }
         public Guid UserId { get; private set; }
-        public List<Product>? Products { get; private set; }
+        public List<OrderItem>? OrderItems { get; private set; }
         public static Result<ShoppingCart> Create(Guid userId)
         {
             if (userId == default)
@@ -23,62 +23,55 @@ namespace ECommerceApplication.Domain.Entities
             return Result<ShoppingCart>.Success(new ShoppingCart(userId));
         }
 
-        public void AddProduct(Product product)
+        public void AddProduct(OrderItem orderItem)
         {
-            if(Products == null)
+            if(OrderItems == null)
             {
-                Products = new List<Product>();
+                OrderItems = new List<OrderItem>();
             }
-            Products.Add(product);
+            OrderItems.Add(orderItem);
         }
 
-        public void RemoveProduct(Guid productId)
+        public void RemoveProduct(Guid orderItemId)
         {
-            var productToRemove = Products.Find(product => product.ProductId == productId);
+            var productToRemove = OrderItems.Find(orderItem => orderItem.OrderItemId == orderItemId);
 
             if (productToRemove != null)
             {
-                Products.Remove(productToRemove);
+                OrderItems.Remove(productToRemove);
             }
         }
 
         public decimal CalculateTotal()
         {
-            decimal total = 0;
-
-            foreach (Product product in Products)
-            {
-                total += product.Price;
-            }
-
-            return total;
+            return OrderItems.Aggregate((decimal) 0, (acc, x) => acc + x.CalculateTotal());
         }
 
         public void ClearCart()
         {
-            Products?.Clear();
+            OrderItems?.Clear();
         }
 
         public int GetProductCount()
         {
-            return Products?.Count ?? 0;
+            return OrderItems?.Count ?? 0;
         }
 
         public bool IsEmpty()
         {
-            return Products == null || !Products.Any();
+            return OrderItems == null || !OrderItems.Any();
         }
 
         public void MergeCarts(ShoppingCart otherCart)
         {
-            if (otherCart != null && otherCart.Products != null && otherCart.Products.Any())
+            if (otherCart != null && otherCart.OrderItems != null && otherCart.OrderItems.Any())
             {
-                if (Products == null)
+                if (OrderItems == null)
                 {
-                    Products = new List<Product>();
+                    OrderItems = new List<OrderItem>();
                 }
 
-                Products.AddRange(otherCart.Products);
+                OrderItems.AddRange(otherCart.OrderItems);
                 otherCart.ClearCart();
             }
         }
