@@ -2,7 +2,7 @@
 
 namespace ECommerceApplication.Domain.Entities
 {
-    public class Address
+    public class Address : AuditableEntity
     {
         private Address(Guid addressId, Guid userId, string street, string city, string state, string postalCode, bool isDefault)
         {

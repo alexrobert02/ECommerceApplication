@@ -1,6 +1,4 @@
-﻿using ECommerceApplication.Application.Features.Categories.Queries;
-using ECommerceApplication.Application.Features.Categories.Queries.GetAllCategory;
-using ECommerceApplication.Application.Persistence;
+﻿using ECommerceApplication.Application.Persistence;
 using MediatR;
 
 namespace ECommerceApplication.Application.Features.ShoppingCarts.Queries.GetAll

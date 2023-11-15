@@ -1,5 +1,4 @@
-﻿using ECommerceApplication.Application.Features.Categories.Queries;
-using ECommerceApplication.Application.Features.ShoppingCarts.Queries;
+﻿using ECommerceApplication.Application.Features.ShoppingCarts.Queries;
 using ECommerceApplication.Application.Responses;
 
 namespace ECommerceApplication.Application.Features.ShoppingCarts.Commands.DeleteShoppingCart

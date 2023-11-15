@@ -2,7 +2,7 @@
 
 namespace ECommerceApplication.Application.Persistence
 {
-    public interface IOrderItemRepository : IAsyncRepository<OrderItem>
+    public interface IAddressRepository : IAsyncRepository<Address>
     {
     }
 }
