@@ -1,5 +1,4 @@
-﻿using ECommerceApplication.Application.Features.Categories.Queries;
-using ECommerceApplication.Application.Responses;
+﻿using ECommerceApplication.Application.Responses;
 
 
 namespace ECommerceApplication.Application.Features.ShoppingCarts.Queries.GetAll

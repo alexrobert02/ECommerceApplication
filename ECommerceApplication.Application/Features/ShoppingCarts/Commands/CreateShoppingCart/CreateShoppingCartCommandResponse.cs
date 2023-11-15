@@ -1,5 +1,4 @@
-﻿using ECommerceApplication.Application.Features.Categories.Queries.CreateCategory;
-using ECommerceApplication.Application.Responses;
+﻿using ECommerceApplication.Application.Responses;
 
 namespace ECommerceApplication.Application.Features.ShoppingCarts.Commands.CreateShoppingCart
 {
