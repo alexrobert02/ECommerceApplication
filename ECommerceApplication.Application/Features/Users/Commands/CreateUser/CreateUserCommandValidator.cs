@@ -35,7 +35,7 @@ namespace ECommerceApplication.Application.Features.Users.Commands.CreateUser
                 .NotEmpty().WithMessage("{PropertyName} is required.")
                 .NotNull()
                 .Matches(@"^[0-9]*$").WithMessage("{PropertyName} must contain only digits.")
-                .MaximumLength(100).WithMessage("{PropertyName} must not exceed 100 characters.");
+                .MaximumLength(10).WithMessage("{PropertyName} must not exceed 10 characters.");
         }
     }
 }
