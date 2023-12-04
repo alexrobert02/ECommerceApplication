@@ -1,5 +1,5 @@
 using ECommerceApplication.Application;
-using Infrastructure;
+using ECommerceApplication.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 

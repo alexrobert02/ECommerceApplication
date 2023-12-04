@@ -1,7 +1,7 @@
 ﻿using ECommerceApplication.Application.Persistence;
 using ECommerceApplication.Domain.Entities;
 
-namespace Infrastructure.Repositories
+namespace ECommerceApplication.Infrastructure.Repositories
 {
     public class ReceiptRepository : BaseRepository<Receipt>, IReceiptRepository
     {

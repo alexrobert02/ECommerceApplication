@@ -1,10 +1,10 @@
 ﻿using ECommerceApplication.Application.Persistence;
-using Infrastructure.Repositories;
+using ECommerceApplication.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Infrastructure
+namespace ECommerceApplication.Infrastructure
 {
     public static class InfrastructureRegistrationDI
     {
