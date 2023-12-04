@@ -1,7 +1,7 @@
 ﻿using ECommerceApplication.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure
+namespace ECommerceApplication.Infrastructure
 {
     public class ECommerceApplicationContext : DbContext
     {
