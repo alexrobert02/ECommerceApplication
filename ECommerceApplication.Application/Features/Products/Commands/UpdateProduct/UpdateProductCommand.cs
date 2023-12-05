@@ -1,6 +1,8 @@
-﻿namespace ECommerceApplication.Application.Features.Products.Commands.CreateProduct
+﻿using MediatR;
+
+namespace ECommerceApplication.Application.Features.Products.Commands.UpdateProduct
 {
-    public class CreateProductDto
+    public class UpdateProductCommand : IRequest<UpdateProductDto>
     {
         public Guid ProductId { get; set; }
         public string ProductName { get; set; } = string.Empty;
@@ -8,7 +10,6 @@
         public string? Description { get; set; }
         public string? ImageUrl { get; set; }
         public Guid CategoryId { get; set; }
-        //public Guid ManufacturerId { get; private set; }
+        //public Guid? ManufacturerId { get; set; }
     }
 }
-
