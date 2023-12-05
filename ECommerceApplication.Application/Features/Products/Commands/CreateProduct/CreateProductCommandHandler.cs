@@ -23,7 +23,7 @@ namespace ECommerceApplication.Application.Features.Products.Commands.CreateProd
 
         public async Task<CreateProductCommandResponse> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
-            var validator = new CreateProductCommandValidator();
+            var validator = new CreateProductCommandValidator(productRepository);
             var validatorResult = await validator.ValidateAsync(request, cancellationToken);
 
             if (!validatorResult.IsValid)

@@ -1,6 +1,8 @@
-﻿namespace ECommerceApplication.Application.Features.Products.Commands.CreateProduct
+﻿using ECommerceApplication.Application.Responses;
+
+namespace ECommerceApplication.Application.Features.Products.Commands.UpdateProduct
 {
-    public class CreateProductDto
+    public class UpdateProductDto : BaseResponse
     {
         public Guid ProductId { get; set; }
         public string ProductName { get; set; } = string.Empty;
@@ -8,7 +10,5 @@
         public string? Description { get; set; }
         public string? ImageUrl { get; set; }
         public Guid CategoryId { get; set; }
-        //public Guid ManufacturerId { get; private set; }
     }
 }
-

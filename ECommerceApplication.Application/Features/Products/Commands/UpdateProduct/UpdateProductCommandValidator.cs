@@ -1,13 +1,13 @@
-﻿using FluentValidation;
-using ECommerceApplication.Application.Persistence;
+﻿using ECommerceApplication.Application.Persistence;
+using FluentValidation;
 
-namespace ECommerceApplication.Application.Features.Products.Commands.CreateProduct
+namespace ECommerceApplication.Application.Features.Products.Commands.UpdateProduct
 {
-    public class CreateProductCommandValidator : AbstractValidator<CreateProductCommand>
+    public class UpdateProductCommandValidator : AbstractValidator<UpdateProductCommand>
     {
         private readonly IProductRepository repository;
 
-        public CreateProductCommandValidator(IProductRepository repository)
+        public UpdateProductCommandValidator(IProductRepository repository)
         {
             RuleFor(p => p.ProductName)
                 .NotEmpty()
