@@ -5,13 +5,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="MediatR" Version="12.1.1" />
+    <PackageReference Include="MediatR" Version="12.2.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ECommerceApplication.Application\ECommerceApplication.Application.csproj" />
-    <ProjectReference Include="..\Infrastructure\ECommerceApplication.Infrastructure.csproj" />
+    <ProjectReference Include="..\ECommerceApplication.Identity\ECommerceApplication.Identity.csproj" />
+    <ProjectReference Include="..\ECommerceApplication.Infrastructure\ECommerceApplication.Infrastructure.csproj" />
   </ItemGroup>
 </Project>
