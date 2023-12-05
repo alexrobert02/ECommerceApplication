@@ -2,9 +2,8 @@
 
 namespace ECommerceApplication.Application.Features.Products.Queries.GetAllProduct
 {
-    public class GetAllProductQuery : IRequest<GetAllProductResponse>
+    public class GetAllProductQuery : IRequest<GetAllProductQueryResponse>
     {
-        public GetAllProductQuery() { }
 
     }
 }

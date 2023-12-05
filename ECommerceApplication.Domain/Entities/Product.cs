@@ -4,13 +4,11 @@ namespace ECommerceApplication.Domain.Entities
 {
     public class Product : AuditableEntity
     {
-        public Product() { }
-        private Product(string productName, decimal price,Manufacturer manufacturer)
+        private Product(string productName, decimal price)
         {
             ProductId = Guid.NewGuid();
             ProductName = productName;
             Price = price;
-            Manufacturer = manufacturer;
         }
         public Guid ProductId { get; private set; }
         public string ProductName { get; private set; } = string.Empty;
@@ -18,9 +16,10 @@ namespace ECommerceApplication.Domain.Entities
         public string? Description { get; private set; }
         public string? ImageUrl { get; private set; }
         public List<Review>? Reviews { get; private set; }
-        public Manufacturer? Manufacturer { get; private set; }
+        //public Manufacturer Manufacturer { get; private set; }
+        //public Guid ManufacturerId { get; private set; }
 
-        public static Result<Product> Create(string productName, decimal price, Manufacturer manufacturer)
+        public static Result<Product> Create(string productName, decimal price)
         {
             if (string.IsNullOrWhiteSpace(productName))
             {
@@ -30,13 +29,10 @@ namespace ECommerceApplication.Domain.Entities
             {
                 return Result<Product>.Failure("Price must be greater than zero.");
             }
-            if (manufacturer == null)
-            {
-                return Result<Product>.Failure("Manufacturer is required.");
-            }
-            return Result<Product>.Success(new Product(productName, price, manufacturer));
+            return Result<Product>.Success(new Product(productName, price));
         }
         public Guid CategoryId { get; private set; }
+        public Category Category { get; private set; }
 
         public void AttachDescription(string description)
         {
@@ -61,6 +57,15 @@ namespace ECommerceApplication.Domain.Entities
                 CategoryId = categoryId;
             }
         }
+
+        /*public void AttachManufacturer(Guid manufacturerId)
+        {
+            if (manufacturerId != Guid.Empty)
+            {
+                ManufacturerId = manufacturerId;
+            }
+        }*/
+
         public void AttachReview(Review review)
         {
             if (Reviews == null)
@@ -87,7 +92,7 @@ namespace ECommerceApplication.Domain.Entities
 
             ProductName = newProductName;
             Price = newPrice;
-            Manufacturer = newManufacturer;
+            //Manufacturer = newManufacturer;
         }
 
         public void RemoveReview(Guid reviewId)

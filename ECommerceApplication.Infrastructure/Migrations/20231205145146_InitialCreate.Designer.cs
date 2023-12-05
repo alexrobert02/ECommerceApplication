@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ECommerceApplication.Infrastructure.Migrations
 {
     [DbContext(typeof(ECommerceApplicationContext))]
-    [Migration("20231204220138_InitialCreate")]
+    [Migration("20231205145146_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -457,13 +457,13 @@ namespace ECommerceApplication.Infrastructure.Migrations
 
             modelBuilder.Entity("ECommerceApplication.Domain.Entities.Product", b =>
                 {
-                    b.HasOne("ECommerceApplication.Domain.Entities.Category", null)
+                    b.HasOne("ECommerceApplication.Domain.Entities.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ECommerceApplication.Domain.Entities.Manufacturer", "Manufacturer")
+                    b.HasOne("ECommerceApplication.Domain.Entities.Manufacturer", null)
                         .WithMany("Products")
                         .HasForeignKey("ManufacturerId");
 
@@ -471,7 +471,7 @@ namespace ECommerceApplication.Infrastructure.Migrations
                         .WithMany("FavoriteProducts")
                         .HasForeignKey("UserId");
 
-                    b.Navigation("Manufacturer");
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("ECommerceApplication.Domain.Entities.Review", b =>

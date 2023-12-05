@@ -1,6 +1,7 @@
-﻿using ECommerceApplication.Application.Features.Products.Queries.GetAllProduct;
+﻿using ECommerceApplication.Application.Features.Products.Queries;
+using ECommerceApplication.Application.Features.Products.Queries.GetAllProduct;
+using ECommerceApplication.Application.Features.Products.Queries.GetByIdProduct;
 using ECommerceApplication.Application.Features.Products.Commands.CreateProduct;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerceApplication.API.Controllers
@@ -8,28 +9,31 @@ namespace ECommerceApplication.API.Controllers
     public class ProductsController : ApiControllerBase
     {
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<IActionResult> Create(CreateProductCommand command)
+        public async Task<ActionResult<CreateProductCommandResponse>> Create([FromBody] CreateProductCommand createProductCommand)
         {
-            var result = await Mediator.Send(command);
-            if (!result.Success)
-            {
-                return BadRequest(result);
-            }
-            return Ok(result);
+            var response = await Mediator.Send(createProductCommand);
+            return Ok(response);
         }
 
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<List<ProductDto>>> GetAll()
         {
-            var command = new GetAllProductQuery();
-            var result = await Mediator.Send(command);
+            var dtos = await Mediator.Send(new GetAllProductQuery());
+            return Ok(dtos);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ProductDto>> GetById(Guid id)
+        {
+            var result = await Mediator.Send(new GetByIdProductQuery()
+            {
+                ProductId = id
+            });
             if (!result.Success)
             {
                 return NotFound(result);
             }
-            return Ok(result);
+            return Ok(result.Product);
         }
     }
 }
