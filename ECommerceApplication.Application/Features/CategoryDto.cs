@@ -1,4 +1,4 @@
-﻿namespace ECommerceApplication.Application.Features.Categories.Queries
+﻿namespace ECommerceApplication.Application.Features
 {
     public class CategoryDto
     {

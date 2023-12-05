@@ -454,13 +454,13 @@ namespace ECommerceApplication.Infrastructure.Migrations
 
             modelBuilder.Entity("ECommerceApplication.Domain.Entities.Product", b =>
                 {
-                    b.HasOne("ECommerceApplication.Domain.Entities.Category", null)
+                    b.HasOne("ECommerceApplication.Domain.Entities.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ECommerceApplication.Domain.Entities.Manufacturer", "Manufacturer")
+                    b.HasOne("ECommerceApplication.Domain.Entities.Manufacturer", null)
                         .WithMany("Products")
                         .HasForeignKey("ManufacturerId");
 
@@ -468,7 +468,7 @@ namespace ECommerceApplication.Infrastructure.Migrations
                         .WithMany("FavoriteProducts")
                         .HasForeignKey("UserId");
 
-                    b.Navigation("Manufacturer");
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("ECommerceApplication.Domain.Entities.Review", b =>

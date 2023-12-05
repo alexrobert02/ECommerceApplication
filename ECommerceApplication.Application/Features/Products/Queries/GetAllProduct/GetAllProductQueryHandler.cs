@@ -3,30 +3,36 @@ using MediatR;
 
 namespace ECommerceApplication.Application.Features.Products.Queries.GetAllProduct
 {
-    public class GetAllProductQueryHandler : IRequestHandler<GetAllProductQuery, GetAllProductResponse>
+    public class GetAllProductQueryHandler : IRequestHandler<GetAllProductQuery, GetAllProductQueryResponse>
     {
-        private readonly IProductRepository _categoryRepository;
+        private readonly IProductRepository repository;
 
-        public GetAllProductQueryHandler(IProductRepository categoryRepository)
+        public GetAllProductQueryHandler(IProductRepository repository)
         {
-            _categoryRepository = categoryRepository;
+            this.repository = repository;
         }
 
-        public async Task<GetAllProductResponse> Handle(GetAllProductQuery request, CancellationToken cancellationToken)
+        public async Task<GetAllProductQueryResponse> Handle(GetAllProductQuery request, CancellationToken cancellationToken)
         {
-            GetAllProductResponse response = new();
-            var result = await _categoryRepository.GetAllAsync();
-            if (result.IsSuccess)
+            var result = await repository.GetAllAsync();
+            var products = result.Value.Select(e => new ProductDto
             {
-                response.Products = result.Value.Select(p => new ProductDto
+                ProductId = e.ProductId,
+                ProductName = e.ProductName,
+                Price = e.Price,
+                Description = e.Description,
+                ImageUrl = e.ImageUrl,
+                Category = new CategoryDto
                 {
-                    ProductId = p.ProductId,
-                    ProductName = p.ProductName,
-                    Price = p.Price,
-                    Manufacturer = p.Manufacturer
-                }).ToList();
-            }
-            return response;
+                    CategoryId = e.Category.CategoryId,
+                    CategoryName = e.Category.CategoryName
+                }
+            }).ToList();
+            return new GetAllProductQueryResponse
+            {
+                Products = products,
+                Success = true
+            };
         }
     }
 }

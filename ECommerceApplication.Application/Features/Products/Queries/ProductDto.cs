@@ -1,12 +1,12 @@
-﻿using ECommerceApplication.Domain.Entities;
-
-namespace ECommerceApplication.Application.Features.Products.Queries
+﻿namespace ECommerceApplication.Application.Features.Products.Queries
 {
     public class ProductDto
     {
         public Guid ProductId { get; set; }
-        public string ProductName { get; set; } = default!;
-        public decimal Price { get; set; } = default!;
-        public Manufacturer? Manufacturer { get; set; } = default!;
+        public string ProductName { get; set; } = string.Empty;
+        public decimal Price { get; set; }
+        public string? Description { get; set; }
+        public string? ImageUrl { get; set; }
+        public CategoryDto Category { get; set; }
     }
 }

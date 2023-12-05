@@ -1,4 +1,5 @@
-﻿using ECommerceApplication.Application.Responses;
+﻿using ECommerceApplication.Application.Features.Products.Queries;
+using ECommerceApplication.Application.Responses;
 
 namespace ECommerceApplication.Application.Features.Products.Commands.CreateProduct
 {
@@ -8,6 +9,6 @@ namespace ECommerceApplication.Application.Features.Products.Commands.CreateProd
         {
         }
 
-        public CreateProductDto Product { get; set; }
+        public ProductDto Product { get; set; } = default!;
     }
 }

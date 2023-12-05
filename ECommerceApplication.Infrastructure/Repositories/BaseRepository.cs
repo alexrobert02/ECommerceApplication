@@ -6,7 +6,7 @@ namespace ECommerceApplication.Infrastructure.Repositories
 {
     public class BaseRepository<T> : IAsyncRepository<T> where T : class
     {
-        private readonly ECommerceApplicationContext context;
+        protected readonly ECommerceApplicationContext context;
 
         public BaseRepository(ECommerceApplicationContext context)
         {
@@ -22,7 +22,7 @@ namespace ECommerceApplication.Infrastructure.Repositories
         public virtual async Task<Result<T>> DeleteAsync(Guid id)
         {
             var result = await FindByIdAsync(id);
-            if (result != null)
+            if (result.IsSuccess)
             {
                 context.Set<T>().Remove(result.Value);
                 await context.SaveChangesAsync();
@@ -47,20 +47,17 @@ namespace ECommerceApplication.Infrastructure.Repositories
             return Result<IReadOnlyList<T>>.Success(result);
         }
 
+        public virtual async Task<Result<IReadOnlyList<T>>> GetAllAsync()
+        {
+            var result = await context.Set<T>().ToListAsync();
+            return Result<IReadOnlyList<T>>.Success(result);
+        }
+
         public virtual async Task<Result<T>> UpdateAsync(T entity)
         {
             context.Entry(entity).State = EntityState.Modified;
             await context.SaveChangesAsync();
             return Result<T>.Success(entity);
-        }
-
-        public virtual async Task<Result<IReadOnlyList<T>>> GetAllAsync()
-        {
-            var result = await context.Set<T>().ToListAsync();
-            {
-                return Result<IReadOnlyList<T>>.Success(result);
-            }
-
         }
     }
 

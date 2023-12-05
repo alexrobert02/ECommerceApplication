@@ -1,5 +1,7 @@
-﻿using ECommerceApplication.Application.Persistence;
+﻿using ECommerceApplication.Application.Contracts;
+using ECommerceApplication.Application.Persistence;
 using ECommerceApplication.Infrastructure.Repositories;
+using ECommerceApplication.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,6 +30,7 @@ namespace ECommerceApplication.Infrastructure
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IEmailService, EmailService>();
             return services;
         }
     }
