@@ -3,6 +3,7 @@ using ECommerceApplication.Application.Features.Products.Queries.GetAllProduct;
 using ECommerceApplication.Application.Features.Products.Queries.GetByIdProduct;
 using ECommerceApplication.Application.Features.Products.Commands.CreateProduct;
 using ECommerceApplication.Application.Features.Products.Commands.DeleteProduct;
+using ECommerceApplication.Application.Features.Products.Commands.UpdateProduct;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using ECommerceApplication.Application.Features.Products.Commands.UpdateProduct;
@@ -26,6 +27,27 @@ namespace ECommerceApplication.API.Controllers
         {
             var dtos = await Mediator.Send(new GetAllProductQuery());
             return Ok(dtos);
+        }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult> Update(Guid id, [FromBody] UpdateProductCommand updateProductCommand)
+        {
+            if (id != updateProductCommand.ProductId)
+            {
+                return BadRequest("The provided product ID does not match the request body.");
+            }
+
+            var result = await Mediator.Send(updateProductCommand);
+
+            if (!result.Success)
+            {
+                return NotFound(result);
+            }
+
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]

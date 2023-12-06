@@ -8,27 +8,25 @@ using Microsoft.Extensions.Logging;
 
 namespace ECommerceApplication.Application.Features.Products.Commands.UpdateProduct
 {
-    public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, UpdateProductCommandResponse>
+    public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, UpdateProductDto>
     {
         private readonly IProductRepository productRepository;
         private readonly IEmailService emailService;
         private readonly ILogger<UpdateProductCommandHandler> logger;
 
-        public UpdateProductCommandHandler(IProductRepository repository, IEmailService emailService, ILogger<UpdateProductCommandHandler> logger)
+        public UpdateProductCommandHandler(IProductRepository productRepository)
         {
-            this.productRepository = repository;
-            this.emailService = emailService;
-            this.logger = logger;
+            this.productRepository = productRepository;
         }
 
-        public async Task<UpdateProductCommandResponse> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
+        public async Task<UpdateProductDto> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
-            var validator = new UpdateProductCommandValidator();
+            var validator = new UpdateProductCommandValidator(productRepository);
             var validatorResult = await validator.ValidateAsync(request, cancellationToken);
 
             if (!validatorResult.IsValid)
             {
-                return new UpdateProductCommandResponse
+                return new UpdateProductDto
                 {
                     Success = false,
                     ValidationsErrors = validatorResult.Errors.Select(e => e.ErrorMessage).ToList()
@@ -65,42 +63,30 @@ namespace ECommerceApplication.Application.Features.Products.Commands.UpdateProd
                 try
                 {
                     await emailService.SendEmailAsync(email);
-                }
-                catch (Exception e)
+            }
+            var @event = await productRepository.FindByIdAsync(request.ProductId);
+            if (@event == null)
+            {
+                return new UpdateProductDto
                 {
-                    logger.LogError(e, "Email sending failed");
-                    return new UpdateProductCommandResponse
-                    {
-                        Success = false,
-                        ValidationsErrors = new List<string> { "Email sending failed" }
-                    };
-                }
+                    Success = false,
+                    ValidationsErrors = ["Product not found"]
+                };
+            }
+            @event.Value.Update(request.ProductName, request.Price, request.Description, request.ImageUrl, request.CategoryId);
+            await productRepository.UpdateAsync(@event.Value);
 
-                return new UpdateProductCommandResponse
-                {
-                    Success = true,
+            return new UpdateProductDto
+            {
+                Success = true,
                     Product = new ProductDto
                     {
-                        ProductId = @event.Value.ProductId,
-                        ProductName = @event.Value.ProductName,
-                        Price = @event.Value.Price,
-                        Description = @event.Value.Description,
-                        ImageUrl = @event.Value.ImageUrl,
-                        Category = new CategoryDto
-                        {
-                            CategoryId = @event.Value.CategoryId,
-                        }
-
-                    }
-                };
-
-
-            }
-
-            return new UpdateProductCommandResponse
-            {
-                Success = false,
-                ValidationsErrors = new List<string> { @event.Error }
+                ProductId = @event.Value.ProductId,
+                ProductName = @event.Value.ProductName,
+                Price = @event.Value.Price,
+                Description = @event.Value.Description,
+                ImageUrl = @event.Value.ImageUrl,
+                CategoryId = @event.Value.CategoryId
             };
         }
     }
