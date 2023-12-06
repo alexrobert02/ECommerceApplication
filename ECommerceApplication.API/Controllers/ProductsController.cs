@@ -5,6 +5,7 @@ using ECommerceApplication.Application.Features.Products.Commands.CreateProduct;
 using ECommerceApplication.Application.Features.Products.Commands.DeleteProduct;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using ECommerceApplication.Application.Features.Products.Commands.UpdateProduct;
 
 namespace ECommerceApplication.API.Controllers
 {
@@ -51,6 +52,15 @@ namespace ECommerceApplication.API.Controllers
                 return NotFound(result);
             }
             return Ok(result.Product);
+        }
+
+        [Authorize(Roles = "User")]
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        public async Task<ActionResult<UpdateProductCommandResponse>> Update([FromBody] CreateProductCommand updateProductCommand)
+        {
+            var response = await Mediator.Send(updateProductCommand);
+            return Ok(response);
         }
     }
 }
