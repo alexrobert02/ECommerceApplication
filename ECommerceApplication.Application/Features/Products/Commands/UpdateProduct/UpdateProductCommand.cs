@@ -2,7 +2,7 @@
 
 namespace ECommerceApplication.Application.Features.Products.Commands.UpdateProduct
 {
-    public class UpdateProductCommand : IRequest<UpdateProductCommandResponse>
+    public class UpdateProductCommand : IRequest<UpdateProductDto>
     {
         public Guid ProductId { get; set; }
         public string ProductName { get; set; } = string.Empty;
