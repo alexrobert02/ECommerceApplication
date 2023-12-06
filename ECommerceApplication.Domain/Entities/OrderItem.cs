@@ -37,23 +37,28 @@ namespace ECommerceApplication.Domain.Entities
             return Result<OrderItem>.Success(new OrderItem(productId, quantity, pricePerUnit));
         }
 
-        public void UpdateQuantity(int newQuantity)
+        public Result<OrderItem> UpdateQuantity(int newQuantity)
         {
             if (newQuantity > 0)
             {
                 Quantity = newQuantity;
+                return Result<OrderItem>.Success(this);
             }
             else
+                return Result<OrderItem>.Failure("Invalid quantity. Quantity should be greater than zero.");
                 throw new InvalidOperationException("Invalid quantity. Quantity should be greater than zero.");
         }
 
-        public void UpdatePricePerUnit(decimal newPricePerUnit)
+        public Result<OrderItem> UpdatePricePerUnit(decimal newPricePerUnit)
         {
             if (newPricePerUnit > 0)
             {
                 PricePerUnit = newPricePerUnit;
+                return Result<OrderItem>.Success(this);
             }
             else
+                return
+                    Result<OrderItem>.Failure("Invalid price. Price per unit should be greater than zero.");
                 throw new InvalidOperationException("Invalid price. Price per unit should be greater than zero.");
         }
 
