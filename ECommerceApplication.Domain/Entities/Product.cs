@@ -75,24 +75,13 @@ namespace ECommerceApplication.Domain.Entities
             Reviews.Add(review);
         }
 
-        public void UpdateProductInformation(string newProductName, decimal newPrice, Manufacturer newManufacturer)
+        public void Update(string productName, decimal price, string? description, string? imageUrl, Guid categoryId)
         {
-            if (string.IsNullOrWhiteSpace(newProductName))
-            {
-                throw new ArgumentException("New product name is required.", nameof(newProductName));
-            }
-            if (newPrice <= 0)
-            {
-                throw new ArgumentException("New price must be greater than zero.", nameof(newPrice));
-            }
-            if (newManufacturer == null)
-            {
-                throw new ArgumentNullException(nameof(newManufacturer), "New manufacturer is required.");
-            }
-
-            ProductName = newProductName;
-            Price = newPrice;
-            //Manufacturer = newManufacturer;
+            ProductName = productName;
+            Price = price;
+            Description = description;
+            ImageUrl = imageUrl;
+            CategoryId = categoryId;
         }
 
         public void RemoveReview(Guid reviewId)
