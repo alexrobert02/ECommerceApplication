@@ -58,6 +58,14 @@ namespace ECommerceApplication.Domain.Entities
             }
         }
 
+        public void UpdateUserReward(Reward reward)
+        {
+            if (OrderPaid)
+            {
+                reward.UpdateRewardDate(OrderPlaced.AddMonths(3));
+                reward.IncreaseReward(ShoppingCart.CalculateTotal() * 0.1m);
+            }
+        }
         public void CancelOrder()
         {
             if (OrderPaid)
