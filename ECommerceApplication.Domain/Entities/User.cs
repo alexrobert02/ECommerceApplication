@@ -14,6 +14,7 @@ namespace ECommerceApplication.Domain.Entities
             LastName = lastName;
             Address = address;
             PhoneNumber = phoneNumber;
+            Reward = new Reward(UserId, null, null);
         }
 
         public Guid UserId { get; private set; }
@@ -25,6 +26,7 @@ namespace ECommerceApplication.Domain.Entities
         public string Address { get; private set; }
         public string PhoneNumber { get; private set; }
 
+        public Reward Reward { get; private set; }
         public List<Order>? Orders { get; private set; }
         public List<Review>? Reviews { get; private set; }
         public List<Address>? Addresses { get; private set; }
