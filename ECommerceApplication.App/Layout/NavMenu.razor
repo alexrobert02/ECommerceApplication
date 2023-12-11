@@ -1,4 +1,9 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@using ECommerceApplication.App.Auth
+@using ECommerceApplication.App.ViewModels
+@inject NavigationManager navigationManager
+@inject CustomStateProvider authStateProvider
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">ECommerceApplication.App</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -12,7 +17,11 @@
         <Microsoft.AspNetCore.Components.Authorization.CascadingAuthenticationState>
         <Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
             <Microsoft.AspNetCore.Components.Authorization.AuthorizeView.Authorized>
-
+        <div class="nav-item px-3">
+            <div class="nav-link" @onclick="OnLogout">
+                <span class="bi bi-person-x" aria-hidden="true"></span> LogOut
+            </div>
+        </div>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
                 <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
@@ -42,5 +51,11 @@
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+    }
+
+    public async void OnLogout()
+    {
+        await authStateProvider.Logout();
+        navigationManager.NavigateTo("/login");
     }
 }
