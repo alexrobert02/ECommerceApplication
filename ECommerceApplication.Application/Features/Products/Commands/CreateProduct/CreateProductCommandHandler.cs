@@ -11,12 +11,14 @@ namespace ECommerceApplication.Application.Features.Products.Commands.CreateProd
     public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, CreateProductCommandResponse>
     {
         private readonly IProductRepository productRepository;
+        private readonly ICategoryRepository categoryRepository;
         private readonly IEmailService emailService;
         private readonly ILogger<CreateProductCommandHandler> logger;
 
-        public CreateProductCommandHandler(IProductRepository repository, IEmailService emailService, ILogger<CreateProductCommandHandler> logger)
+        public CreateProductCommandHandler(IProductRepository productRepository, ICategoryRepository categoryRepository, IEmailService emailService, ILogger<CreateProductCommandHandler> logger)
         {
-            this.productRepository = repository;
+            this.productRepository = productRepository;
+            this.categoryRepository = categoryRepository;
             this.emailService = emailService;
             this.logger = logger;
         }
@@ -32,6 +34,16 @@ namespace ECommerceApplication.Application.Features.Products.Commands.CreateProd
                 {
                     Success = false,
                     ValidationsErrors = validatorResult.Errors.Select(e => e.ErrorMessage).ToList()
+                };
+            }
+
+            var categoryExists = await categoryRepository.CategoryExists(request.CategoryId);
+            if (!categoryExists)
+            {
+                return new CreateProductCommandResponse
+                {
+                    Success = false,
+                    ValidationsErrors = new List<string> { "Category with the provided ID does not exist." }
                 };
             }
 
