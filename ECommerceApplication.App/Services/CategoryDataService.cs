@@ -7,6 +7,14 @@ using System.Text.Json;
 
 namespace ECommerceApplication.App.Services
 {
+
+    public class ApiResponse
+    {
+        public List<CategoryViewModel> Categories { get; set; }
+        public bool Success { get; set; }
+        public string Message { get; set; }
+        public List<String> ValidationsErrors { get; set; }
+    }
     public class CategoryDataService : ICategoryDataService
     {
         private const string RequestUri = "api/v1/categories";
@@ -39,7 +47,9 @@ namespace ECommerceApplication.App.Services
             {
                 throw new ApplicationException(content);
             }
-            var categories = JsonSerializer.Deserialize<List<CategoryViewModel>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            Console.WriteLine(content);
+            var apiResponse = JsonSerializer.Deserialize<ApiResponse>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            List<CategoryViewModel> categories = apiResponse.Categories;
             return categories!;
         }
     }
