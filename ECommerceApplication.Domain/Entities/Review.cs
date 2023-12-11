@@ -17,7 +17,7 @@ namespace ECommerceApplication.Domain.Entities
         public Guid UserId { get; set; } 
         public string ReviewText { get; set; } 
         public decimal Rating { get; set; }    
-        public static Result<Review> Create(Guid productId, Guid userId, string reviewText, int rating)
+        public static Result<Review> Create(Guid productId, Guid userId, string reviewText, decimal rating)
         {
             if (productId == default)
             {
@@ -37,13 +37,13 @@ namespace ECommerceApplication.Domain.Entities
             }
             return Result<Review>.Success(new Review(Guid.NewGuid(), productId, userId, reviewText, rating));
         }
-        public void AddReview(string reviewText, int rating)
+        public void AddReview(string reviewText, decimal rating)
         {
             ReviewText = reviewText;
             Rating = rating;
         }
 
-        public void UpdateReview(string newReviewText, int newRating)
+        public void UpdateReview(string newReviewText, decimal newRating)
         {
             if (string.IsNullOrWhiteSpace(newReviewText))
             {
@@ -67,5 +67,29 @@ namespace ECommerceApplication.Domain.Entities
         {
             return requestingUserId == UserId;
         }
+
+        /*public void AttachDescription(string description)
+        {
+            if (!string.IsNullOrWhiteSpace(description))
+            {
+                Description = description;
+            }
+        }
+
+        public void AttachImageUrl(string imageUrl)
+        {
+            if (!string.IsNullOrWhiteSpace(imageUrl))
+            {
+                ImageUrl = imageUrl;
+            }
+        }
+
+        public void AttachCategory(Guid categoryId)
+        {
+            if (categoryId != Guid.Empty)
+            {
+                CategoryId = categoryId;
+            }
+        }*/
     }
 }

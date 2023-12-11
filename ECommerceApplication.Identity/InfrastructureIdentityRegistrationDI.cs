@@ -1,4 +1,5 @@
 ﻿using ECommerceApplication.Application.Contracts.Identity;
+using ECommerceApplication.Application.Persistence;
 using ECommerceApplication.Identity.Models;
 using ECommerceApplication.Identity.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -56,6 +57,8 @@ namespace ECommerceApplication.Identity
                         });
             services.AddScoped
                <IAuthService, AuthService>();
+            services.AddScoped
+                <IUserManager, ApplicationUserManager>();
             return services;
         }
 
