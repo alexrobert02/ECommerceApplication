@@ -1,11 +1,15 @@
 ﻿using ECommerceApplication.Application.Features.Users.Commands.CreateUser;
 using ECommerceApplication.Application.Features.Users.Commands.UpdateUser;
+using ECommerceApplication.Application.Features.Users.Queries.GetByIdUser;
+using ECommerceApplication.Application.Features.Users.Queries.GetAllUser;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerceApplication.API.Controllers
 {
     public class UserController : ApiControllerBase
     {
+        //[Authorize(Roles = "User")]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> Create(CreateUserCommand command)
@@ -17,7 +21,7 @@ namespace ECommerceApplication.API.Controllers
             }
             return Ok(result);
         }
-
+        //[Authorize(Roles = "User")]
         [HttpPut("{userId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -39,5 +43,44 @@ namespace ECommerceApplication.API.Controllers
 
             return Ok(result);
         }
+
+        //[Authorize(Roles = "User")]
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await Mediator.Send(new GetAllUserQuery());
+            return Ok(result);
+        }
+
+        /*[Authorize(Roles = "Admin")]
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var command = new DeleteUserCommand { UserId = id };
+            var result = await Mediator.Send(command);
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }*/
+
+        //[Authorize(Roles = "User")]
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetUserById(string id)
+        {
+            var query = new GetByIdUserQuery { UserId = id };
+            var result = await Mediator.Send(query);
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+
+
     }
 }

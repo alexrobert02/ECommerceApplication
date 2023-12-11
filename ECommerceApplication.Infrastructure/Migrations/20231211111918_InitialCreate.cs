@@ -109,16 +109,16 @@ namespace ECommerceApplication.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Address",
+                name: "Adresses",
                 columns: table => new
                 {
                     AddressId = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     Street = table.Column<string>(type: "text", nullable: false),
                     City = table.Column<string>(type: "text", nullable: false),
                     State = table.Column<string>(type: "text", nullable: false),
                     PostalCode = table.Column<string>(type: "text", nullable: false),
                     IsDefault = table.Column<bool>(type: "boolean", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: true),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true),
@@ -126,13 +126,12 @@ namespace ECommerceApplication.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Address", x => x.AddressId);
+                    table.PrimaryKey("PK_Adresses", x => x.AddressId);
                     table.ForeignKey(
-                        name: "FK_Address_Users_UserId",
+                        name: "FK_Adresses_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "UserId");
                 });
 
             migrationBuilder.CreateTable(
@@ -205,6 +204,26 @@ namespace ECommerceApplication.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Reward",
+                columns: table => new
+                {
+                    RewardId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    RewardValue = table.Column<decimal>(type: "numeric", nullable: true),
+                    RewardDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reward", x => x.RewardId);
+                    table.ForeignKey(
+                        name: "FK_Reward_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Payments",
                 columns: table => new
                 {
@@ -257,10 +276,39 @@ namespace ECommerceApplication.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Discount",
+                columns: table => new
+                {
+                    DiscountId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Code = table.Column<string>(type: "text", nullable: false),
+                    Percentage = table.Column<decimal>(type: "numeric", nullable: false),
+                    ExpiryDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    RewardId = table.Column<Guid>(type: "uuid", nullable: true),
+                    CreatedBy = table.Column<string>(type: "text", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastModifiedBy = table.Column<string>(type: "text", nullable: true),
+                    LastModifiedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Discount", x => x.DiscountId);
+                    table.ForeignKey(
+                        name: "FK_Discount_Reward_RewardId",
+                        column: x => x.RewardId,
+                        principalTable: "Reward",
+                        principalColumn: "RewardId");
+                });
+
             migrationBuilder.CreateIndex(
-                name: "IX_Address_UserId",
-                table: "Address",
+                name: "IX_Adresses_UserId",
+                table: "Adresses",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Discount_RewardId",
+                table: "Discount",
+                column: "RewardId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderItem_ShoppingCartId",
@@ -307,13 +355,22 @@ namespace ECommerceApplication.Infrastructure.Migrations
                 name: "IX_Review_UserId",
                 table: "Review",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reward_UserId",
+                table: "Reward",
+                column: "UserId",
+                unique: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Address");
+                name: "Adresses");
+
+            migrationBuilder.DropTable(
+                name: "Discount");
 
             migrationBuilder.DropTable(
                 name: "OrderItem");
@@ -323,6 +380,9 @@ namespace ECommerceApplication.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Review");
+
+            migrationBuilder.DropTable(
+                name: "Reward");
 
             migrationBuilder.DropTable(
                 name: "Orders");

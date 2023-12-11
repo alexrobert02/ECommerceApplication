@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using ECommerceApplication.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace ECommerceApplication.Identity.Models
 {

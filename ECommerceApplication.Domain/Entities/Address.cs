@@ -4,10 +4,9 @@ namespace ECommerceApplication.Domain.Entities
 {
     public class Address : AuditableEntity
     {
-        private Address(Guid addressId, Guid userId, string street, string city, string state, string postalCode, bool isDefault)
+        private Address(string street, string city, string state, string postalCode, bool isDefault)
         {
-            AddressId = addressId;
-            UserId = userId;
+            AddressId = Guid.NewGuid();
             Street = street;
             City = city;
             State = state;
@@ -16,23 +15,14 @@ namespace ECommerceApplication.Domain.Entities
         }
 
         public Guid AddressId { get; private set; }
-        public Guid UserId { get; private set; }
         public string Street { get; private set; }
         public string City { get; private set; }
         public string State { get; private set; }
         public string PostalCode { get; private set; }
         public bool IsDefault { get; private set; }
 
-        public static Result<Address> Create(Guid addressId, Guid userId, string street, string city, string state, string postalCode, bool isDefault)
+        public static Result<Address> Create(string street, string city, string state, string postalCode, bool isDefault)
         {
-            if (addressId == default)
-            {
-                return Result<Address>.Failure("Address id is required.");
-            }
-            if (userId == default)
-            {
-                return Result<Address>.Failure("User id is required.");
-            }
             if (string.IsNullOrWhiteSpace(street))
             {
                 return Result<Address>.Failure("Street is required.");
@@ -50,7 +40,7 @@ namespace ECommerceApplication.Domain.Entities
                 return Result<Address>.Failure("Postal code is required.");
             }
 
-            return Result<Address>.Success(new Address(addressId, userId, street, city, state, postalCode, isDefault));
+            return Result<Address>.Success(new Address(street, city, state, postalCode, isDefault));
         }
 
         public void UpdateAddress(string street, string city, string state, string postalCode)
