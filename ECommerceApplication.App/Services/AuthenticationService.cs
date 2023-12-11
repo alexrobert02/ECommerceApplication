@@ -2,7 +2,7 @@
 using ECommerceApplication.App.ViewModels;
 using System.Net.Http.Json;
 
-namespace ECommerceApplication.TicketManagement.App.Services
+namespace ECommerceApplication.App.Services
 {
     public class AuthenticationService : IAuthenticationService
     {
@@ -36,12 +36,23 @@ namespace ECommerceApplication.TicketManagement.App.Services
 
         public async Task Register(RegisterViewModel registerRequest)
         {
-            var result = await httpClient.PostAsJsonAsync("api/v1/authentication/register", registerRequest);
-            if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            try
             {
-                throw new Exception(await result.Content.ReadAsStringAsync());
+                var result = await httpClient.PostAsJsonAsync("api/v1/authentication/register", registerRequest);
+                if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    Console.WriteLine(await result.Content.ReadAsStringAsync());
+                    throw new Exception(await result.Content.ReadAsStringAsync());
+                }
+                result.EnsureSuccessStatusCode();
             }
-            result.EnsureSuccessStatusCode();
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+                throw ex;
+            }
         }
     }
 }
