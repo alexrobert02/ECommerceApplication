@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ECommerceApplication.Identity.Services
 {
@@ -37,7 +38,12 @@ namespace ECommerceApplication.Identity.Services
             };
             var createUserResult = await userManager.CreateAsync(user, model.Password);
             if (!createUserResult.Succeeded)
-                return (0, "User creation failed! Please check user details and try again.");
+            {
+                string concatenatedErrors = 
+                    string.Join(Environment.NewLine, 
+                    createUserResult.Errors.Select(error => $"{error.Code}: {error.Description}"));
+                return (0, concatenatedErrors);
+            }
 
             if (!await roleManager.RoleExistsAsync(role))
                 await roleManager.CreateAsync(new IdentityRole(role));

@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using ECommerceApplication.App.Services;
-using ECommerceApplication.TicketManagement.App.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -28,12 +27,12 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<CustomStateProvider>();
 builder.Services.AddHttpClient<ICategoryDataService, CategoryDataService>(client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7165/");
+    client.BaseAddress = new Uri("https://localhost:7252/");
 });
 builder.Services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<CustomStateProvider>());
 builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>(client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7165/");
+    client.BaseAddress = new Uri("https://localhost:7252/");
 });
 
 
