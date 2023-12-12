@@ -7,6 +7,5 @@ namespace ECommerceApplication.Application.Features.Categories.Commands.UpdateCa
     {
         public Guid CategoryId { get; set; }
         public string CategoryName { get; set; } = default!;
-        public List<Product> Products { get; set; } = default!;
     }
 }

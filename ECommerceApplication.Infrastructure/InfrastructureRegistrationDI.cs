@@ -27,7 +27,6 @@ namespace ECommerceApplication.Infrastructure
                 (typeof(IAsyncRepository<>),
                 typeof(BaseRepository<>));
             services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IEmailService, EmailService>();

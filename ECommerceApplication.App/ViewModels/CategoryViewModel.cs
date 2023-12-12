@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-
 namespace ECommerceApplication.App.ViewModels
 {
     public class CategoryViewModel

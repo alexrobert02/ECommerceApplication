@@ -40,7 +40,7 @@ namespace ECommerceApplication.Application.Features.Categories.Commands.UpdateCa
             }
 
             // Update category profile
-            var updateResult = category.Value.Update(request.CategoryName, request.Products);
+            var updateResult = category.Value.Update(request.CategoryName);
 
             if (updateResult.IsSuccess)
             {
@@ -54,7 +54,6 @@ namespace ECommerceApplication.Application.Features.Categories.Commands.UpdateCa
                     {
                         CategoryId = updateResult.Value.CategoryId,
                         CategoryName = updateResult.Value.CategoryName,
-                        Products = updateResult.Value.Products
                     }
                 };
             }

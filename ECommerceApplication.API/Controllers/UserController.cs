@@ -1,5 +1,4 @@
-﻿using ECommerceApplication.Application.Features.Users.Commands.CreateUser;
-using ECommerceApplication.Application.Features.Users.Commands.UpdateUser;
+﻿using ECommerceApplication.Application.Features.Users.Commands.UpdateUser;
 using ECommerceApplication.Application.Features.Users.Queries.GetByIdUser;
 using ECommerceApplication.Application.Features.Users.Queries.GetAllUser;
 using Microsoft.AspNetCore.Authorization;
@@ -9,18 +8,6 @@ namespace ECommerceApplication.API.Controllers
 {
     public class UserController : ApiControllerBase
     {
-        //[Authorize(Roles = "User")]
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<IActionResult> Create(CreateUserCommand command)
-        {
-            var result = await Mediator.Send(command);
-            if (!result.Success)
-            {
-                return BadRequest(result);
-            }
-            return Ok(result);
-        }
         //[Authorize(Roles = "User")]
         [HttpPut("{userId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
