@@ -1,0 +1,95 @@
+﻿@page "/updatecategory"
+@using ECommerceApplication.App.Contracts
+@using ECommerceApplication.App.ViewModels
+@inject ICategoryDataService categoryDataService
+
+<h3>Update Category</h3>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="categoryId">Category ID</label>
+            <input type="text" class="form-control" @bind="categoryId" id="categoryId" />
+        </div>
+        <div class="form-group">
+            <label for="newCategoryName">New Category Name</label>
+            <input type="text" class="form-control" @bind="newCategoryName" id="newCategoryName" />
+        </div>
+        <button class="btn btn-primary" @onclick="HandleUpdateCategory">Update Category</button>
+        <p>@updateMessage</p>
+    </div>
+</div>
+
+@code {
+    private Guid categoryId;
+    private string newCategoryName;
+    private string updateMessage = "";
+
+    private async Task HandleUpdateCategory()
+    {
+        if (categoryId != Guid.Empty && !string.IsNullOrWhiteSpace(newCategoryName))
+        {
+            try
+            {
+                var categories = await categoryDataService.GetCategoriesAsync();
+                bool categoryExists = categories.Any(category => category.CategoryId == categoryId);
+
+                if (categoryExists)
+                {
+                    var currentCategory = categories.FirstOrDefault(category => category.CategoryId == categoryId);
+
+                    if (currentCategory != null)
+                    {
+                        if (newCategoryName != currentCategory.CategoryName)
+                        {
+                            var updatedCategory = new CategoryViewModel
+                                {
+                                    CategoryId = categoryId,
+                                    CategoryName = newCategoryName
+                                };
+
+                            var response = await categoryDataService.UpdateCategoryAsync(updatedCategory);
+
+                            if (response != null && response.IsSuccess)
+                            {
+                                updateMessage = "Category updated successfully!";
+                                // Handle success
+                            }
+                            else
+                            {
+                                updateMessage = "Failed to update category. Please try again.";
+                                // Handle failure
+                            }
+                        }
+                        else
+                        {
+                            updateMessage = "New category name is the same as the current one.";
+                            // Handle case where the new category name is the same as the current one
+                        }
+                    }
+                    else
+                    {
+                        updateMessage = "Category with specified ID not found.";
+                        // Handle case where category with specified ID doesn't exist
+                    }
+                }
+                else
+                {
+                    updateMessage = "Category with specified ID does not exist in the database.";
+                    // Handle case where category with specified ID doesn't exist
+                }
+            }
+            catch (Exception ex)
+            {
+                updateMessage = $"Error occurred: {ex.Message}";
+                // Handle exception
+            }
+        }
+        else
+        {
+            updateMessage = "Please fill in both Category ID and New Category Name.";
+            // Handle empty fields or invalid input
+            // You can display an error message to prompt the user to fill in both fields
+        }
+    }
+}

@@ -13,7 +13,7 @@ namespace ECommerceApplication.Application.Features.Payments.Commands.UpdatePaym
         private readonly IPaymentRepository _paymentRepository;
         public UpdatePaymentCommandValidator(IPaymentRepository paymentRepository)
         {
-           /* RuleFor(updatePayment => updatePayment.PaymentId)
+            /*RuleFor(updatePayment => updatePayment.PaymentId)
                .NotEmpty().WithMessage("PaymentId is required.")
                .MustAsync(async (paymentId, cancellation) =>
                {

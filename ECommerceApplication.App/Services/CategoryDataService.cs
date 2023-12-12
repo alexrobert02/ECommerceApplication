@@ -52,5 +52,29 @@ namespace ECommerceApplication.App.Services
             List<CategoryViewModel> categories = apiResponse.Categories;
             return categories!;
         }
+
+        public async Task<ApiResponse<CategoryDto>> UpdateCategoryAsync(CategoryViewModel updatedCategory)
+        {
+            // Asigură-te că ai o rută corectă definită în backend pentru a actualiza categoria
+            string updateUri = $"api/v1/categories/{updatedCategory.CategoryId}";
+
+            // Setează token-ul de autorizare pentru a putea accesa ruta protejată din backend
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await tokenService.GetTokenAsync());
+
+            // Trimite o solicitare PUT către backend pentru a actualiza categoria
+            var result = await httpClient.PutAsJsonAsync(updateUri, updatedCategory);
+
+            // Asigură-te că solicitarea a fost realizată cu succes
+            result.EnsureSuccessStatusCode();
+
+            // Citește răspunsul JSON primit de la backend și parsează-l într-un obiect ApiResponse<CategoryDto>
+            var response = await result.Content.ReadFromJsonAsync<ApiResponse<CategoryDto>>();
+
+            // Setează proprietatea IsSuccess pe baza rezultatului solicitării HTTP
+            response!.IsSuccess = result.IsSuccessStatusCode;
+
+            return response!;
+        }
+
     }
 }

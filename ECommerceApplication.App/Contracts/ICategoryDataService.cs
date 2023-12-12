@@ -9,5 +9,9 @@ namespace ECommerceApplication.App.Contracts
         Task<List<CategoryViewModel>> GetCategoriesAsync();
 
         Task<ApiResponse<CategoryDto>> CreateCategoryAsync(CategoryViewModel categoryViewModel);
+
+        Task<ApiResponse<CategoryDto>> UpdateCategoryAsync(CategoryViewModel categoryViewModel);
+
+
     }
 }
