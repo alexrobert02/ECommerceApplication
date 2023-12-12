@@ -6,7 +6,6 @@ using ECommerceApplication.Application.Features.Products.Commands.DeleteProduct;
 using ECommerceApplication.Application.Features.Products.Commands.UpdateProduct;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using ECommerceApplication.Application.Features.Products.Commands.UpdateProduct;
 
 namespace ECommerceApplication.API.Controllers
 {

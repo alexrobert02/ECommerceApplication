@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using ECommerceApplication.Application.Features.Addresses.Commands.CreateAddress;
 using ECommerceApplication.Application.Features.Addresses.Queries.GetAllAddress;
+using ECommerceApplication.Application.Features.Addresses.Commands.UpdateAddress;
 
 namespace ECommerceApplication.API.Controllers
 {
@@ -31,6 +32,27 @@ namespace ECommerceApplication.API.Controllers
             {
                 return NotFound(result);
             }
+            return Ok(result);
+        }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult> Update(Guid id, [FromBody] UpdateAddressCommand updateAddressCommand)
+        {
+            if (id != updateAddressCommand.AddressId)
+            {
+                return BadRequest("The provided product ID does not match the request body.");
+            }
+
+            var result = await Mediator.Send(updateAddressCommand);
+
+            if (!result.Success)
+            {
+                return NotFound(result);
+            }
+
             return Ok(result);
         }
     }
