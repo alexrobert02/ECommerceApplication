@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ECommerceApplication.Application.Features.OrderItems
+﻿namespace ECommerceApplication.Application.Features.OrderItems
 {
     public class OrderItemDto
     {

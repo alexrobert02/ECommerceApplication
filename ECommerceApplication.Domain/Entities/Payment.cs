@@ -12,6 +12,7 @@ namespace ECommerceApplication.Domain.Entities
             PaymentDate = paymentDate;
             PaymentMethod = paymentMethod;
             PaymentStatus = "Pending";
+            Currency = "RON";
         }
 
         public Guid PaymentId { get; private set; }
@@ -19,6 +20,7 @@ namespace ECommerceApplication.Domain.Entities
         public decimal Amount { get; private set; }
         public DateTime PaymentDate { get; private set; }
         public string PaymentMethod { get; private set; }
+        public string Currency { get; private set; }
         public string PaymentStatus { get; private set; }
 
         public static Result<Payment> Create(Guid orderId, decimal amount, DateTime paymentDate, string paymentMethod)
@@ -93,6 +95,54 @@ namespace ECommerceApplication.Domain.Entities
             }
 
             Amount = newAmount;
+        }
+
+        public void AttachPaymentStatus(string v)
+        {
+            if (!string.IsNullOrWhiteSpace(v))
+            {
+                PaymentStatus = v;
+            }
+        }
+
+        public void AttachPaymentDate(DateTime now)
+        {
+            if(DateTime.TryParse(now.ToString(), out DateTime date))
+            {
+                PaymentDate = date;
+            }
+        }
+
+        public void AttachPaymentMethod(string paymentMethod)
+        {
+            if(paymentMethod != null)
+            {
+                PaymentMethod = paymentMethod;
+            }
+        }
+
+        public void AttachCurrency(string currency)
+        {
+            if (!string.IsNullOrWhiteSpace(currency))
+            {
+                Currency = currency;
+            }
+        }
+
+        public void AttachAmount(decimal amount)
+        {
+            if (amount >= 0)
+            {
+                Amount=amount;
+            }
+        }
+
+        public void AttachOrderId(Guid orderId)
+        {
+            if (orderId != Guid.Empty)
+            {
+                OrderId = orderId;
+            }
         }
     }
 }

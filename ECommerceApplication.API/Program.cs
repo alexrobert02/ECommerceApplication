@@ -6,6 +6,7 @@ using ECommerceApplication.Infrastructure;
 using ECommerceApplication.Identity;
 using Microsoft.OpenApi.Models;
 using WebAPI.Services;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpContextAccessor();
@@ -64,6 +65,8 @@ builder.Services.AddSwaggerGen(c =>
 
     c.OperationFilter<FileResultContentTypeOperationFilter>();
 });
+
+StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
 
 var app = builder.Build();
 

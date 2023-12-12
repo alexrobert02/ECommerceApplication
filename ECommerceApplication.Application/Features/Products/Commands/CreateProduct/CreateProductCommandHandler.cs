@@ -46,7 +46,6 @@ namespace ECommerceApplication.Application.Features.Products.Commands.CreateProd
                     ValidationsErrors = new List<string> { "Category with the provided ID does not exist." }
                 };
             }
-
             var @event = Product.Create(request.ProductName, request.Price);
             if (@event.IsSuccess)
             {

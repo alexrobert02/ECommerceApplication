@@ -1,11 +1,5 @@
-﻿using ECommerceApplication.Application.Features.Categories.Commands.UpdateCategory;
-using ECommerceApplication.Application.Persistence;
+﻿using ECommerceApplication.Application.Persistence;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ECommerceApplication.Application.Features.OrderItems.Commands.UpdateOrderItem
 {

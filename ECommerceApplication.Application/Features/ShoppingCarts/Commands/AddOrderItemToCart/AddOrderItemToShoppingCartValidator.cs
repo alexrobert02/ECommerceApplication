@@ -1,10 +1,4 @@
-﻿using ECommerceApplication.Application.Features.OrderItems.Queries.GetByIdOrderItem;
-using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FluentValidation;
 
 namespace ECommerceApplication.Application.Features.ShoppingCarts.Commands.AddOrderItemToCart
 {
