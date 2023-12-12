@@ -144,5 +144,40 @@ namespace ECommerceApplication.Domain.Entities
                 OrderId = orderId;
             }
         }
+
+        public void Update(Guid orderId, decimal amount, DateTime paymentDate, string paymentMethod, string paymentStatus, string currency)
+        {
+            if (orderId == default)
+            {
+                throw new ArgumentException("Order id is required.", nameof(orderId));
+            }
+            if (amount == default)
+            {
+                throw new ArgumentException("Amount is required.", nameof(amount));
+            }
+            if (paymentDate == default)
+            {
+                throw new ArgumentException("Payment date is required.", nameof(paymentDate));
+            }
+            if (string.IsNullOrWhiteSpace(paymentMethod))
+            {
+                throw new ArgumentException("Payment method is required.", nameof(paymentMethod));
+            }
+            if (string.IsNullOrWhiteSpace(paymentStatus))
+            {
+                throw new ArgumentException("Payment status is required.", nameof(paymentStatus));
+            }
+            if (string.IsNullOrWhiteSpace(currency))
+            {
+                throw new ArgumentException("Currency is required.", nameof(currency));
+            }
+
+            OrderId = orderId;
+            Amount = amount;
+            PaymentDate = paymentDate;
+            PaymentMethod = paymentMethod;
+            PaymentStatus = paymentStatus;
+            Currency = currency;
+        }
     }
 }

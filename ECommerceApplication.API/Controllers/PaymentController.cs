@@ -1,5 +1,10 @@
 ﻿using ECommerceApplication.API.Models;
 using ECommerceApplication.Application.Contracts.Interfaces;
+using ECommerceApplication.Application.Features.Payments.Commands.CreatePayment;
+using ECommerceApplication.Application.Features.Payments.Commands.DeletePayment;
+using ECommerceApplication.Application.Features.Payments.Commands.UpdatePayment;
+using ECommerceApplication.Application.Features.Payments.Queries.GetAllPayment;
+using ECommerceApplication.Application.Features.Payments.Queries.GetByIdPayment;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerceApplication.API.Controllers
@@ -32,10 +37,10 @@ namespace ECommerceApplication.API.Controllers
 
         [HttpDelete("{paymentId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(DeletePaymentQuery), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(DeletePaymentCommand), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(Guid paymentId)
         {
-            var command = new DeletePaymentQuery { PaymentId = paymentId };
+            var command = new DeletePaymentCommand { PaymentId = paymentId };
             var result = await Mediator.Send(command);
             return Ok(result);
         }
