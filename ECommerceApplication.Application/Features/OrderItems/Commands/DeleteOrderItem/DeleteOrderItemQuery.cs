@@ -1,5 +1,4 @@
-﻿using ECommerceApplication.Application.Features.Categories.Queries.DeleteCategory;
-using MediatR;
+﻿using MediatR;
 
 namespace ECommerceApplication.Application.Features.OrderItems.Commands.DeleteCategory
 {

@@ -1,5 +1,4 @@
-﻿using ECommerceApplication.Application.Features.Categories.Commands.CreateCategory;
-using ECommerceApplication.Application.Persistence;
+﻿using ECommerceApplication.Application.Persistence;
 using ECommerceApplication.Domain.Entities;
 using MediatR;
 

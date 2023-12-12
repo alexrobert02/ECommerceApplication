@@ -33,6 +33,7 @@ namespace ECommerceApplication.Infrastructure
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IOrderItemRepository, OrderItemRepository>();
             services.AddScoped<IAddressRepository, AddressRepository>();
+            services.AddScoped<IPaymentRepository, PaymentRepository>();
             return services;
         }
     }
