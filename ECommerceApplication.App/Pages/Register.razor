@@ -11,10 +11,6 @@
 <EditForm class="form-signin" OnValidSubmit="OnSubmit" Model="registerRequest">
     <DataAnnotationsValidator />
 
-    <label for="inputName" class="sr-only">Name</label>
-    <InputText id="inputName" class="form-control" @bind-Value="registerRequest.Name" autofocus placeholder="Name" />
-    <ValidationMessage For="@(() => registerRequest.Name)" />
-
     <label for="inputEmail" class="sr-only">Email</label>
     <InputText id="inputEmail" class="form-control" @bind-Value="registerRequest.Email" autofocus placeholder="Email" />
     <ValidationMessage For="@(() => registerRequest.Email)" />
