@@ -104,18 +104,27 @@ namespace ECommerceApplication.Identity.Services
         }
         private void UpdateUserProperties(ApplicationUser user, UserDto userDto)
         {
-            user.Name = userDto.Name;
             user.UserName = userDto.Username;
             user.Email = userDto.Email;
+            user.FirstName = userDto.FirstName;
+            user.LastName = userDto.LastName;
+            user.Address = userDto.Address;
+            user.PhoneNumber = userDto.PhoneNumber;
+            user.Role = userDto.Role;
         }
         private UserDto MapToUserDto(ApplicationUser user)
         {
             return new UserDto
             {
                 UserId = user.Id,
-                Name = user.Name,
                 Username = user.UserName,
-                Email = user.Email
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Address = user.Address,
+                PhoneNumber = user.PhoneNumber,
+                Role = user.Role
+
             };
         }
     }

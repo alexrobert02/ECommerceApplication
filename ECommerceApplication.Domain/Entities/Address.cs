@@ -43,12 +43,13 @@ namespace ECommerceApplication.Domain.Entities
             return Result<Address>.Success(new Address(street, city, state, postalCode, isDefault));
         }
 
-        public void UpdateAddress(string street, string city, string state, string postalCode)
+        public void Update(string street, string city, string state, string postalCode, bool isDefault)
         {
             Street = street;
             City = city;
             State = state;
             PostalCode = postalCode;
+            IsDefault = isDefault;
         }
 
         public bool MarkAsDefault()

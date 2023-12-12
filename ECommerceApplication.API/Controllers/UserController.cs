@@ -29,7 +29,7 @@ namespace ECommerceApplication.API.Controllers
         public async Task<IActionResult> Update(Guid userId, UpdateUserCommand command)
         {
             // Ensure the userId in the path matches the one in the request body
-            if (userId != command.UserId)
+            if (userId != command.Id)
             {
                 return BadRequest("The provided userId in the path does not match the one in the request body.");
             }

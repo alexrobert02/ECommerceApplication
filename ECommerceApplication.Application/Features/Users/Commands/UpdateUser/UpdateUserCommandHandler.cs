@@ -1,13 +1,14 @@
-﻿using ECommerceApplication.Application.Persistence;
+﻿using ECommerceApplication.Application.Features.Users.Queries;
+using ECommerceApplication.Application.Persistence;
 using MediatR;
 
 namespace ECommerceApplication.Application.Features.Users.Commands.UpdateUser
 {
     public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, UpdateUserCommandResponse>
     {
-        private readonly IUserRepository repository;
+        private readonly IUserManager repository;
 
-        public UpdateUserCommandHandler(IUserRepository repository)
+        public UpdateUserCommandHandler(IUserManager repository)
         {
             this.repository = repository;
         }
@@ -28,49 +29,67 @@ namespace ECommerceApplication.Application.Features.Users.Commands.UpdateUser
             }
 
             // Retrieve the user from the repository
-            var user = await repository.FindByIdAsync(request.UserId);
+            var user = await repository.FindByIdAsync(request.Id);
 
-            if (user == null)
+            if (!user.IsSuccess)
             {
                 return new UpdateUserCommandResponse
                 {
                     Success = false,
-                    ValidationsErrors = new List<string> { "User not found." }
+                    ValidationsErrors = new List<string> { $"User with {request.Id} not found" }
                 };
             }
+
+            request.Username ??= user.Value.Username;
+            request.Email ??= user.Value.Email;
+            request.FirstName ??= user.Value.FirstName;
+            request.LastName ??= user.Value.LastName;
+            request.Address ??= user.Value.Address;
+            request.PhoneNumber ??= user.Value.PhoneNumber;
+            request.Role ??= user.Value.Role;
 
             // Update user profile
-            var updateResult = user.Value.Update(request.Username, request.Email, request.PasswordHash ,request.FirstName, request.LastName, request.Address, request.PhoneNumber);
 
-            if (updateResult.IsSuccess)
+            UserDto userDto = new()
             {
-                // Save the updated user
-                await repository.UpdateAsync(updateResult.Value);
+                UserId = user.Value.UserId,
+                Username = request.Username,
+                Email = request.Email,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                Address = request.Address,
+                PhoneNumber = request.PhoneNumber,
+                Role = request.Role
 
-                return new UpdateUserCommandResponse
-                {
-                    Success = true,
-                    User = new UpdateUserDto
-                    {
-                        UserId = updateResult.Value.UserId,
-                        Username = updateResult.Value.Username,
-                        Email = updateResult.Value.Email,
-                        FirstName = updateResult.Value.FirstName,
-                        LastName = updateResult.Value.LastName,
-                        Address = updateResult.Value.Address,
-                        PhoneNumber = updateResult.Value.PhoneNumber
-                    }
-                };
-            }
-            else
+            };
+
+            // Save the updated user
+            var result = await repository.UpdateAsync(userDto);
+
+            if(!result.IsSuccess)
             {
                 // Handle failure result
                 return new UpdateUserCommandResponse
                 {
                     Success = false,
-                    ValidationsErrors = new List<string> { updateResult.Error }
+                    ValidationsErrors = new List<string> { result.Error }
                 };
             }
+
+            return new UpdateUserCommandResponse
+            {
+                Success = true,
+                User = new UpdateUserDto
+                {
+                    Username = result.Value.Username,
+                    Email = result.Value.Email,
+                    FirstName = result.Value.FirstName,
+                    LastName = result.Value.LastName,
+                    Address = result.Value.Address,
+                    PhoneNumber = result.Value.PhoneNumber,
+                    Role = result.Value.Role
+                }
+            };
         }
     }
 }

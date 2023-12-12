@@ -20,10 +20,14 @@ namespace ECommerceApplication.Application.Features.Users.Queries.GetAllUser
                 response.Users = result.Value.Select(u => new UserDto
                 {
                     UserId = u.UserId,
-                    Name = u.Name,
                     Username = u.Username,
                     Email = u.Email,
-                    Role = u.Role
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    Address = u.Address,
+                    PhoneNumber = u.PhoneNumber,
+                    Role = u.Role,
+
                 }).ToList();
             }
             return response;

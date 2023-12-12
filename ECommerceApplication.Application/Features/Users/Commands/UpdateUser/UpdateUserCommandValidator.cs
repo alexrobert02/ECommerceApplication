@@ -6,7 +6,7 @@ namespace ECommerceApplication.Application.Features.Users.Commands.UpdateUser
     {
         public UpdateUserCommandValidator()
         {
-            RuleFor(p => p.UserId)
+            RuleFor(p => p.Id)
                 .NotEmpty().WithMessage("{PropertyName} is required.");
 
             // Add validation rules for other properties if needed

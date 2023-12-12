@@ -23,10 +23,13 @@ namespace ECommerceApplication.Application.Features.Users.Queries.GetByIdUser
                 User = new UserDto
                 {
                     UserId = userDto.UserId,
-                    Name = userDto.Name,
                     Username = userDto.Username,
                     Email = userDto.Email,
-                    Role = userDto.Role
+                    FirstName = userDto.FirstName,
+                    LastName = userDto.LastName,
+                    Address = userDto.Address,
+                    PhoneNumber = userDto.PhoneNumber,
+                    Role = userDto.Role,
                 }
             };
 
