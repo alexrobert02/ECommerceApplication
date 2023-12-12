@@ -26,7 +26,7 @@ namespace ECommerceApplication.Application.Features.Users.Commands.CreateUser
                     ValidationsErrors = validatorResult.Errors.Select(e => e.ErrorMessage).ToList()
                 };
             }
-            var user = User.Create(request.Username, request.Email, request.PasswordHash, request.FirstName, request.LastName, request.Address, request.PhoneNumber);
+            var user = User.Create(request.Username, request.Email, request.PasswordHash, request.FirstName, request.LastName, request.PhoneNumber);
             if (!user.IsSuccess)
             {
                 return new CreateUserCommandResponse
@@ -49,7 +49,6 @@ namespace ECommerceApplication.Application.Features.Users.Commands.CreateUser
                     PasswordHash = user.Value.PasswordHash,
                     FirstName = user.Value.FirstName,
                     LastName = user.Value.LastName,
-                    Address = user.Value.Address,
                     PhoneNumber = user.Value.PhoneNumber
                 }
             };

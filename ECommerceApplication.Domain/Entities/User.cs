@@ -4,7 +4,7 @@ namespace ECommerceApplication.Domain.Entities
 {
     public class User : AuditableEntity
     {
-        private User(string username, string email, string passwordHash, string firstName, string lastName, string address, string phoneNumber)
+        private User(string username, string email, string passwordHash, string firstName, string lastName, string phoneNumber)
         {
             UserId = Guid.NewGuid();
             Username = username;
@@ -12,7 +12,6 @@ namespace ECommerceApplication.Domain.Entities
             PasswordHash = passwordHash;
             FirstName = firstName;
             LastName = lastName;
-            Address = address;
             PhoneNumber = phoneNumber;
             Reward = new Reward(UserId, null, null);
         }
@@ -23,7 +22,7 @@ namespace ECommerceApplication.Domain.Entities
         public string PasswordHash { get; private set; }
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
-        public string Address { get; private set; }
+        //public string Address { get; private set; }
         public string PhoneNumber { get; private set; }
 
         public Reward Reward { get; private set; }
@@ -32,7 +31,7 @@ namespace ECommerceApplication.Domain.Entities
         public List<Address>? Addresses { get; private set; }
         public List<Product>? FavoriteProducts { get; private set; }
 
-        public static Result<User> Create(string username, string email, string passwordhash, string firstname, string lastname, string address, string phonenumber)
+        public static Result<User> Create(string username, string email, string passwordhash, string firstname, string lastname, string phonenumber)
         {
             if (string.IsNullOrWhiteSpace(username))
             {
@@ -54,21 +53,17 @@ namespace ECommerceApplication.Domain.Entities
             {
                 return Result<User>.Failure("Last name is required.");
             }
-            if (string.IsNullOrWhiteSpace(address))
-            {
-                return Result<User>.Failure("Address is required.");
-            }
             if (string.IsNullOrWhiteSpace(phonenumber))
             {
                 return Result<User>.Failure("Phone number is required.");
             }
-            return Result<User>.Success(new User(username, email, passwordhash, firstname, lastname, address, phonenumber));
+            return Result<User>.Success(new User(username, email, passwordhash, firstname, lastname, phonenumber));
         }
 
         public Result<User> Update(string username, string email, string passwordhash, string firstName, string lastName, string address, string phoneNumber)
         {
             // Perform any additional validation if needed
-            if (string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName) || string.IsNullOrWhiteSpace(address) || string.IsNullOrWhiteSpace(phoneNumber))
+            if (string.IsNullOrWhiteSpace(firstName) || string.IsNullOrWhiteSpace(lastName) || string.IsNullOrWhiteSpace(phoneNumber))
             {
                 return Result<User>.Failure("Invalid input for updating profile.");
             }
@@ -77,7 +72,6 @@ namespace ECommerceApplication.Domain.Entities
             PasswordHash = passwordhash;
             FirstName = firstName;
             LastName = lastName;
-            Address = address;
             PhoneNumber = phoneNumber;
 
             return Result<User>.Success(this);
