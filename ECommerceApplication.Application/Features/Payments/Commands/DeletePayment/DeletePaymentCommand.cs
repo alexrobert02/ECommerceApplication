@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace ECommerceApplication.Application.Features.Payments.Commands.DeletePayment
 {
-    public class DeletePaymentCommand IRequest <DeletePaymentCommandResponse>
+    public class DeletePaymentCommand : IRequest<DeletePaymentCommandResponse>
     {
         public Guid PaymentId { get; set; }
-
     }
 }

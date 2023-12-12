@@ -13,7 +13,7 @@ namespace ECommerceApplication.Domain.Entities
         public Guid ProductId { get; private set; }
         public string ProductName { get; private set; } = string.Empty;
         public decimal Price { get; private set; }
-        public string? Description { get; private set; }
+        public string? Description { get; private set; } 
         public string? ImageUrl { get; private set; }
         public List<Review>? Reviews { get; private set; }
         //public Manufacturer Manufacturer { get; private set; }
