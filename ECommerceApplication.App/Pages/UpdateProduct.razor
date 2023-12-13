@@ -5,35 +5,37 @@
 
 <h3>Update Product</h3>
 
-<div class="row">
-    <div class="col-md-6">
-        <div class="form-group">
-            <label for="productId">Product ID</label>
-            <input type="text" class="form-control" @bind="productId" id="productId" />
-        </div>
-        <div class="form-group">
-            <label for="newProductName">New Product Name</label>
-            <input type="text" class="form-control" @bind="newProductName" id="newProductName" />
-        </div>
-        <div class="form-group">
-            <label for="newProductPrice">New Product Price</label>
-            <input type="number" class="form-control" @bind="newProductPrice" id="newProductPrice" />
-        </div>
-        <div class="form-group">
-            <label for="newProductDescription">New Product Description</label>
-            <input type="text" class="form-control" @bind="newProductDescription" id="newProductDescription" />
-        </div>
-        <div class="form-group">
-            <label for="newProductImage">New Product Image</label>
-            <input type="text" class="form-control" @bind="newProductImage" id="newProductImage" />
-        </div>
-        <div class="form-group">
-            <label for="newProductImage">New Product Category Id</label>
-            <input type="text" class="form-control" @bind="newProductCategoryId" id="newProductCategoryId" />
-        </div>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label for="productId" class="form-label">Product ID</label>
+                <input type="text" class="form-control" @bind="productId" id="productId" />
+            </div>
+            <div class="mb-3">
+                <label for="newProductName" class="form-label">New Product Name</label>
+                <input type="text" class="form-control" @bind="newProductName" id="newProductName" />
+            </div>
+            <div class="mb-3">
+                <label for="newProductPrice" class="form-label">New Product Price</label>
+                <input type="number" class="form-control" @bind="newProductPrice" id="newProductPrice" />
+            </div>
+            <div class="mb-3">
+                <label for="newProductDescription" class="form-label">New Product Description</label>
+                <input type="text" class="form-control" @bind="newProductDescription" id="newProductDescription" />
+            </div>
+            <div class="mb-3">
+                <label for="newProductImage" class="form-label">New Product Image</label>
+                <input type="text" class="form-control" @bind="newProductImage" id="newProductImage" />
+            </div>
+            <div class="mb-3">
+                <label for="newProductCategoryId" class="form-label">New Product Category Id</label>
+                <input type="text" class="form-control" @bind="newProductCategoryId" id="newProductCategoryId" />
+            </div>
 
-        <button class="btn btn-primary" @onclick="HandleUpdateProduct">Update Product</button>
-        <p>@updateMessage</p>
+            <button class="btn btn-primary" @onclick="HandleUpdateProduct">Update Product</button>
+            <p class="mt-3">@updateMessage</p>
+        </div>
     </div>
 </div>
 
