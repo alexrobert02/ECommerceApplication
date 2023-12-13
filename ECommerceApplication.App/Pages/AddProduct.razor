@@ -1,0 +1,111 @@
+﻿@page "/addproduct"
+@using ECommerceApplication.App.Contracts
+@using ECommerceApplication.App.ViewModels
+
+<h3>New Product</h3>
+<EditForm Model="@ProductViewModel" OnValidSubmit="@HandleValidSubmit">
+
+    <DataAnnotationsValidator />
+    <ValidationSummary></ValidationSummary>
+
+    <div class="row mb-3 ms-2">
+        <label for="productName" class="col-sm-3 form-label">Product Name:</label>
+        <div class="col-sm-5">
+            <InputText id="productName" class="form-control" @bind-Value="@ProductViewModel.ProductName" placeholder="Enter product name"></InputText>
+            <ValidationMessage For="@(() => ProductViewModel.ProductName)" />
+        </div>
+    </div>
+
+    <div class="row mb-3 ms-2">
+        <label for="productPrice" class="col-sm-3 form-label">Price:</label>
+        <div class="col-sm-5">
+            <InputNumber id="productPrice" class="form-control" @bind-Value="@ProductViewModel.Price" placeholder="Enter price"></InputNumber>
+            <ValidationMessage For="@(() => ProductViewModel.Price)" />
+        </div>
+    </div>
+
+    <div class="row mb-3 ms-2">
+        <label for="productDescription" class="col-sm-3 form-label">Description:</label>
+        <div class="col-sm-5">
+            <InputText id="productDescription" class="form-control" @bind-Value="@ProductViewModel.Description" placeholder="Enter description"></InputText>
+            <ValidationMessage For="@(() => ProductViewModel.Description)" />
+        </div>
+     </div>
+
+<div class="row mb-3 ms-2">
+        <label for="productImage" class="col-sm-3 form-label">Image:</label>
+        <div class="col-sm-5">
+            <InputText id="productImage" class="form-control" @bind-Value="@ProductViewModel.ImageUrl" placeholder="Enter image"></InputText>
+            <ValidationMessage For="@(() => ProductViewModel.ImageUrl)" />
+        </div>
+</div>
+
+    <div class="row mb-3 ms-2">
+        <label for="productCategory" class="col-sm-3 form-label">Category:</label>
+        <div class="col-sm-5">
+            <InputText id="productCategory" class="form-control" @bind-Value="@ProductViewModel.StringCategoryId" placeholder="Enter category"></InputText>
+            <ValidationMessage For="@(() => ProductViewModel.StringCategoryId)" />
+        </div>
+    </div>
+
+
+    <button type="submit" class="btn btn-primary">Save product</button>
+    <button class="btn btn-primary" @onclick="Cancel">Cancel</button>
+</EditForm>
+
+@code {
+[Inject]
+    public IProductDataService ProductDataService { get; set; }
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    public ProductViewModel ProductViewModel { get; set; } = new ProductViewModel();
+
+    public string Message { get; set; }
+}
+
+@functions{
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            // Convert string to Guid for CategoryId
+            if (Guid.TryParse(ProductViewModel.StringCategoryId, out Guid categoryIdGuid))
+            {
+                ProductViewModel.CategoryId = categoryIdGuid;
+
+                var result = await ProductDataService.CreateProductAsync(ProductViewModel);
+
+                if (result.IsSuccess)
+                {
+                    Message = "Product created successfully";
+                    NavigationManager.NavigateTo("/productoverview");
+                }
+                else
+                {
+                    Message = result.Message;
+                    if (!string.IsNullOrWhiteSpace(result.ValidationErrors))    
+                    {
+                        Message += result.ValidationErrors;
+                    }
+                }
+            }
+            else
+            {
+                throw new FormatException("Invalid Category ID format");
+            }
+        }
+        catch (FormatException ex)
+        {
+            // Mesaj de eroare pentru conversia incorectă a GUID-ului
+            Message = ex.Message;
+        }
+    }
+
+
+    private void Cancel()
+    {
+        NavigationManager.NavigateTo("/productoverview");
+    }
+}

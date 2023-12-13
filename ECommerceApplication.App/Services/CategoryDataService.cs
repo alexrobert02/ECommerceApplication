@@ -8,7 +8,7 @@ using System.Text.Json;
 namespace ECommerceApplication.App.Services
 {
 
-    public class ApiResponse
+    public class ApiResponseCategory
     {
         public List<CategoryViewModel> Categories { get; set; }
         public bool Success { get; set; }
@@ -48,7 +48,7 @@ namespace ECommerceApplication.App.Services
                 throw new ApplicationException(content);
             }
             Console.WriteLine(content);
-            var apiResponse = JsonSerializer.Deserialize<ApiResponse>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            var apiResponse = JsonSerializer.Deserialize<ApiResponseCategory>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             List<CategoryViewModel> categories = apiResponse.Categories;
             return categories!;
         }
