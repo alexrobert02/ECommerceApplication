@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ECommerceApplication.Infrastructure.Migrations
 {
     [DbContext(typeof(ECommerceApplicationContext))]
-    [Migration("20231212152447_Initial-Create")]
-    partial class InitialCreate
+    [Migration("20231213075307_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -62,12 +62,7 @@ namespace ECommerceApplication.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("AddressId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Addresses");
                 });
@@ -97,44 +92,6 @@ namespace ECommerceApplication.Infrastructure.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("ECommerceApplication.Domain.Entities.Discount", b =>
-                {
-                    b.Property<Guid>("DiscountId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("ExpiryDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("LastModifiedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<decimal>("Percentage")
-                        .HasColumnType("numeric");
-
-                    b.Property<Guid?>("RewardId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("DiscountId");
-
-                    b.HasIndex("RewardId");
-
-                    b.ToTable("Discount");
                 });
 
             modelBuilder.Entity("ECommerceApplication.Domain.Entities.Manufacturer", b =>
@@ -209,8 +166,6 @@ namespace ECommerceApplication.Infrastructure.Migrations
                     b.HasKey("OrderId");
 
                     b.HasIndex("ShoppingCartId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -336,16 +291,11 @@ namespace ECommerceApplication.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("ProductId");
 
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("ManufacturerId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Products");
                 });
@@ -373,32 +323,7 @@ namespace ECommerceApplication.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Review");
-                });
-
-            modelBuilder.Entity("ECommerceApplication.Domain.Entities.Reward", b =>
-                {
-                    b.Property<Guid>("RewardId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("RewardDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<decimal?>("RewardValue")
-                        .HasColumnType("numeric");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("RewardId");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("Reward");
                 });
 
             modelBuilder.Entity("ECommerceApplication.Domain.Entities.ShoppingCart", b =>
@@ -427,78 +352,11 @@ namespace ECommerceApplication.Infrastructure.Migrations
                     b.ToTable("ShoppingCarts");
                 });
 
-            modelBuilder.Entity("ECommerceApplication.Domain.Entities.User", b =>
-                {
-                    b.Property<Guid>("UserId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("LastModifiedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("UserId");
-
-                    b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("ECommerceApplication.Domain.Entities.Address", b =>
-                {
-                    b.HasOne("ECommerceApplication.Domain.Entities.User", null)
-                        .WithMany("Addresses")
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("ECommerceApplication.Domain.Entities.Discount", b =>
-                {
-                    b.HasOne("ECommerceApplication.Domain.Entities.Reward", null)
-                        .WithMany("Discounts")
-                        .HasForeignKey("RewardId");
-                });
-
             modelBuilder.Entity("ECommerceApplication.Domain.Entities.Order", b =>
                 {
                     b.HasOne("ECommerceApplication.Domain.Entities.ShoppingCart", "ShoppingCart")
                         .WithMany()
                         .HasForeignKey("ShoppingCartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ECommerceApplication.Domain.Entities.User", null)
-                        .WithMany("Orders")
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -524,7 +382,7 @@ namespace ECommerceApplication.Infrastructure.Migrations
             modelBuilder.Entity("ECommerceApplication.Domain.Entities.Product", b =>
                 {
                     b.HasOne("ECommerceApplication.Domain.Entities.Category", "Category")
-                        .WithMany("Products")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -532,10 +390,6 @@ namespace ECommerceApplication.Infrastructure.Migrations
                     b.HasOne("ECommerceApplication.Domain.Entities.Manufacturer", null)
                         .WithMany("Products")
                         .HasForeignKey("ManufacturerId");
-
-                    b.HasOne("ECommerceApplication.Domain.Entities.User", null)
-                        .WithMany("FavoriteProducts")
-                        .HasForeignKey("UserId");
 
                     b.Navigation("Category");
                 });
@@ -547,26 +401,6 @@ namespace ECommerceApplication.Infrastructure.Migrations
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("ECommerceApplication.Domain.Entities.User", null)
-                        .WithMany("Reviews")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ECommerceApplication.Domain.Entities.Reward", b =>
-                {
-                    b.HasOne("ECommerceApplication.Domain.Entities.User", null)
-                        .WithOne("Reward")
-                        .HasForeignKey("ECommerceApplication.Domain.Entities.Reward", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ECommerceApplication.Domain.Entities.Category", b =>
-                {
-                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("ECommerceApplication.Domain.Entities.Manufacturer", b =>
@@ -585,28 +419,9 @@ namespace ECommerceApplication.Infrastructure.Migrations
                     b.Navigation("Reviews");
                 });
 
-            modelBuilder.Entity("ECommerceApplication.Domain.Entities.Reward", b =>
-                {
-                    b.Navigation("Discounts");
-                });
-
             modelBuilder.Entity("ECommerceApplication.Domain.Entities.ShoppingCart", b =>
                 {
                     b.Navigation("OrderItems");
-                });
-
-            modelBuilder.Entity("ECommerceApplication.Domain.Entities.User", b =>
-                {
-                    b.Navigation("Addresses");
-
-                    b.Navigation("FavoriteProducts");
-
-                    b.Navigation("Orders");
-
-                    b.Navigation("Reviews");
-
-                    b.Navigation("Reward")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
