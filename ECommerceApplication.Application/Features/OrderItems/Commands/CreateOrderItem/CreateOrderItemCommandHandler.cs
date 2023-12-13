@@ -1,4 +1,5 @@
-﻿using ECommerceApplication.Application.Persistence;
+﻿using ECommerceApplication.Application.Features.Products.Commands.CreateProduct;
+using ECommerceApplication.Application.Persistence;
 using ECommerceApplication.Domain.Entities;
 using MediatR;
 
@@ -7,10 +8,12 @@ namespace ECommerceApplication.Application.Features.OrderItems.Commands.CreateOr
     public class CreateOrderItemCommandHandler : IRequestHandler<CreateOrderItemCommand, CreateOrderItemCommandResponse>
     {
         private readonly IOrderItemRepository repository;
+        private readonly IProductRepository productRepository;
 
-        public CreateOrderItemCommandHandler(IOrderItemRepository repository)
+        public CreateOrderItemCommandHandler(IOrderItemRepository repository, IProductRepository productRepository)
         {
             this.repository = repository;
+            this.productRepository = productRepository;
         }
 
         public async Task<CreateOrderItemCommandResponse> Handle(CreateOrderItemCommand request, CancellationToken cancellationToken)
@@ -24,6 +27,16 @@ namespace ECommerceApplication.Application.Features.OrderItems.Commands.CreateOr
                 {
                     Success = false,
                     ValidationsErrors = validatorResult.Errors.Select(e => e.ErrorMessage).ToList()
+                };
+            }
+
+            var productExists = await productRepository.ProductExists(request.ProductId);
+            if (!productExists)
+            {
+                return new CreateOrderItemCommandResponse
+                {
+                    Success = false,
+                    ValidationsErrors = new List<string> { "Product with the provided ID does not exist." }
                 };
             }
 

@@ -34,5 +34,10 @@ namespace ECommerceApplication.Infrastructure.Repositories
             return Result<IReadOnlyList<Product>>.Success(result);
         }
 
+        public async Task<bool> ProductExists(Guid productId)
+        {
+            return await context.Products.AnyAsync(c => c.ProductId == productId);
+        }
+
     }
 }

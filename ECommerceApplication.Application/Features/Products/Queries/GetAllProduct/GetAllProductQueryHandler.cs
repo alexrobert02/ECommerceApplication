@@ -14,8 +14,9 @@ namespace ECommerceApplication.Application.Features.Products.Queries.GetAllProdu
 
         public async Task<GetAllProductQueryResponse> Handle(GetAllProductQuery request, CancellationToken cancellationToken)
         {
+            GetAllProductQueryResponse response = new();
             var result = await repository.GetAllAsync();
-            var products = result.Value.Select(e => new ProductDto
+            response.Products = result.Value.Select(e => new ProductDto
             {
                 ProductId = e.ProductId,
                 ProductName = e.ProductName,
@@ -28,11 +29,7 @@ namespace ECommerceApplication.Application.Features.Products.Queries.GetAllProdu
                     CategoryName = e.Category.CategoryName
                 }
             }).ToList();
-            return new GetAllProductQueryResponse
-            {
-                Products = products,
-                Success = true
-            };
+            return response;
         }
     }
 }
