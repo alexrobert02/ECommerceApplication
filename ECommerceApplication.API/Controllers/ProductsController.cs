@@ -11,7 +11,7 @@ namespace ECommerceApplication.API.Controllers
 {
     public class ProductsController : ApiControllerBase
     {
-        [Authorize(Roles = "User")]
+        /*[Authorize(Roles = "User")]*/
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<CreateProductCommandResponse>> Create([FromBody] CreateProductCommand createProductCommand)
