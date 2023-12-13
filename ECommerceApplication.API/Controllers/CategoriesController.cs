@@ -47,13 +47,8 @@ namespace ECommerceApplication.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll()
         {
-            var command = new GetAllCategoryQuery();
-            var result = await Mediator.Send(command);
-            if (!result.Success)
-            {
-                return NotFound(result);
-            }
-            return Ok(result);
+            var result = await Mediator.Send(new GetAllCategoryQuery());
+            return Ok(result.Categories);
         }
 
         [HttpGet("{categoryId}")]
