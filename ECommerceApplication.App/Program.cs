@@ -33,6 +33,10 @@ builder.Services.AddHttpClient<IProductDataService, ProductDataService>(client =
 {
     client.BaseAddress = new Uri("https://localhost:7252/");
 });
+builder.Services.AddHttpClient<IAddressDataService, AddressDataService>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7252/");
+});
 builder.Services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<CustomStateProvider>());
 builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>(client =>
 {

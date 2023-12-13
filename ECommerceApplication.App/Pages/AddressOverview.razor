@@ -1,0 +1,55 @@
+﻿@page "/addressoverview"
+@using ECommerceApplication.App.Contracts
+@using ECommerceApplication.App.ViewModels
+
+<h3>Address Overview</h3>
+
+<br />
+
+@if (Addresses == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th class="col">Street Address</th>
+                <th class="col">City</th>
+                <th class="col">State</th>
+                <th class="col">Postal Code</th>
+                <th class="col">Is Default</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var address in Addresses)
+            {
+                <tr>
+                    <td>@address.Street</td>
+                    <td>@address.City</td>
+                    <td>@address.State</td>
+                    <td>@address.PostalCode</td>
+                    <td>@(address.IsDefault ? "Yes" : "No")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Inject]
+    public IAddressDataService AddressDataService { get; set; }
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    public List<AddressViewModel> Addresses { get; set; }
+}
+
+@functions {
+    protected override async Task OnInitializedAsync()
+    {
+        Addresses = (await AddressDataService.GetAddressesAsync()).ToList();
+    }
+}

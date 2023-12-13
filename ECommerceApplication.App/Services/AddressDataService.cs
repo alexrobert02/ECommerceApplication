@@ -7,38 +7,37 @@ using System.Text.Json;
 
 namespace ECommerceApplication.App.Services
 {
-    public class ApiResponse
+    public class ApiResponseAddress
     {
-        public List<CategoryViewModel> Categories { get; set; }
         public bool Success { get; set; }
         public string Message { get; set; }
         public List<String> ValidationsErrors { get; set; }
+        public List<AddressViewModel> Addresses { get; set; }
     }
-
-    public class CategoryDataService : ICategoryDataService
+    public class AddressDataService : IAddressDataService
     {
-        private const string RequestUri = "api/v1/categories";
+        private const string RequestUri = "api/v1/addresses";
         private readonly HttpClient httpClient;
         private readonly ITokenService tokenService;
 
-        public CategoryDataService(HttpClient httpClient, ITokenService tokenService)
+        public AddressDataService(HttpClient httpClient, ITokenService tokenService)
         {
             this.httpClient = httpClient;
             this.tokenService = tokenService;
         }
 
-        public async Task<ApiResponse<CategoryDto>> CreateCategoryAsync(CategoryViewModel categoryViewModel)
+        public async Task<ApiResponse<AddressDto>> CreateAddressAsync(AddressViewModel addressViewModel)
         {
-            httpClient.DefaultRequestHeaders.Authorization 
+            httpClient.DefaultRequestHeaders.Authorization
                 = new AuthenticationHeaderValue("Bearer", await tokenService.GetTokenAsync());
-            var result = await httpClient.PostAsJsonAsync(RequestUri, categoryViewModel);
+            var result = await httpClient.PostAsJsonAsync(RequestUri, addressViewModel);
             result.EnsureSuccessStatusCode();
-            var response = await result.Content.ReadFromJsonAsync<ApiResponse<CategoryDto>>();
+            var response = await result.Content.ReadFromJsonAsync<ApiResponse<AddressDto>>();
             response!.IsSuccess = result.IsSuccessStatusCode;
             return response!;
         }
 
-        public async Task<List<CategoryViewModel>> GetCategoriesAsync()
+        public async Task<List<AddressViewModel>> GetAddressesAsync()
         {
             var result = await httpClient.GetAsync(RequestUri, HttpCompletionOption.ResponseHeadersRead);
             result.EnsureSuccessStatusCode();
@@ -48,21 +47,21 @@ namespace ECommerceApplication.App.Services
                 throw new ApplicationException(content);
             }
             Console.WriteLine(content);
-            var categories = JsonSerializer.Deserialize<List<CategoryViewModel>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            return categories!;
+            var apiResponse = JsonSerializer.Deserialize<ApiResponseAddress>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            List<AddressViewModel> addresses = apiResponse.Addresses;
+            return addresses!;
         }
 
-        public async Task<ApiResponse<CategoryDto>> UpdateCategoryAsync(CategoryViewModel updatedCategory)
+        public async Task<ApiResponse<AddressDto>> UpdateAddressAsync(AddressViewModel updatedAddress)
         {
-            string updateUri = $"api/v1/categories/{updatedCategory.CategoryId}";
+            string updateUri = $"api/v1/addresses/{updatedAddress.AddressId}";
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await tokenService.GetTokenAsync());
-            var result = await httpClient.PutAsJsonAsync(updateUri, updatedCategory);
+            var result = await httpClient.PutAsJsonAsync(updateUri, updatedAddress);
             result.EnsureSuccessStatusCode();
-            var response = await result.Content.ReadFromJsonAsync<ApiResponse<CategoryDto>>();
+            var response = await result.Content.ReadFromJsonAsync<ApiResponse<AddressDto>>();
             response!.IsSuccess = result.IsSuccessStatusCode;
 
             return response!;
         }
-
     }
 }

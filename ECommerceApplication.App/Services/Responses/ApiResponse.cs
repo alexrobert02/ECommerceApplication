@@ -1,4 +1,6 @@
-﻿namespace ECommerceApplication.App.Services.Responses
+﻿using ECommerceApplication.App.ViewModels;
+
+namespace ECommerceApplication.App.Services.Responses
 {
     public class ApiResponse<T>
     {
