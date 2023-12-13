@@ -1,4 +1,4 @@
-﻿using ECommerceApplication.Application.Features.Categories.Queries.GetAllOrderItem;
+﻿using ECommerceApplication.Application.Features.OrderItems.Queries.GetAllOrderItem;
 using ECommerceApplication.Application.Features.OrderItems.Commands.CreateOrderItem;
 using ECommerceApplication.Application.Features.OrderItems.Commands.DeleteCategory;
 using ECommerceApplication.Application.Features.OrderItems.Commands.UpdateOrderItem;
@@ -48,13 +48,8 @@ namespace ECommerceApplication.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll()
         {
-            var command = new GetAllOrderItemQuery();
-            var result = await Mediator.Send(command);
-            if (!result.Success)
-            {
-                return NotFound(result);
-            }
-            return Ok(result);
+            var result = await Mediator.Send(new GetAllOrderItemQuery());
+            return Ok(result.OrderItems);
         }
 
         [HttpGet("{orderItemId}")]

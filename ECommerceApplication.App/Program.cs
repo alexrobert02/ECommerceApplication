@@ -42,6 +42,10 @@ builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>(cl
 {
     client.BaseAddress = new Uri("https://localhost:7252/");
 });
+builder.Services.AddHttpClient<IOrderItemDataService, OrderItemDataService>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7252/");
+});
 
 
 await builder.Build().RunAsync();

@@ -1,12 +1,11 @@
-﻿using ECommerceApplication.Application.Features.OrderItems;
-using ECommerceApplication.Application.Responses;
+﻿using ECommerceApplication.Application.Responses;
 
 
-namespace ECommerceApplication.Application.Features.Categories.Queries.GetAllOrderItem
+namespace ECommerceApplication.Application.Features.OrderItems.Queries.GetAllOrderItem
 {
-    public class GetAllCategoryResponse : BaseResponse
+    public class GetAllOrderItemResponse : BaseResponse
     {
-        public GetAllCategoryResponse() : base()
+        public GetAllOrderItemResponse() : base()
         {
         }
         public List<OrderItemDto> OrderItems { get; set; }

@@ -2,29 +2,29 @@
 using ECommerceApplication.Application.Persistence;
 using MediatR;
 
-namespace ECommerceApplication.Application.Features.Categories.Queries.GetAllOrderItem
+namespace ECommerceApplication.Application.Features.OrderItems.Queries.GetAllOrderItem
 {
-    public class GetAllOrderItemQueryHandler : IRequestHandler<GetAllOrderItemQuery, GetAllCategoryResponse>
+    public class GetAllOrderItemQueryHandler : IRequestHandler<GetAllOrderItemQuery, GetAllOrderItemResponse>
     {
-        private readonly IOrderItemRepository _ordeItemRepository;
+        private readonly IOrderItemRepository orderItemRepository;
 
-        public GetAllOrderItemQueryHandler(IOrderItemRepository ordeItemRepository)
+        public GetAllOrderItemQueryHandler(IOrderItemRepository orderItemRepository)
         {
-            _ordeItemRepository = ordeItemRepository;
+            this.orderItemRepository = orderItemRepository;
         }
 
-        public async Task<GetAllCategoryResponse> Handle(GetAllOrderItemQuery request, CancellationToken cancellationToken)
+        public async Task<GetAllOrderItemResponse> Handle(GetAllOrderItemQuery request, CancellationToken cancellationToken)
         {
-            GetAllCategoryResponse response = new();
-            var result = await _ordeItemRepository.GetAllAsync();
+            GetAllOrderItemResponse response = new();
+            var result = await orderItemRepository.GetAllAsync();
             if (result.IsSuccess)
             {
-                response.OrderItems = result.Value.Select(c => new OrderItemDto
+                response.OrderItems = result.Value.Select(o => new OrderItemDto
                 {
-                    OrderItemId = c.OrderItemId,
-                    ProductId = c.ProductId,
-                    Quantity = c.Quantity,
-                    PricePerUnit = c.PricePerUnit
+                    OrderItemId = o.OrderItemId,
+                    ProductId = o.ProductId,
+                    Quantity = o.Quantity,
+                    PricePerUnit = o.PricePerUnit
                 }).ToList();
             }
             return response;

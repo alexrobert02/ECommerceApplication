@@ -11,5 +11,6 @@ namespace ECommerceApplication.App.ViewModels
         public int Quantity { get; set; }
         [Required(ErrorMessage = "PricePerUnit is required")]
         public decimal PricePerUnit { get; set; }
+        public string StringProductId { get; set; } = string.Empty;
     }
 }
