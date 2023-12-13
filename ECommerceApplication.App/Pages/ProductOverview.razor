@@ -1,0 +1,67 @@
+﻿@page "/productoverview"
+
+@using ECommerceApplication.App.Contracts
+@using ECommerceApplication.App.ViewModels
+
+<h3>ProductOverview</h3>
+<br />
+
+<p><input class="custom-checkbox" type="checkbox" id="includeHistory" @onchange="OnIncludeHistoryChanged" />   Include past events?</p>
+
+@if (Products == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Product name</th>
+                <th>Price</th>
+                <th>Description</th>
+                <th>Image</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var prod in Products)
+            {
+                <tr>
+                    <td>@prod.ProductName </td>
+                    <td>@prod.Price</td>
+                    <td>@prod.Description</td>
+                    <td>@prod.ImageUrl</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+})
+
+@code {
+[Inject]
+    public IProductDataService ProductDataService { get; set; }
+[Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    public List<ProductViewModel> Products { get; set; }
+
+}
+
+@functions{
+    protected override async Task OnInitializedAsync()
+    {
+        Products = (await ProductDataService.GetProductAsync()).ToList();
+    }
+
+    private void OnIncludeHistoryChanged(ChangeEventArgs e)
+    {
+        if((bool)e.Value)
+        {
+            NavigationManager.NavigateTo("/productoverview?includeHistory=true");
+        }
+        else
+        {
+            NavigationManager.NavigateTo("/productoverview");
+        }
+    }
+}
