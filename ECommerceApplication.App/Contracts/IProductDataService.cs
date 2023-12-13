@@ -7,5 +7,6 @@ namespace ECommerceApplication.App.Contracts
     {
         Task<List<ProductViewModel>> GetProductAsync();
         Task <ApiResponse<ProductDto>> CreateProductAsync(ProductViewModel productViewModel);
+        Task<ApiResponse<ProductDto>> UpdateProductAsync(ProductViewModel prouctViewModel);
     }
 }

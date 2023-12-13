@@ -1,24 +1,32 @@
 ﻿@page "/addcategory"
 @using ECommerceApplication.App.Contracts
 @using ECommerceApplication.App.ViewModels
-<h3>New category</h3>
+<h3 style="text-align: center; margin-bottom: 20px;">New Category</h3>
 
-<EditForm Model="@CategoryViewModel" OnValidSubmit="@HandleValidSubmit">
+<div class="container">
+    <EditForm Model="@CategoryViewModel" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
 
-    <DataAnnotationsValidator />
-    <ValidationSummary></ValidationSummary>
-
-    <div class="row mb-3 ms-2">
-        <label for="categoryname" class="col-sm-3 form-label">Category name:</label>
-        <div class="col-sm-5">
-            <InputText id="categoryname" class="form-control" @bind-Value="@CategoryViewModel.CategoryName" placeholder="Enter category name"></InputText>
-            <ValidationMessage For="@(() => CategoryViewModel.CategoryName)" />
+        <div class="mb-3 row">
+            <label for="categoryname" class="col-sm-3 col-form-label">Category Name:</label>
+            <div class="col-sm-5">
+                <InputText id="categoryname" class="form-control" @bind-Value="@CategoryViewModel.CategoryName" placeholder="Enter category name"></InputText>
+                <ValidationMessage For="@(() => CategoryViewModel.CategoryName)" />
+            </div>
         </div>
-    </div>
 
-    <button type="submit" class="btn btn-primary">Save category</button>
-    <button class="btn btn-primary" @onclick="Cancel">Cancel</button>
-</EditForm>
+        <div class="row">
+            <div class="col-sm-3 offset-sm-3">
+                <button type="submit" class="btn btn-primary" style="background-color: #0d6efd; border-color: #0d6efd;">Save Category</button>
+            </div>
+            <div class="col-sm-3">
+                <button class="btn btn-secondary" @onclick="Cancel" style="background-color: #007bff; border-color: #007bff;">Cancel</button>
+            </div>
+        </div>
+    </EditForm>
+    <p style="margin-top: 10px; color: #e83e8c; font-weight: bold;">@Message</p>
+</div>
 
 @code {
     [Inject]
@@ -30,9 +38,7 @@
     public CategoryViewModel CategoryViewModel { get; set; } = new CategoryViewModel();
 
     public string Message { get; set; }
-}
 
-@functions {
     private async Task HandleValidSubmit()
     {
         var result = await CategoryDataService.CreateCategoryAsync(CategoryViewModel);
@@ -55,5 +61,4 @@
     {
         NavigationManager.NavigateTo("/categoryoverview");
     }
-
 }
