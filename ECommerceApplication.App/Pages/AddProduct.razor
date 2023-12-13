@@ -41,7 +41,7 @@
 </div>
 
     <div class="row mb-3 ms-2">
-        <label for="productCategory" class="col-sm-3 form-label">Category:</label>
+        <label for="productCategory" class="col-sm-3 form-label">Category Id:</label>
         <div class="col-sm-5">
             <InputText id="productCategory" class="form-control" @bind-Value="@ProductViewModel.StringCategoryId" placeholder="Enter category"></InputText>
             <ValidationMessage For="@(() => ProductViewModel.StringCategoryId)" />

@@ -1,0 +1,119 @@
+﻿@page "/updateproduct"
+@using ECommerceApplication.App.Contracts
+@using ECommerceApplication.App.ViewModels
+@inject IProductDataService productDataService
+
+<h3>Update Product</h3>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="productId">Product ID</label>
+            <input type="text" class="form-control" @bind="productId" id="productId" />
+        </div>
+        <div class="form-group">
+            <label for="newProductName">New Product Name</label>
+            <input type="text" class="form-control" @bind="newProductName" id="newProductName" />
+        </div>
+        <div class="form-group">
+            <label for="newProductPrice">New Product Price</label>
+            <input type="number" class="form-control" @bind="newProductPrice" id="newProductPrice" />
+        </div>
+        <div class="form-group">
+            <label for="newProductDescription">New Product Description</label>
+            <input type="text" class="form-control" @bind="newProductDescription" id="newProductDescription" />
+        </div>
+        <div class="form-group">
+            <label for="newProductImage">New Product Image</label>
+            <input type="text" class="form-control" @bind="newProductImage" id="newProductImage" />
+        </div>
+        <div class="form-group">
+            <label for="newProductImage">New Product Category Id</label>
+            <input type="text" class="form-control" @bind="newProductCategoryId" id="newProductCategoryId" />
+        </div>
+
+        <button class="btn btn-primary" @onclick="HandleUpdateProduct">Update Product</button>
+        <p>@updateMessage</p>
+    </div>
+</div>
+
+@code {
+    public Guid productId;
+    private string newProductName;
+    private string newProductDescription;
+    private string newProductImage;
+    private decimal newProductPrice;
+    private string newProductCategoryId;
+    private string updateMessage = "";
+
+    private async Task HandleUpdateProduct()
+    {
+        if (productId != Guid.Empty && !string.IsNullOrWhiteSpace(newProductName))
+        {
+            try
+            {
+                var products = await productDataService.GetProductAsync();
+                Console.WriteLine(products);
+                bool productExists = products.Any(product => product.ProductId == productId);
+
+                if (productExists)
+                {
+                    var currentProduct = products.FirstOrDefault(product => product.ProductId == productId);
+
+                    if (currentProduct != null)
+                    {
+                        if (!String.IsNullOrWhiteSpace(newProductName) && !String.IsNullOrWhiteSpace(newProductDescription) && !String.IsNullOrWhiteSpace(newProductImage) && !String.IsNullOrWhiteSpace(newProductCategoryId) && newProductPrice!=0)
+                        {
+
+                            var updatedProduct = new ProductViewModel
+                                {
+                                    ProductId = productId,
+                                    ProductName = newProductName,
+                                    Description = newProductDescription,
+                                    ImageUrl = newProductImage,
+                                    Price = newProductPrice,
+                                    CategoryId = Guid.Parse(newProductCategoryId),
+                                    StringCategoryId = newProductCategoryId
+
+                                };
+
+                            var response = await productDataService.UpdateProductAsync(updatedProduct);
+
+                            if (response != null && response.IsSuccess)
+                            {
+                                updateMessage = "Product updated successfully!";
+                                // Handle success
+                            }
+                            else
+                            {
+                                updateMessage = "Failed to update product. Please try again.";
+                                // Handle failure
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        updateMessage = "Product with specified ID not found.";
+                        // Handle case where product with specified ID doesn't exist
+                    }
+                }
+                else
+                {
+                    updateMessage = "Product does not exist.";
+                }
+            }
+            catch (Exception ex)
+            {
+                updateMessage = "Failed to update product. Please try again.";
+                // Handle exception
+            }
+        }
+        else
+        {
+            updateMessage = "Please enter a valid product ID and new product name.";
+        }
+    }
+
+
+}
