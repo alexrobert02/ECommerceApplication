@@ -141,7 +141,7 @@ namespace ECommerceApplication.Domain.Tests
             result.Value.RemoveDiscount(discount);
             // Assert
             //Assert.True(result.IsSuccess);
-            result.IsSuccess.Should().BeTrue();
+            result.IsSuccess.Should().BeTrue();  
         }
 
         [Fact]

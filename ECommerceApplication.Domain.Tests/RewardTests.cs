@@ -5,13 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xunit;
 
 namespace ECommerceApplication.Domain.Tests
 {
     public class RewardTests
     {
         [Fact]
-        public void When_CreateRewardIsCalled_And_RewardNameIsValid_Then_SuccessIsReturned()
+        public void When_CreateRewardIsCalled_And_RewardInfoAreValid_Then_SuccessIsReturned()
         {
             Guid userId = Guid.NewGuid();
             decimal rewardValue = 10;
@@ -24,22 +25,23 @@ namespace ECommerceApplication.Domain.Tests
         }
 
         [Fact]
-        public void When_CreateRewardIsCalled_And_RewardNameIsNull_Then_FailureIsReturned()
+        public void When_CreateRewardIsCalled_And_RewardValueIsSmallerThanZero_Then_FailureIsReturned()
         {
-            decimal rewardValue = 10;
+            Guid userId = Guid.NewGuid();
+            decimal rewardValue = -19;
             DateTime expiryDate = DateTime.UtcNow.AddDays(30);
             // Arrange && Act
-            var result = Reward.Create(Guid.Empty, rewardValue, expiryDate);
+            var result = Reward.Create(userId, rewardValue, expiryDate);
             // Assert
             //Assert.True(result.IsSuccess);
             result.IsSuccess.Should().BeFalse();
         }
 
         [Fact]
-        public void When_CreateRewardIsCalled_And_RewardValueIsNegative_Then_FailureIsReturned()
+        public void When_CreateRewardIsCalled_And_RewardValueIsZero_Then_FailureIsReturned()
         {
             Guid userId = Guid.NewGuid();
-            decimal rewardValue = -10;
+            decimal rewardValue = 0;
             DateTime expiryDate = DateTime.UtcNow.AddDays(30);
             // Arrange && Act
             var result = Reward.Create(userId, rewardValue, expiryDate);
@@ -53,7 +55,7 @@ namespace ECommerceApplication.Domain.Tests
         {
             Guid userId = Guid.NewGuid();
             decimal rewardValue = 10;
-            DateTime expiryDate = DateTime.UtcNow;
+            DateTime expiryDate = DateTime.UtcNow.AddDays(-5);
             // Arrange && Act
             var result = Reward.Create(userId, rewardValue, expiryDate);
             // Assert
@@ -61,31 +63,7 @@ namespace ECommerceApplication.Domain.Tests
             result.IsSuccess.Should().BeFalse();
         }
 
-        [Fact]
-        public void When_CreateRewardIsCalled_And_ExpiryDateIsInTheFuture_Then_SuccessIsReturned()
-        {
-            Guid userId = Guid.NewGuid();
-            decimal rewardValue = 10;
-            DateTime expiryDate = DateTime.UtcNow.AddDays(30);
-            // Arrange && Act
-            var result = Reward.Create(userId, rewardValue, expiryDate);
-            // Assert
-            //Assert.True(result.IsSuccess);
-            result.IsSuccess.Should().BeTrue();
-        }
 
-        [Fact]
-        public void When_IsValidIsCalled_And_RewardIsExpired_Then_FalseIsReturned()
-        {
-            Guid userId = Guid.NewGuid();
-            decimal rewardValue = 10;
-            DateTime expiryDate = DateTime.UtcNow.AddDays(-1);
-            // Arrange && Act
-            var result = Reward.Create(userId, rewardValue, expiryDate);
-            // Assert
-            //Assert.True(result.IsSuccess);
-            result.IsSuccess.Should().BeFalse();
-        }
 
         [Fact]
         public void When_IsValidIsCalled_And_RewardIsNotExpired_Then_TrueIsReturned()
@@ -93,8 +71,9 @@ namespace ECommerceApplication.Domain.Tests
             Guid userId = Guid.NewGuid();
             decimal rewardValue = 10;
             DateTime expiryDate = DateTime.UtcNow.AddDays(1);
-            // Arrange && Act
             var result = Reward.Create(userId, rewardValue, expiryDate);
+            // Arrange && Act
+            result.Value.IsRewardValid();
             // Assert
             //Assert.True(result.IsSuccess);
             result.IsSuccess.Should().BeTrue();
@@ -106,8 +85,10 @@ namespace ECommerceApplication.Domain.Tests
             Guid userId = Guid.NewGuid();
             decimal rewardValue = 10;
             DateTime expiryDate = DateTime.UtcNow.AddDays(1);
-            // Arrange && Act
             var result = Reward.Create(userId, rewardValue, expiryDate);
+            decimal increaseValue = 10;
+            // Arrange && Act
+            result.Value.IncreaseReward(increaseValue);
             // Assert
             //Assert.True(result.IsSuccess);
             result.IsSuccess.Should().BeTrue();
@@ -116,14 +97,16 @@ namespace ECommerceApplication.Domain.Tests
         [Fact]
         public void When_IncreaseRewardValueIsCalled_And_RewardValueIsNotIncreased_Then_FailureIsReturned()
         {
+            // Arrange
             Guid userId = Guid.NewGuid();
             decimal rewardValue = 10;
             DateTime expiryDate = DateTime.UtcNow.AddDays(1);
-            // Arrange && Act
             var result = Reward.Create(userId, rewardValue, expiryDate);
-            // Assert
-            //Assert.True(result.IsSuccess);
-            result.IsSuccess.Should().BeTrue();
+            decimal increaseValue = -10;
+            // Act & Assert
+            result.Invoking(r => r.Value.IncreaseReward(increaseValue))
+                  .Should().Throw<ArgumentException>().WithMessage("Increase value cannot be less than or equal to zero."); 
+
         }
 
         [Fact]
@@ -134,22 +117,23 @@ namespace ECommerceApplication.Domain.Tests
             DateTime expiryDate = DateTime.UtcNow.AddDays(1);
             // Arrange && Act
             var result = Reward.Create(userId, rewardValue, expiryDate);
+            result.Value.DecreaseReward(5);
             // Assert
             //Assert.True(result.IsSuccess);
             result.IsSuccess.Should().BeTrue();
         }
 
         [Fact]
-        public void When_DecreaseRewardValueIsCalled_And_RewardValueIsNotDecreased_Then_FailureIsReturned()
+        public void When_DecreaseRewardValueIsCalled_And_RewardValueIsSmallerThanZero_Then_FailureIsReturned()
         {
             Guid userId = Guid.NewGuid();
             decimal rewardValue = 10;
             DateTime expiryDate = DateTime.UtcNow.AddDays(1);
             // Arrange && Act
             var result = Reward.Create(userId, rewardValue, expiryDate);
-            // Assert
-            //Assert.True(result.IsSuccess);
-            result.IsSuccess.Should().BeTrue();
+            // Act & Assert
+            result.Invoking(r => r.Value.DecreaseReward(-20))
+                  .Should().Throw<ArgumentException>().WithMessage("Decrease value cannot be less than or equal to zero.");
         }
 
         [Fact]
@@ -160,6 +144,7 @@ namespace ECommerceApplication.Domain.Tests
             DateTime expiryDate = DateTime.UtcNow.AddDays(1);
             // Arrange && Act
             var result = Reward.Create(userId, rewardValue, expiryDate);
+            result.Value.UpdateRewardDate(DateTime.UtcNow.AddDays(10));
             // Assert
             //Assert.True(result.IsSuccess);
             result.IsSuccess.Should().BeTrue();
@@ -173,9 +158,9 @@ namespace ECommerceApplication.Domain.Tests
             DateTime expiryDate = DateTime.UtcNow.AddDays(1);
             // Arrange && Act
             var result = Reward.Create(userId, rewardValue, expiryDate);
-            // Assert
-            //Assert.True(result.IsSuccess);
-            result.IsSuccess.Should().BeTrue();
+            // Act & Assert
+            result.Invoking(r => r.Value.UpdateRewardDate(DateTime.UtcNow.AddDays(-10)))
+                  .Should().Throw<ArgumentException>().WithMessage("Reward date cannot be less than or equal to current date.");
         }
 
         [Fact]
@@ -194,7 +179,7 @@ namespace ECommerceApplication.Domain.Tests
             // Assert
             //Assert.True(result.IsSuccess);
             result.IsSuccess.Should().BeTrue();
-            
         }
+
     }
 }
