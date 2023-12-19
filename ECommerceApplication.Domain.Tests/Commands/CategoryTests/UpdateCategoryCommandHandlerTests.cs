@@ -1,13 +1,4 @@
-﻿using ECommerceApplication.Application.Features.Categories.Commands.UpdateCategory;
-using ECommerceApplication.Application.Persistence;
-using ECommerceApplication.Domain.Common;
-using ECommerceApplication.Domain.Entities;
-using NSubstitute;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ECommerceApplication.Domain.Common;
 
 namespace ECommercerApplication.Application.Tests.Commands.CategoryTests
 {
@@ -19,9 +10,6 @@ namespace ECommercerApplication.Application.Tests.Commands.CategoryTests
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using System.Collections.Generic;
-    using System.Linq;
-
     public class UpdateCategoryCommandHandlerTests
     {
         private readonly ICategoryRepository _repository;
