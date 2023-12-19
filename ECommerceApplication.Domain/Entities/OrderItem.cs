@@ -37,54 +37,16 @@ namespace ECommerceApplication.Domain.Entities
             return Result<OrderItem>.Success(new OrderItem(productId, quantity, pricePerUnit));
         }
 
-        public Result<OrderItem> UpdateQuantity(int newQuantity)
+        public void Update(Guid newProductId, int newQuantity, decimal newPricePerUnit)
         {
-            if (newQuantity > 0)
-            {
-                Quantity = newQuantity;
-                return Result<OrderItem>.Success(this);
-            }
-            else
-                return Result<OrderItem>.Failure("Invalid quantity. Quantity should be greater than zero.");
-                throw new InvalidOperationException("Invalid quantity. Quantity should be greater than zero.");
-        }
-
-        public Result<OrderItem> UpdatePricePerUnit(decimal newPricePerUnit)
-        {
-            if (newPricePerUnit > 0)
-            {
-                PricePerUnit = newPricePerUnit;
-                return Result<OrderItem>.Success(this);
-            }
-            else
-                return
-                    Result<OrderItem>.Failure("Invalid price. Price per unit should be greater than zero.");
-                throw new InvalidOperationException("Invalid price. Price per unit should be greater than zero.");
+            ProductId = newProductId;
+            Quantity = newQuantity;
+            PricePerUnit = newPricePerUnit;
         }
 
         public decimal CalculateTotal()
         {
             return Quantity * PricePerUnit;
-        }
-
-        public void IncreaseQuantity(int amount)
-        {
-            if (amount > 0)
-            {
-                Quantity += amount;
-            }
-            else
-                throw new InvalidOperationException("Invalid quantity increment. Quantity should be greater than zero.");
-        }
-
-        public void DecreaseQuantity(int amount)
-        {
-            if (amount > 0 && Quantity >= amount)
-            {
-                Quantity -= amount;
-            }
-            else
-                throw new InvalidOperationException("Invalid quantity decrement. Quantity should be greater than zero and not exceed current quantity.");
         }
     }
 }

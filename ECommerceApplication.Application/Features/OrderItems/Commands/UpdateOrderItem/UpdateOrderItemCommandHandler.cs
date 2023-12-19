@@ -39,24 +39,9 @@ namespace ECommerceApplication.Application.Features.OrderItems.Commands.UpdateOr
                     Success = false,
                     ValidationsErrors = validatorResult.Errors.Select(e => e.ErrorMessage).ToList()
                 };
-            var updateResult = orderItem.Value.UpdatePricePerUnit(request.PricePerUnit);
-            if (!updateResult.IsSuccess)
-            {
-                return new UpdateOrderItemCommandResponse
-                {
-                    Success = false,
-                    ValidationsErrors = new List<string> { updateResult.Error }
-                };
-            }
-            updateResult = orderItem.Value.UpdateQuantity(request.Quantity);
-            if (!updateResult.IsSuccess)
-            {
-                return new UpdateOrderItemCommandResponse
-                {
-                    Success = false,
-                    ValidationsErrors = new List<string> { updateResult.Error }
-                };
-            }
+            
+            orderItem.Value.Update(request.ProductId, request.Quantity, request.PricePerUnit);
+
             await _orderItemRepository.UpdateAsync(orderItem.Value);
             return new UpdateOrderItemCommandResponse
             {
