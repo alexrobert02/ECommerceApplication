@@ -50,13 +50,10 @@ namespace ECommerceApplication.Domain.Entities
 
         public void IncreaseReward(decimal rewardValue)
         {
-            if (rewardValue == default)
-            {
-                throw new ArgumentNullException(nameof(rewardValue), "Reward value cannot be null.");
-            }
+            
             if (rewardValue <= 0)
             {
-                throw new ArgumentException("Reward value cannot be less than or equal to zero.", nameof(rewardValue));
+                throw new ArgumentException("Increase value cannot be less than or equal to zero.");
             }
             if (IsRewardValid())
             {
@@ -66,13 +63,9 @@ namespace ECommerceApplication.Domain.Entities
 
         public void DecreaseReward(decimal rewardValue)
         {
-            if (rewardValue == default)
+            if (rewardValue < 0)
             {
-                throw new ArgumentNullException(nameof(rewardValue), "Reward value cannot be null.");
-            }
-            if (rewardValue <= 0)
-            {
-                throw new ArgumentException("Reward value cannot be less than or equal to zero.", nameof(rewardValue));
+                throw new ArgumentException("Decrease value cannot be less than or equal to zero.");
             }
             if (IsRewardValid())
             {
@@ -82,9 +75,9 @@ namespace ECommerceApplication.Domain.Entities
 
         public void UpdateRewardDate(DateTime rewardDate)
         {
-            if (rewardDate == default)
+            if (rewardDate <DateTime.UtcNow)
             {
-                throw new ArgumentNullException(nameof(rewardDate), "Reward date cannot be null.");
+                throw new ArgumentException("Reward date cannot be less than or equal to current date.");
             }
             RewardDate = rewardDate;
         }
@@ -93,7 +86,7 @@ namespace ECommerceApplication.Domain.Entities
         {
             if (discount == null)
             {
-                throw new ArgumentNullException(nameof(discount), "Discount cannot be null.");
+                throw new ArgumentNullException("Discount cannot be null.");
             }
 
             Discounts.Add(discount);
