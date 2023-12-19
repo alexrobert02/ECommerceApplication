@@ -1,11 +1,11 @@
 using Xunit;
 using NSubstitute;
-using ECommerceApplication.Application.Features.Categories.Commands.CreateCategory;
-using ECommerceApplication.Application.Persistence;
 using ECommerceApplication.Domain.Entities;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using ECommerceApplication.Application.Persistence;
+using ECommerceApplication.Application.Features.Categories.Commands.CreateCategory;
 
 namespace ECommercerApplication.Application.Tests.Commands.CategoryTests
 {
