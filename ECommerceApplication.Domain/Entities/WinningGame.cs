@@ -35,11 +35,11 @@ namespace ECommerceApplication.Domain.Entities
             {
                 return Result<WinningGame>.Failure("User id is required.");
             }
-            if (price == default)
+            if (price == default || price<0)
             {
                 return Result<WinningGame>.Failure("Price is required.");
             }
-            if (timestamp == default)
+            if (timestamp == default|| timestamp <DateTime.UtcNow)
             {
                 return Result<WinningGame>.Failure("Timestamp is required.");
             }
@@ -47,7 +47,7 @@ namespace ECommerceApplication.Domain.Entities
             {
                 return Result<WinningGame>.Failure("Discounts cannot be null.");
             }
-            if (size == default)
+            if (size == default|| size<0)
             {
                 return Result<WinningGame>.Failure("Size is required.");
             }
@@ -80,8 +80,11 @@ namespace ECommerceApplication.Domain.Entities
             {
                 throw new ArgumentNullException(nameof(discount), "Discount cannot be null.");
             }
+            if(Discounts.Contains(discount))
+            {
 
-            Discounts.Remove(discount);
+                Discounts.Remove(discount);
+            }
         }
 
         public void SpinWheel(Reward reward)
