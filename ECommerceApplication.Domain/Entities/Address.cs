@@ -52,7 +52,7 @@ namespace ECommerceApplication.Domain.Entities
             IsDefault = isDefault;
         }
 
-        public bool MarkAsDefault()
+        /*public bool MarkAsDefault()
         {
             if (!IsDefault)
             {
@@ -87,6 +87,6 @@ namespace ECommerceApplication.Domain.Entities
         public string GetFormattedAddress()
         {
             return $"{Street}, {City}, {State} {PostalCode}";
-        }
+        }*/
     }
 }

@@ -33,16 +33,5 @@ namespace ECommerceApplication.Domain.Entities
             return Result<Category>.Success(this);
         }
 
-        public bool UpdateCategoryName(string newCategoryName)
-        {
-            if (string.IsNullOrWhiteSpace(newCategoryName))
-            {
-                return false;
-            }
-
-            CategoryName = newCategoryName;
-            return true;
-        }
-
     }
 }
