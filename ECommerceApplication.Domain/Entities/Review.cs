@@ -43,15 +43,5 @@ namespace ECommerceApplication.Domain.Entities
             ReviewText = newReviewText;
             Rating = newRating;
         }
-
-        public string GetFormattedReview()
-        {
-            return $"{Rating} stars - {ReviewText}";
-        }
-
-        public bool IsUserAuthorized(Guid requestingUserId)
-        {
-            return requestingUserId == UserId;
-        }
     }
 }

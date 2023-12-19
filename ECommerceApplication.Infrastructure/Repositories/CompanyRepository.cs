@@ -3,7 +3,7 @@ using ECommerceApplication.Domain.Entities;
 
 namespace ECommerceApplication.Infrastructure.Repositories
 {
-    public class CompanyRepository : BaseRepository<Manufacturer>, ICompanyRepository
+    public class CompanyRepository : BaseRepository<Company>, ICompanyRepository
     {
         public CompanyRepository(ECommerceApplicationContext context) : base(context)
         {
