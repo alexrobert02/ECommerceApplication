@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
 
+namespace ECommerceApplication.Domain.Tests;
+
 public class ProductTests
 {
     [Fact]
