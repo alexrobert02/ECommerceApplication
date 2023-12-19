@@ -45,7 +45,10 @@ namespace ECommerceApplication.Domain.Entities
             {
                 AppliedDiscounts = new List<Discount>();
             }
-            AppliedDiscounts.Add(discount);
+            if(! AppliedDiscounts.Contains (discount))
+            {
+                AppliedDiscounts.Add(discount);
+            }
         }
 
         public bool IsDiscountApplied(Discount discount)
@@ -60,7 +63,10 @@ namespace ECommerceApplication.Domain.Entities
 
         public void UpdateTotalAmount(decimal newTotalAmount)
         {
-            TotalAmount = newTotalAmount;
+            if (newTotalAmount >= 0)
+            {
+                TotalAmount = newTotalAmount;
+            }
         }
     }
 }
