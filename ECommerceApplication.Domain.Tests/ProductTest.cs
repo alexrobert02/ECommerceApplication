@@ -112,7 +112,7 @@ public class ProductTests
     }
 
     [Fact]
-    public void When_AttachCategoryIsCalled_WithValidCategoryId_Then_CategoryIsAttached()
+    public void When_AttachCategoryIsCalled_WithValidCategory_Then_CategoryIsAttached()
     {
         // Arrange
         var product = Product.Create("Test Product", 10.0m).Value;
@@ -123,7 +123,7 @@ public class ProductTests
 
         // Assert
         product.CategoryId.Should().Be(category.Value.CategoryId);
-        product.Category.Should().Be(category);
+        product.Category.Should().Be(category.Value);
     }
 
     [Fact]
