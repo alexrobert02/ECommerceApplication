@@ -25,6 +25,19 @@ namespace ECommerceApplication.Domain.Tests
         }
 
         [Fact]
+        public void When_CreateRewardIsCalled_And_UserIdIsDefault_Then_FailureIsReturned()
+        {
+            Guid userId = default;
+            decimal rewardValue = 10;
+            DateTime expiryDate = DateTime.UtcNow.AddDays(30);
+            // Arrange && Act
+            var result = Reward.Create(userId, rewardValue, expiryDate);
+            // Assert
+            //Assert.True(result.IsSuccess);
+            result.IsSuccess.Should().BeFalse();
+        }
+
+        [Fact]
         public void When_CreateRewardIsCalled_And_RewardValueIsSmallerThanZero_Then_FailureIsReturned()
         {
             Guid userId = Guid.NewGuid();
