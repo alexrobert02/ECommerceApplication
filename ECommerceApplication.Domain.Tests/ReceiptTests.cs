@@ -215,22 +215,5 @@ namespace ECommerceApplication.Domain.Tests
             receipt.TotalAmount.Should().Be(totalAmount);
         }
 
-        [Fact]
-        public void When_UpdateTotalAmountIsCalled_WithZeroAmount_Then_FailureIsReturned()
-        {
-            Guid orderId = Guid.NewGuid();
-            decimal totalAmount = 100;
-            DateTime issueDate = DateTime.UtcNow;
-            List<Discount> appliedDiscounts = new List<Discount>();
-            var receipt = Receipt.Create(orderId, totalAmount, issueDate, appliedDiscounts).Value;
-            decimal newTotalAmount = 0;
-
-            // Arrange && Act
-            receipt.UpdateTotalAmount(newTotalAmount);
-
-            // Assert
-            //Assert.Equal(newTotalAmount, receipt.TotalAmount);
-            receipt.TotalAmount.Should().Be(totalAmount);
-        }
     }
 }

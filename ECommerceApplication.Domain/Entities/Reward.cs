@@ -10,6 +10,7 @@ namespace ECommerceApplication.Domain.Entities
             UserId = userId;
             RewardValue = rewardValue;
             RewardDate = rewardDate;
+            Discounts = new List<Discount>();
         }
 
         public Guid RewardId { get; set; }
@@ -26,11 +27,11 @@ namespace ECommerceApplication.Domain.Entities
             {
                 return Result<Reward>.Failure("User id is required.");
             }
-            if (rewardDate == default)
+            if (rewardDate == default || rewardDate<DateTime.UtcNow)
             {
                 return Result<Reward>.Failure("Reward date is required.");
             }
-            if (rewardValue == default)
+            if (rewardValue == default || rewardValue<0)
             {
                 return Result<Reward>.Failure("Reward value is required.");
             }
