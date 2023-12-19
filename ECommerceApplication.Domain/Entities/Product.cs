@@ -9,15 +9,14 @@ namespace ECommerceApplication.Domain.Entities
             ProductId = Guid.NewGuid();
             ProductName = productName;
             Price = price;
+            Reviews = new List<Review>();
         }
         public Guid ProductId { get; private set; }
         public string ProductName { get; private set; } = string.Empty;
         public decimal Price { get; private set; }
         public string? Description { get; private set; } 
         public string? ImageUrl { get; private set; }
-        public List<Review>? Reviews { get; private set; }
-        //public Manufacturer Manufacturer { get; private set; }
-        //public Guid ManufacturerId { get; private set; }
+        public List<Review> Reviews { get; private set; }
 
         public static Result<Product> Create(string productName, decimal price)
         {
@@ -58,20 +57,8 @@ namespace ECommerceApplication.Domain.Entities
             }
         }
 
-        /*public void AttachManufacturer(Guid manufacturerId)
+        public void AddReview(Review review)
         {
-            if (manufacturerId != Guid.Empty)
-            {
-                ManufacturerId = manufacturerId;
-            }
-        }*/
-
-        public void AttachReview(Review review)
-        {
-            if (Reviews == null)
-            {
-                Reviews = new List<Review>();
-            }
             Reviews.Add(review);
         }
 
@@ -84,7 +71,7 @@ namespace ECommerceApplication.Domain.Entities
             CategoryId = categoryId;
         }
 
-        public void RemoveReview(Guid reviewId)
+        /*public void RemoveReview(Guid reviewId)
         {
             if (Reviews == null || !Reviews.Any())
             {
@@ -101,7 +88,7 @@ namespace ECommerceApplication.Domain.Entities
             {
                 throw new InvalidOperationException("Review not found for this product.");
             }
-        }
+        }*/
 
     }
 }

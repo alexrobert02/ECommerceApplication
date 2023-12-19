@@ -2,7 +2,7 @@
 
 namespace ECommerceApplication.Application.Persistence
 {
-    public interface IManufacturerRepository : IAsyncRepository<Manufacturer>
+    public interface ICompanyRepository : IAsyncRepository<Company>
     {
     }
 }
