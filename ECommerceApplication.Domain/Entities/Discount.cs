@@ -29,7 +29,7 @@ namespace ECommerceApplication.Domain.Entities
                 return Result<Discount>.Failure("Percentage must be between 0 and 100.");
             }
 
-            if (expiryDate <= DateTime.UtcNow)
+            if (expiryDate < DateTime.UtcNow)
             {
                 return Result<Discount>.Failure("Expiry date must be in the future.");
             }
@@ -56,5 +56,6 @@ namespace ECommerceApplication.Domain.Entities
         {
             return other != null && DiscountId == other.DiscountId;
         }
+    
     }
 }
