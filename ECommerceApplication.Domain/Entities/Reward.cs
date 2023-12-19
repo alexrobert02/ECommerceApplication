@@ -75,21 +75,19 @@ namespace ECommerceApplication.Domain.Entities
 
         public void UpdateRewardDate(DateTime rewardDate)
         {
-            if (rewardDate <DateTime.UtcNow)
+            if (rewardDate >=DateTime.UtcNow)
             {
-                throw new ArgumentException("Reward date cannot be less than or equal to current date.");
+                rewardDate = RewardDate.Value;
             }
-            RewardDate = rewardDate;
+           
         }
 
         public void AddDiscount(Discount discount)
         {
-            if (discount == null)
+            if (discount != null)
             {
-                throw new ArgumentNullException("Discount cannot be null.");
+                Discounts.Add(discount);
             }
-
-            Discounts.Add(discount);
         }
 
     }
