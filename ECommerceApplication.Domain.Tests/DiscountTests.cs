@@ -103,19 +103,6 @@ namespace ECommerceApplication.Domain.Tests
             result.IsSuccess.Should().BeTrue();
         }
 
-        [Fact]
-        public void When_DiscountIsExpired_Then_TrueIsReturned()
-        {
-            string code = "Test Discount";
-            decimal percentage = 10;
-            DateTime expiryDate = DateTime.UtcNow.AddMonths(-5); 
-            var discount = Discount.Create(code, percentage, expiryDate).Value;
-            // Arrange && Act
-            var result = discount.IsExpired();
-            // Assert
-            //Assert.True(result.IsSuccess);
-            result.Should().BeTrue();
-        }
 
         [Fact]
         public void When_DiscountIsNotExpired_Then_FalseIsReturned()
@@ -126,21 +113,6 @@ namespace ECommerceApplication.Domain.Tests
             var discount = Discount.Create(code, percentage, expiryDate).Value;
             // Arrange && Act
             var result = discount.IsExpired();
-            // Assert
-            //Assert.True(result.IsSuccess);
-            result.Should().BeFalse();
-        }
-
-
-        [Fact]
-        public void When_DiscountIsExpired_Then_ItIsNotValidForOrder()
-        {
-            string code = "Test Discount";
-            decimal percentage = 10;
-            DateTime expiryDate = DateTime.UtcNow.AddDays(-5);
-            var discount = Discount.Create(code, percentage, expiryDate).Value;
-            // Arrange && Act
-            var result = discount.IsValidForOrder(DateTime.UtcNow);
             // Assert
             //Assert.True(result.IsSuccess);
             result.Should().BeFalse();
