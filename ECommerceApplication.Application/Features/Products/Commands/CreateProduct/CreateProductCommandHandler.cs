@@ -49,7 +49,9 @@ namespace ECommerceApplication.Application.Features.Products.Commands.CreateProd
             var @event = Product.Create(request.ProductName, request.Price);
             if (@event.IsSuccess)
             {
-                @event.Value.AttachCategory(request.CategoryId);
+                var category = await categoryRepository.FindByIdAsync(request.CategoryId);
+
+                @event.Value.AttachCategory(category.Value);
 
 #pragma warning disable CS8604 // Possible null reference argument.
                 @event.Value.AttachDescription(request.Description);

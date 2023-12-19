@@ -49,12 +49,10 @@ namespace ECommerceApplication.Domain.Entities
             }
         }
 
-        public void AttachCategory(Guid categoryId)
+        public void AttachCategory(Category category)
         {
-            if (categoryId != Guid.Empty)
-            {
-                CategoryId = categoryId;
-            }
+            Category = category;
+            CategoryId = category.CategoryId;
         }
 
         public void AddReview(Review review)
