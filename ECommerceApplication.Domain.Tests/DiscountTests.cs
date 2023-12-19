@@ -1,11 +1,5 @@
 ﻿using ECommerceApplication.Domain.Entities;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Drawing.Printing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ECommerceApplication.Domain.Tests
 {
@@ -22,6 +16,7 @@ namespace ECommerceApplication.Domain.Tests
             // Assert
             //Assert.True(result.IsSuccess);
             result.IsSuccess.Should().BeTrue();
+            result.Value.Code.Should().Be(code);
         }
 
         [Fact]

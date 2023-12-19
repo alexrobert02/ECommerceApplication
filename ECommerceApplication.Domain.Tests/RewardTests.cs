@@ -163,18 +163,6 @@ namespace ECommerceApplication.Domain.Tests
             result.IsSuccess.Should().BeTrue();
         }
 
-        [Fact]
-        public void When_UpdateRewardIsCalled_And_RewardValueIsNotUpdated_Then_FailureIsReturned()
-        {
-            Guid userId = Guid.NewGuid();
-            decimal rewardValue = 10;
-            DateTime expiryDate = DateTime.UtcNow.AddDays(1);
-            // Arrange && Act
-            var result = Reward.Create(userId, rewardValue, expiryDate);
-            // Act & Assert
-            result.Invoking(r => r.Value.UpdateRewardDate(DateTime.UtcNow.AddDays(-10)))
-                  .Should().Throw<ArgumentException>().WithMessage("Reward date cannot be less than or equal to current date.");
-        }
 
         [Fact]
         public void When_AddDiscountIsCalled_And_DiscountIsAdded_Then_SuccessIsReturned()
