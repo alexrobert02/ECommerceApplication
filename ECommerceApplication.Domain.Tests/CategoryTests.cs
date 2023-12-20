@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.JavaScript;
 using ECommerceApplication.Domain.Entities;
 using FluentAssertions;
 
@@ -10,9 +11,21 @@ namespace ECommerceApplication.Domain.Tests
         {
             // Arrange && Act
             var result = Category.Create("Test Category");
+            var createdDate = DateTime.Now;
+            var lastModifiedDate = DateTime.Now;
+            var createdBy = "ADMIN";
+            var modifiedBy = "ADMIN";
+            result.Value.CreatedDate = createdDate;
+            result.Value.LastModifiedDate = lastModifiedDate;
+            result.Value.CreatedBy = "ADMIN";
+            result.Value.LastModifiedBy = "ADMIN";
             // Assert
             //Assert.True(result.IsSuccess);
             result.IsSuccess.Should().BeTrue();
+            result.Value.CreatedDate.Should().Be(createdDate);
+            result.Value.LastModifiedDate.Should().Be(lastModifiedDate);
+            result.Value.CreatedBy.Should().Be(createdBy);
+            result.Value.LastModifiedBy.Should().Be(modifiedBy);
         }
 
         [Fact]
