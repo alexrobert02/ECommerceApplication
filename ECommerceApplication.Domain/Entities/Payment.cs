@@ -29,9 +29,9 @@ namespace ECommerceApplication.Domain.Entities
             {
                 return Result<Payment>.Failure("Order id is required.");
             }
-            if (amount == default)
+            if (amount <=0)
             {
-                return Result<Payment>.Failure("Amount is required.");
+                return Result<Payment>.Failure("Amount should be greater than zero.");
             }
             if (paymentDate == default)
             {
@@ -107,9 +107,9 @@ namespace ECommerceApplication.Domain.Entities
 
         public void AttachPaymentDate(DateTime now)
         {
-            if(DateTime.TryParse(now.ToString(), out DateTime date))
+            if(now != default)
             {
-                PaymentDate = date;
+                PaymentDate = now;
             }
         }
 
