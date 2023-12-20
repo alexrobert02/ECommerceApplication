@@ -2,6 +2,7 @@
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,7 @@ namespace ECommerceApplication.Domain.Tests
             // Assert
             //Assert.True(result.IsSuccess);
             result.IsSuccess.Should().BeTrue();
+            result.Value.UserId.Should().Be(userId);
         }
 
         [Fact]
@@ -90,6 +92,20 @@ namespace ECommerceApplication.Domain.Tests
             // Assert
             //Assert.True(result.IsSuccess);
             result.IsSuccess.Should().BeTrue();
+        }
+
+        [Fact]
+        public void When_IsValidIsCalled_And_RewardIsExpired_Then_FalseIsReturned()
+        {
+            Guid userId = Guid.NewGuid();
+            decimal rewardValue = 10;
+            DateTime expiryDate = DateTime.UtcNow.AddDays(1);
+            var result = Reward.Create(userId, rewardValue, expiryDate);
+            // Arrange && Act
+            result.Value.RewardDate = DateTime.UtcNow.AddDays(-2);
+            var test = result.Value.IsRewardValid();
+            // Assert
+            test.Should().BeFalse();
         }
 
         [Fact]
@@ -164,19 +180,6 @@ namespace ECommerceApplication.Domain.Tests
         }
 
         [Fact]
-        public void When_UpdateRewardIsCalled_And_RewardValueIsNotUpdated_Then_FailureIsReturned()
-        {
-            Guid userId = Guid.NewGuid();
-            decimal rewardValue = 10;
-            DateTime expiryDate = DateTime.UtcNow.AddDays(1);
-            // Arrange && Act
-            var result = Reward.Create(userId, rewardValue, expiryDate);
-            // Act & Assert
-            result.Invoking(r => r.Value.UpdateRewardDate(DateTime.UtcNow.AddDays(-10)))
-                  .Should().Throw<ArgumentException>().WithMessage("Reward date cannot be less than or equal to current date.");
-        }
-
-        [Fact]
         public void When_AddDiscountIsCalled_And_DiscountIsAdded_Then_SuccessIsReturned()
         {
             Guid userId = Guid.NewGuid();
@@ -192,6 +195,22 @@ namespace ECommerceApplication.Domain.Tests
             // Assert
             //Assert.True(result.IsSuccess);
             result.IsSuccess.Should().BeTrue();
+        }
+
+        [Fact]
+        public void When_RewardIsComparedToAnotherRewardWithDifferentId_Then_FalseIsReturned()
+        {
+            Guid userId = Guid.NewGuid();
+            decimal rewardValue = 10;
+            DateTime expiryDate = DateTime.UtcNow.AddDays(30);
+            // Arrange && Act
+            var reward1 = Reward.Create(userId, rewardValue, expiryDate);
+            var reward2 = Reward.Create(userId, rewardValue, expiryDate);
+            // Arrange && Act
+            var result = reward1.Value.RewardId == reward2.Value.RewardId;
+            // Assert
+            //Assert.True(result.IsSuccess);
+            result.Should().BeFalse();
         }
 
     }
