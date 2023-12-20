@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices.JavaScript;
 using ECommerceApplication.Domain.Entities;
 using FluentAssertions;
 

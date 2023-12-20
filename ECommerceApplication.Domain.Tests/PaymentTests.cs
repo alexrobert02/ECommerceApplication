@@ -22,6 +22,7 @@ namespace ECommerceApplication.Domain.Tests
             // Assert
             //Assert.True(result.IsSuccess);
             result.IsSuccess.Should().BeTrue();
+            result.Value.PaymentId.Should().NotBe(Guid.Empty);
         }
 
         [Fact]
@@ -390,6 +391,33 @@ namespace ECommerceApplication.Domain.Tests
 
             // Act & Assert
             Assert.Throws<ArgumentException>(() => payment.Update(newOrderId, newAmount, newPaymentDate, newPaymentMethod, newPaymentStatus, newCurrency));
+        }
+
+        [Fact]
+        public void When_MarkAsFailedIsCalled_And_PaymentStatusIsPending_Then_PaymentStatusIsUpdated()
+        {
+            // Arrange
+            var payment = Payment.Create(Guid.NewGuid(), 100.00m, DateTime.UtcNow, "CreditCard").Value;
+
+            // Act
+            payment.MarkAsFailed();
+
+            // Assert
+            payment.PaymentStatus.Should().Be("Failed");
+        }
+
+        [Fact]
+        public void When_MarkAsFailedIsCalled_And_PaymentStatusIsPaid_Then_ExceptionIsThrown()
+        {
+            // Arrange
+            var payment = Payment.Create(Guid.NewGuid(), 100.00m, DateTime.UtcNow, "CreditCard").Value;
+
+            // Act
+            payment.MarkAsPaid();
+
+            // Assert
+            var exception = Assert.Throws<InvalidOperationException>(() => payment.MarkAsFailed());
+            exception.Message.Should().Be("Payment has already been processed or is invalid.");
         }
 
     }
