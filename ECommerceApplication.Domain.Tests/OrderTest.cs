@@ -18,6 +18,8 @@ namespace ECommerceApplication.Domain.Tests
                 OrderItem.Create(Guid.NewGuid(), 1, 15.0m).Value
             };
 
+            var Order = new Order();
+
             // Act
             var result = Order.Create(orderItems, userId);
 
