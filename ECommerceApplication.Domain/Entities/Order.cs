@@ -2,8 +2,14 @@
 
 namespace ECommerceApplication.Domain.Entities
 {
+
     public class Order : AuditableEntity
     {
+        public Order()
+        {
+            // Required by Entity Framework Core
+        }
+
         private Order(List<OrderItem> orderItems, Guid userId)
         {
             OrderId = Guid.NewGuid();
