@@ -23,6 +23,9 @@ namespace ECommerceApplication.Domain.Tests
             // Assert
             //Assert.True(result.IsSuccess);
             result.IsSuccess.Should().BeTrue();
+            result.Value.OrderId.Should().Be(orderId);
+            result.Value.IssueDate.Should().Be(issueDate);
+            result.Value.ReceiptId.Should().NotBe(Guid.Empty);
         }
 
         [Fact]
