@@ -4,7 +4,7 @@ namespace ECommerceApplication.Domain.Entities
 {
     public class Reward
     {
-        public Reward(Guid userId, decimal? rewardValue, DateTime? rewardDate)
+        public Reward(Guid userId, decimal? rewardValue, DateTime rewardDate)
         {
             RewardId = Guid.NewGuid();
             UserId = userId;
@@ -18,7 +18,7 @@ namespace ECommerceApplication.Domain.Entities
 
         public decimal? RewardValue { get; set; }
 
-        public DateTime? RewardDate { get; set; }
+        public DateTime RewardDate { get; set; }
         public List<Discount> Discounts { get; set; }
 
         public static Result<Reward> Create(Guid userId, decimal rewardValue, DateTime rewardDate)
@@ -77,7 +77,7 @@ namespace ECommerceApplication.Domain.Entities
         {
             if (rewardDate >=DateTime.UtcNow)
             {
-                rewardDate = RewardDate.Value;
+                rewardDate = RewardDate;
             }
            
         }

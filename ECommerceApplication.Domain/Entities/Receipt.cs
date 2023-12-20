@@ -41,10 +41,6 @@ namespace ECommerceApplication.Domain.Entities
 
         public void AddDiscount(Discount discount)
         {
-            if (AppliedDiscounts == null)
-            {
-                AppliedDiscounts = new List<Discount>();
-            }
             if(! AppliedDiscounts.Contains (discount))
             {
                 AppliedDiscounts.Add(discount);
