@@ -1,10 +1,5 @@
 ﻿using ECommerceApplication.Domain.Entities;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ECommerceApplication.Domain.Tests
 {
@@ -29,10 +24,34 @@ namespace ECommerceApplication.Domain.Tests
             // Assert
             //Assert.True(result.IsSuccess);
             result.IsSuccess.Should().BeTrue();
+            result.Value.WinningGameId.Should().NotBe(Guid.Empty);
+            result.Value.UserId.Should().Be(userId);
+            result.Value.Timestamp.Should().Be(timestamp);
+
         }
 
         [Fact]
         public void When_CreateWinningGamesIsCalled_And_TimeStampIsInThePast_Then_FailureIsReturned()
+        {
+            int price = 10;
+            DateTime timestamp = DateTime.UtcNow.AddDays(-1);
+            string code = "Test Discount";
+            decimal percentage = 10;
+            DateTime expiryDate = DateTime.UtcNow.AddDays(1);
+            var discount = Discount.Create(code, percentage, expiryDate).Value;
+            List<Discount> discounts = new List<Discount>();
+            discounts.Add(discount);
+            int size = 10;
+            // Arrange && Act
+            var result = WinningGame.Create(Guid.NewGuid(), price, timestamp, discounts,size);
+            // Assert
+            //Assert.True(result.IsSuccess);
+            result.IsSuccess.Should().BeFalse();
+            result.Error.Should().Contain("Timestamp is required");
+        }
+
+        [Fact]
+        public void When_CreateWinningGamesIsCalled_And_UserIdIsEmpty_Then_FailureIsReturned()
         {
             int price = 10;
             DateTime timestamp = DateTime.UtcNow;
@@ -44,10 +63,11 @@ namespace ECommerceApplication.Domain.Tests
             discounts.Add(discount);
             int size = 10;
             // Arrange && Act
-            var result = WinningGame.Create(Guid.Empty, price, timestamp, discounts,size);
+            var result = WinningGame.Create(Guid.Empty, price, timestamp, discounts, size);
             // Assert
             //Assert.True(result.IsSuccess);
             result.IsSuccess.Should().BeFalse();
+            result.Error.Should().Contain("User id is required.");
         }
 
         [Fact]
