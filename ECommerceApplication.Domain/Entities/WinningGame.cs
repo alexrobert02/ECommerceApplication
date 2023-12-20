@@ -4,21 +4,13 @@ namespace ECommerceApplication.Domain.Entities
 {
     public class WinningGame
     {
-        private WinningGame(Guid userId, int price, DateTime timestamp, List<Discount>? discounts, int size)
+        private WinningGame(Guid userId, int price, DateTime timestamp, List<Discount> discounts, int size)
         {
             WinningGameId = Guid.NewGuid();
             UserId = userId;
             Price = price;
             Timestamp = timestamp;
-            if (discounts != null)
-            {
-                Discounts = discounts;
-            }
-            else
-            {
-
-                Discounts = new List<Discount>();
-            }
+            Discounts = discounts;
             Size = size;
         }
 
@@ -43,10 +35,6 @@ namespace ECommerceApplication.Domain.Entities
             {
                 return Result<WinningGame>.Failure("Timestamp is required.");
             }
-            if (discounts == null)
-            {
-                return Result<WinningGame>.Failure("Discounts cannot be null.");
-            }
             if (size == default|| size<0)
             {
                 return Result<WinningGame>.Failure("Size is required.");
@@ -57,11 +45,6 @@ namespace ECommerceApplication.Domain.Entities
 
         public void AddDiscount(List<Discount> discounts)
         {
-            if (discounts == null)
-            {
-                throw new ArgumentNullException(nameof(discounts), "Discounts cannot be null.");
-            }
-
             int len = Discounts.Count;
             int i = 0;
             while (len < Size && i < discounts.Count)
@@ -76,10 +59,6 @@ namespace ECommerceApplication.Domain.Entities
         }
         public void RemoveDiscount(Discount discount)
         {
-            if (discount == null)
-            {
-                throw new ArgumentNullException(nameof(discount), "Discount cannot be null.");
-            }
             if(Discounts.Contains(discount))
             {
 
