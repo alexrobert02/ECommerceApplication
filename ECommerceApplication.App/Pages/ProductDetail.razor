@@ -1,0 +1,48 @@
+﻿@page "/productdetail/{productId}"
+@using ECommerceApplication.App.Contracts
+@using ECommerceApplication.App.ViewModels
+
+<h3>Product Detail</h3>
+
+@if (Product == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="product-detail">
+        <img src="@Product.ImageUrl" alt="@Product.ProductName" class="product-image" />
+        <div class="product-details">
+            <h4 class="product-name">@Product.ProductName</h4>
+            <p class="product-price">$@Product.Price</p>
+            <p class="product-description">@Product.Description</p>
+        </div>
+    </div>
+}
+
+@code {
+    [Inject]
+    public IProductDataService ProductDataService { get; set; }
+
+    [Parameter]
+    public Guid productId { get; set; }
+
+    private ProductViewModel Product { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (string.IsNullOrEmpty(productId.ToString()))
+        {
+            Console.WriteLine("ProductId not provided or invalid");
+            return;
+        }
+
+        Product = await ProductDataService.GetProductByIdAsync(productId);
+
+        if (Product == null)
+        {
+            Console.WriteLine("Product not found");
+        }
+    }
+}
+

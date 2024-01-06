@@ -33,7 +33,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommerceApplication.App", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommerceApplication.Domain.Tests", "ECommerceApplication.Domain.Tests\ECommerceApplication.Domain.Tests.csproj", "{5C9C2FB7-7A4A-4A5A-A3BE-70681060884B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommercerApplication.Application.Tests", "ECommercerApplication.Application.Tests\ECommercerApplication.Application.Tests.csproj", "{0C03181D-2A23-4C9B-9BD1-FFB5E43D289D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommercerApplication.Application.Tests", "ECommercerApplication.Application.Tests\ECommercerApplication.Application.Tests.csproj", "{0C03181D-2A23-4C9B-9BD1-FFB5E43D289D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

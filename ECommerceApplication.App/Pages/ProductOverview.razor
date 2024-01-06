@@ -5,40 +5,34 @@
 <h3>Product Overview</h3>
 <br />
 
-<p><input class="custom-checkbox" type="checkbox" id="includeHistory" @onchange="OnIncludeHistoryChanged" />   Include past events?</p>
-
 @if (Products == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th class="col">Product Name</th>
-                <th class="col">Price</th>
-                <th class="col">Description</th>
-                <th class="col">Image</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var prod in Products)
-            {
-                <tr>
-                    <td>@prod.ProductName</td>
-                    <td>@prod.Price</td>
-                    <td>@prod.Description</td>
-                    <td>@prod.ImageUrl</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="product-container">
+        @foreach (var prod in Products)
+        {
+            <div class="product-card" @onclick="() => NavigateToProductDetail(prod.ProductId)">
+                <img src="@prod.ImageUrl" alt="@prod.ProductName" class="product-image" />
+                <div class="product-details">
+                    <h4 class="product-name">@prod.ProductName</h4>
+                    <p class="product-price">$@prod.Price</p>
+                    <button class="add-to-cart-button" @onclick="() => AddToCart(prod)">
+                        <span class="shopping-cart-icon">&#128722;</span>
+                        Add to Cart
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
 }
 
 @code {
     [Inject]
     public IProductDataService ProductDataService { get; set; }
+
     [Inject]
     public NavigationManager NavigationManager { get; set; }
 
@@ -49,15 +43,13 @@ else
         Products = (await ProductDataService.GetProductAsync()).ToList();
     }
 
-    private void OnIncludeHistoryChanged(ChangeEventArgs e)
+    private void AddToCart(ProductViewModel product)
     {
-        if ((bool)e.Value)
-        {
-            NavigationManager.NavigateTo("/productoverview?includeHistory=true");
-        }
-        else
-        {
-            NavigationManager.NavigateTo("/productoverview");
-        }
+
+    }
+
+    private void NavigateToProductDetail(Guid productId)
+    {
+        NavigationManager.NavigateTo($"/productdetail/{productId}");
     }
 }
