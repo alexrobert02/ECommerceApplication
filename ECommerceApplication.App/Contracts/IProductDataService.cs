@@ -6,6 +6,7 @@ namespace ECommerceApplication.App.Contracts
     public interface IProductDataService
     {
         Task<List<ProductViewModel>> GetProductAsync();
+        Task<ProductViewModel> GetProductByIdAsync(Guid productId);
         Task <ApiResponse<ProductDto>> CreateProductAsync(ProductViewModel productViewModel);
         Task<ApiResponse<ProductDto>> UpdateProductAsync(ProductViewModel prouctViewModel);
     }

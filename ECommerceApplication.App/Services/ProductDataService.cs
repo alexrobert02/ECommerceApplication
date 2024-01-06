@@ -37,6 +37,12 @@ namespace ECommerceApplication.App.Services
             return response!;
         }
 
+        public async Task<ProductViewModel> GetProductByIdAsync(Guid productId)
+        {
+            var products = await GetProductAsync();
+            return products.FirstOrDefault(p => p.ProductId == productId);
+        }
+
         public async Task<List<ProductViewModel>> GetProductAsync()
         {
             var result = await httpClient.GetAsync(RequestUri, HttpCompletionOption.ResponseHeadersRead);
