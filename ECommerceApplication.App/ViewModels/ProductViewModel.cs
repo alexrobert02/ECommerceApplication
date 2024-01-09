@@ -14,6 +14,8 @@ namespace ECommerceApplication.App.ViewModels
         public Guid CategoryId { get; set; }
         public string StringCategoryId { get; set; } = string.Empty;
 
+        public CategoryViewModel Category { get; set; } = new CategoryViewModel();
+
         public static ProductViewModel FromDto(ProductDto dto)
         {
             return new ProductViewModel
@@ -24,8 +26,12 @@ namespace ECommerceApplication.App.ViewModels
                 Description = dto.Description,
                 ImageUrl = dto.ImageUrl,
                 CategoryId = dto.CategoryId,
-                StringCategoryId = dto.CategoryId.ToString()
-                // alte asignări sau logica de conversie
+                StringCategoryId = dto.CategoryId.ToString(),
+                Category = new CategoryViewModel
+                {
+                    CategoryId = dto.Category.CategoryId,
+                    CategoryName = dto.Category.CategoryName
+                }
             };
         }
     }

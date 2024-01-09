@@ -1,24 +1,46 @@
-﻿@page "/productdetail/{productId}"
+﻿@page "/productdetail/{productId:guid}"
 @using ECommerceApplication.App.Contracts
 @using ECommerceApplication.App.ViewModels
+@using System.Text.Json
 
-<h3>Product Detail</h3>
-
-@if (Product == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <div class="product-detail">
-        <img src="@Product.ImageUrl" alt="@Product.ProductName" class="product-image" />
-        <div class="product-details">
-            <h4 class="product-name">@Product.ProductName</h4>
-            <p class="product-price">$@Product.Price</p>
-            <p class="product-description">@Product.Description</p>
+<div class="details-content-container">
+    @if (Product == null)
+    {
+        <p><em>Error 404</em></p>
+    }
+    else
+    {
+        <div class="product-detail">
+            <div class="category-and-title">
+                <h4>@Product.Category.CategoryName</h4>
+                <h1 class="category-text">@Product.ProductName</h1>
+            </div>
+            <div class="product-info">
+                <div class="product-image-container">
+                    <img src="@Product.ImageUrl" alt="@Product.ProductName" class="product-image" />
+                </div>
+                <div class="price-and-button">
+                    <div class="price-button-card-container">
+                        <p class="product-price-details">$@Product.Price</p>
+                        <p class="sold-shipped-text">Sold and Shipped by: ECommerce</p>
+                        <p class="in-stock-text">In stock</p>
+                        <button class="add-to-cart-button-details" @onclick="() => AddToCart(Product)">
+                            <span class="shopping-cart-icon-details">&#128722;</span>
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="product-description">
+                <p>@Product.Description</p>
+            </div>
         </div>
-    </div>
-}
+    }
+</div>
+
+
+
+
 
 @code {
     [Inject]
@@ -31,18 +53,38 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        if (string.IsNullOrEmpty(productId.ToString()))
+        if (productId == Guid.Empty)
         {
             Console.WriteLine("ProductId not provided or invalid");
             return;
         }
 
-        Product = await ProductDataService.GetProductByIdAsync(productId);
+        Console.WriteLine($"Attempting to retrieve product with ID: {productId}");
 
-        if (Product == null)
+        try
         {
-            Console.WriteLine("Product not found");
+            Product = await ProductDataService.GetProductByIdAsync(productId);
+
+            if (Product == null)
+            {
+                Console.WriteLine("Product not found or API response is null");
+                // Handle the null response more gracefully, e.g., redirect the user or show an error message.
+            }
+            else
+            {
+                Console.WriteLine($"Product found: {@Product.ProductName}, {Product.Description}, {Product.ImageUrl}, {Product.Price}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error retrieving product: {ex.Message}");
         }
     }
+
+    private void AddToCart(ProductViewModel product)
+    {
+
+    }
+
 }
 

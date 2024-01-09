@@ -6,7 +6,6 @@
 
 <br />
 
-<p><input class="custom-checkbox" type="checkbox" id="includeHistory" @onchange="OnIncludeHistoryChanged" /> Include past events?</p>
 
 @if (OrderItems == null)
 {
@@ -51,15 +50,4 @@ else
         OrderItems = (await OrderItemDataService.GetOrderItemsAsync()).ToList();
     }
 
-    private void OnIncludeHistoryChanged(ChangeEventArgs e)
-    {
-        if ((bool)e.Value)
-        {
-            NavigationManager.NavigateTo("/orderitemoverview?includeHistory=true");
-        }
-        else
-        {
-            NavigationManager.NavigateTo("/orderitemoverview");
-        }
-    }
 }
