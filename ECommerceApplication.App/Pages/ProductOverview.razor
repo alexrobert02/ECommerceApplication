@@ -2,32 +2,32 @@
 @using ECommerceApplication.App.Contracts
 @using ECommerceApplication.App.ViewModels
 
-<h3>Product Overview</h3>
-<br />
-
-@if (Products == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <div class="product-container">
-        @foreach (var prod in Products)
-        {
-            <div class="product-card" @onclick="() => NavigateToProductDetail(prod.ProductId)">
-                <img src="@prod.ImageUrl" alt="@prod.ProductName" class="product-image" />
-                <div class="product-details">
-                    <h4 class="product-name">@prod.ProductName</h4>
-                    <p class="product-price">$@prod.Price</p>
-                    <button class="add-to-cart-button" @onclick="() => AddToCart(prod)">
-                        <span class="shopping-cart-icon">&#128722;</span>
-                        Add to Cart
-                    </button>
+<div class="products-content-container">
+    @if (Products == null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        <div class="product-container">
+            @foreach (var prod in Products)
+            {
+                <div class="product-card" @onclick="() => NavigateToProductDetail(prod.ProductId)">
+                    <img src="@prod.ImageUrl" alt="@prod.ProductName" class="product-image" />
+                    <div class="product-details">
+                        <h4 class="product-name">@prod.ProductName</h4>
+                        <p class="product-price">$@prod.Price</p>
+                        <button class="add-to-cart-button" @onclick="() => AddToCart(prod)">
+                            <span class="shopping-cart-icon">&#128722;</span>
+                            Add to Cart
+                        </button>
+                    </div>
                 </div>
-            </div>
-        }
-    </div>
-}
+            }
+        </div>
+    }
+</div>
+
 
 @code {
     [Inject]

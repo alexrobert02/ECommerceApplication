@@ -17,7 +17,7 @@ namespace ECommerceApplication.App.Services
     }
     public class ProductDataService : IProductDataService
     {
-        private const string RequestUri = "api/v1/products";
+        private const string RequestUri = "api/v1/Products";
         private readonly HttpClient httpClient;
         private readonly ITokenService tokenService;
 
@@ -39,8 +39,47 @@ namespace ECommerceApplication.App.Services
 
         public async Task<ProductViewModel> GetProductByIdAsync(Guid productId)
         {
-            var products = await GetProductAsync();
-            return products.FirstOrDefault(p => p.ProductId == productId);
+            var result = await httpClient.GetAsync($"{RequestUri}/{productId}", HttpCompletionOption.ResponseHeadersRead);
+            result.EnsureSuccessStatusCode();
+
+            var content = await result.Content.ReadAsStringAsync();
+
+            Console.WriteLine($"Api response content: {content}");
+
+            if (!result.IsSuccessStatusCode)
+            {
+                throw new ApplicationException(content);
+            }
+
+            var apiResponse = JsonSerializer.Deserialize<ProductDto>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            if (apiResponse == null)
+            {
+                Console.WriteLine("Api response is null");
+                throw new ApplicationException("Api response is null");
+            }
+
+            Console.WriteLine($"Mapped ProductDto: {JsonSerializer.Serialize(apiResponse)}");
+
+            var productViewModel = new ProductViewModel
+            {
+                ProductId = apiResponse.ProductId,
+                ProductName = apiResponse.ProductName,
+                Description = apiResponse.Description,
+                ImageUrl = apiResponse.ImageUrl,
+                Price = apiResponse.Price,
+                CategoryId = apiResponse.CategoryId,
+                Category = new CategoryViewModel
+                {
+                    CategoryId = apiResponse.Category.CategoryId,
+                    CategoryName = apiResponse.Category.CategoryName
+                }
+            };
+
+
+            Console.WriteLine($"Mapped ProductViewModel: {JsonSerializer.Serialize(productViewModel)}");
+
+            return productViewModel;
         }
 
         public async Task<List<ProductViewModel>> GetProductAsync()
