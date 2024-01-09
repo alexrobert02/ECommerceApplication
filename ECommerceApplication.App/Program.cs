@@ -46,6 +46,10 @@ builder.Services.AddHttpClient<IOrderItemDataService, OrderItemDataService>(clie
 {
     client.BaseAddress = new Uri("https://localhost:7252/");
 });
+builder.Services.AddHttpClient<IShoppingCartDataService, ShoppingCartDataService>(client=>
+{
+    client.BaseAddress = new Uri("https://localhost:7252/");
+});
 
 
 await builder.Build().RunAsync();
