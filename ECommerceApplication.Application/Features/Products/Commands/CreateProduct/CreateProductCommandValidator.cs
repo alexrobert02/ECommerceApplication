@@ -26,10 +26,8 @@ namespace ECommerceApplication.Application.Features.Products.Commands.CreateProd
                 .WithMessage("{PropertyName} must not exceed 1000 characters.");
             RuleFor(p => p.ImageUrl)
                 .NotEmpty()
-                .WithMessage("{PropertyName} is required.")
                 .NotNull()
-                .MaximumLength(100)
-                .WithMessage("{PropertyName} must not exceed 100 characters.");
+                .WithMessage("{PropertyName} is required.");
         }
     }
 }
