@@ -44,7 +44,7 @@
             <label for="productCategory" class="col-sm-3 form-label">Category Id:</label>
             <div class="col-sm-5">
                 <InputSelect @bind-Value="@ProductViewModel.StringCategoryId" class="form-select" id="productCategory" placeholder="select a category">
-                    <option value="">Select a product...</option>
+                    <option value="">Select a category...</option>
                     @foreach (var category in Categories)
                     {
                         <option value="@category.CategoryId">@category.CategoryName</option>
