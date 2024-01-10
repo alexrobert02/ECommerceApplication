@@ -7,6 +7,6 @@ namespace ECommerceApplication.App.Contracts
     public interface IUserDataService
     {
         Task<UserViewModel> GetUserByEmailAsync(string email);
-        Task<List<UserViewModel>> GetAssignedUsersByProjectId(Guid projectId);
+        Task<string> GetUserIdByEmailAsync(string email);
     }
 }
