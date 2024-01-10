@@ -21,7 +21,7 @@ namespace ECommerceApplication.App.Auth
             try
             {
                 var userInfo = await tokenService.GetTokenAsync();
-                if (userInfo!=null)
+                if (userInfo != null)
                 {
                     var claims = new[] { new Claim(ClaimTypes.Name, "user logged") };
                     identity = new ClaimsIdentity(claims, "Server authentication");

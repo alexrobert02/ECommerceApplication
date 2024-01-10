@@ -1,0 +1,60 @@
+﻿@page "/myaccount"
+@using ECommerceApplication.App.Contracts
+@using ECommerceApplication.App.ViewModels
+@using ECommerceApplication.App.Auth
+@inject CustomStateProvider authStateProvider
+
+@if(User!=null)
+{
+    <div class="container">
+    <div class="row">
+            <div class="col-md-6">
+                <h2>My Account</h2>
+                <hr />
+                <dl class="row">
+                    <dt class="col-sm-3">
+                        Email
+                    </dt>
+                    <dd class="col-sm-9">
+                        @User.Email
+                    </dd>
+                    <dt class="col-sm-3">
+                        Username
+                    </dt>
+                    <dd class="col-sm-9">
+                        @User.Username
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <h3>You are not logged in</h3>
+}
+
+
+@code{
+    [Inject]
+    public IUserDataService UserDataService { get; set; }
+
+    [Inject]
+    public ITokenService TokenService { get; set; }
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    public UserViewModel User { get; set; }
+    private string email;
+    protected override async Task OnInitializedAsync()
+    {
+        var token = await TokenService.GetTokenAsync();
+        email = await TokenService.DecodeEmailFromTokenAsync(token);
+
+        if (!string.IsNullOrEmpty(email))
+        {
+            User = await UserDataService.GetUserByEmailAsync(email);
+        }
+    }
+}
