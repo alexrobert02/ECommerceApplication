@@ -23,7 +23,6 @@ builder.Services.AddBlazoredLocalStorage(config =>
     config.JsonSerializerOptions.ReadCommentHandling = JsonCommentHandling.Skip;
     config.JsonSerializerOptions.WriteIndented = false;
 });
-builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<CustomStateProvider>();
 builder.Services.AddHttpClient<ICategoryDataService, CategoryDataService>(client =>
 {
@@ -50,6 +49,15 @@ builder.Services.AddHttpClient<IShoppingCartDataService, ShoppingCartDataService
 {
     client.BaseAddress = new Uri("https://localhost:7252/");
 });
-
+builder.Services.AddHttpClient<IUserDataService, UserDataService>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7252/");
+});
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<CustomStateProvider>());
+builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7252/");
+});
 
 await builder.Build().RunAsync();
