@@ -50,5 +50,19 @@ namespace ECommerceApplication.App.Services
             }
         }
 
+        public async Task<string> GetUserIdByEmailAsync(string email)
+        {
+            try
+            {
+                var user = await GetUserByEmailAsync(email);
+                return user.UserId;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception during deserialization: {ex}");
+                throw;
+            }
+        }
+
     }
 }
