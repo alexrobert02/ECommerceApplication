@@ -16,6 +16,7 @@ a, .btn-link {
     border-color: #1861ac;
 }
 
+
 .btn:focus,
 .btn:active:focus,
 .btn-link.nav-link:focus,
@@ -24,8 +25,12 @@ a, .btn-link {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-.content {
+/*.content {
     padding-top: 1.1rem;
+}
+    */
+.content px-4{
+    margin: 0;
 }
 
 .valid.modified:not([type=checkbox]) {
@@ -41,14 +46,14 @@ a, .btn-link {
 }
 
 #blazor-error-ui {
-    background: #b32121; /* Fundal albastru închis */
+    background: #b32121;
     color: white;
     padding: 1rem;
 }
 
-    #blazor-error-ui::after {
-        content: "An error has occurred.";
-    }
+#blazor-error-ui::after {
+    content: "An error has occurred.";
+}
 
 .loading-progress {
     position: relative;
@@ -58,19 +63,19 @@ a, .btn-link {
     margin: 20vh auto 1rem auto;
 }
 
-    .loading-progress circle {
-        fill: none;
-        stroke: #e0e0e0;
-        stroke-width: 0.6rem;
-        transform-origin: 50% 50%;
-        transform: rotate(-90deg);
-    }
+.loading-progress circle {
+    fill: none;
+    stroke: #e0e0e0;
+    stroke-width: 0.6rem;
+    transform-origin: 50% 50%;
+    transform: rotate(-90deg);
+}
 
-        .loading-progress circle:last-child {
-            stroke: #1b6ec2;
-            stroke-dasharray: calc(3.141 * var(--blazor-load-percentage, 0%) * 0.8), 500%;
-            transition: stroke-dasharray 0.05s ease-in-out;
-        }
+.loading-progress circle:last-child {
+    stroke: #1b6ec2;
+    stroke-dasharray: calc(3.141 * var(--blazor-load-percentage, 0%) * 0.8), 500%;
+    transition: stroke-dasharray 0.05s ease-in-out;
+}
 
 .loading-progress-text {
     position: absolute;
@@ -79,12 +84,163 @@ a, .btn-link {
     inset: calc(20vh + 3.25rem) 0 auto 0.2rem;
 }
 
-    .loading-progress-text:after {
-        content: var(--blazor-load-percentage-text, "Loading");
-    }
+.loading-progress-text:after {
+    content: var(--blazor-load-percentage-text, "Loading");
+}
 
 code {
     color: #c02d76;
+}
+
+/*Nav Bar*/
+
+.navbar {
+    background-color: white;
+    padding: 0.8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo img {
+    height: 3.2rem;
+}
+
+.app-name-box {
+    margin-left: -1.5rem;
+}
+
+.app-name {
+    font-size: 2rem;
+    color: rebeccapurple;
+    text-decoration: none;
+    font-weight:bold;
+}
+
+.app-name:hover {
+    color: rebeccapurple;
+    text-decoration: none;
+}
+
+.search-bar {
+    display: flex;
+    margin-left: -1.5rem;
+}
+
+.search-bar input::placeholder {
+    color: #999;
+    font-style: italic;
+    font-size: 1.2rem;
+}
+
+.search-bar input:focus::placeholder {
+    color: #666;
+    font-style: normal;
+}
+
+.search-bar input {
+    padding: 0.6rem;
+    width: 55vw;
+    border: 1px solid rebeccapurple;
+    border-radius: 15px;
+    margin-right: -3rem;
+}
+
+.search-bar input:focus {
+    border: 1px solid rebeccapurple;
+    outline: none;
+    box-shadow: 0 0 5px rebeccapurple;
+}
+
+.search-bar button {
+    background-color: rebeccapurple;
+    color: white;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border: 1px solid rebeccapurple;
+    padding: 0.6rem;
+    cursor: pointer;
+    width: 4rem;
+}
+
+.search-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.profile-tab,
+.cart-tab {
+display: flex;
+align-items: center;
+margin-left: -1.5rem;
+}
+
+.profile-button,
+.cart-button {
+    text-decoration: none;
+    color: black;
+    padding: 10px;
+    border-radius: 4px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 1.3rem;
+}
+
+.profile-tab img {
+    width: 2rem; 
+    height: 2rem;
+    border-radius: 50%;
+    margin-right: 0.7rem;
+}
+
+.cart-tab svg {
+    color: rebeccapurple;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-right: 0.7rem;
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .logo img {
+        width: 100%; /* Make the logo fill the width of the container */
+    }
+
+    .search-bar,
+    .profile-tab,
+    .cart-tab {
+        margin-left: 0;
+        margin-top: 0.5rem;
+    }
+
+    .app-name-box {
+        display: none;
+    }
+
+    .search-bar input {
+        width: 100%;
+        max-width: none;
+    }
+
+    .search-bar button {
+        width: 100%;
+        border-radius: 10px;
+        margin-top: 0.5rem;
+    }
+
+    .profile-button,
+    .cart-button {
+        font-size: 1rem;
+    }
 }
 
 
@@ -103,7 +259,7 @@ code {
     box-sizing: border-box;
     margin: 10px;
     padding: 10px;
-    flex: 1 0 calc(25% - 20px); /* 25% width with margin on both sides */
+    flex: 1 0 calc(25% - 20px);
     background-color: white;
     border-radius: 5px;
     transition: transform 0.2s ease;
@@ -116,23 +272,21 @@ code {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Adjustments for smaller screens */
 @media screen and (max-width: 768px) {
     .product-card {
-        flex: 1 0 calc(50% - 20px); /* 50% width with margin on both sides */
+        flex: 1 0 calc(50% - 20px);
     }
 }
 
-/* Adjustments for even smaller screens, like mobile devices */
 @media screen and (max-width: 480px) {
     .product-card {
-        flex: 1 0 calc(100% - 20px); /* Full width with margin on both sides */
+        flex: 1 0 calc(100% - 20px);
     }
 }
 
 .product-details {
     text-align: center;
-    width: 100%; /* Ensure the details take the full width */
+    width: 100%;
     margin-top: 10px;
 }
 
@@ -146,7 +300,7 @@ code {
 }
 
 .product-price {
-    color: #e44d26; /* Adjust color as needed */
+    color: #e44d26;
     font-weight: bold;
     font-size:larger;
     text-align: left;
@@ -165,15 +319,15 @@ code {
 }
 
 .add-to-cart-button {
-    background-color: rebeccapurple; /* Green color, adjust as needed */
+    background-color: rebeccapurple;
     color: white;
     border: none;
-    border-radius: 8px; /* Set border-radius for rounded corners */
+    border-radius: 8px; 
     padding: 8px 16px;
     text-align: center;
     text-decoration: none;
-    display: inline-flex; /* Make it a flex container to align items */
-    align-items: center; /* Center items vertically */
+    display: inline-flex;
+    align-items: center;
     font-size: 14px;
     margin-top: 10px;
     cursor: pointer;
@@ -188,7 +342,7 @@ code {
 }
 
 .shopping-cart-icon {
-    margin-right: 20%; /* Add some spacing between the icon and text */
+    margin-right: 20%; 
     background-color: white;
     border-radius: 3px;
 }
@@ -231,14 +385,14 @@ code {
 }
 
 .price-button-card-container {
-    border: 1px solid #ddd; /* Add border color as needed */
+    border: 1px solid #ddd; 
     border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add box shadow as needed */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
     padding: 10px;
 }
 
 .product-price-details {
-    color: #e44d26; /* Adjust color as needed */
+    color: #e44d26;
     font-weight: bold;
     text-align: left;
     margin-bottom: 1vh;
