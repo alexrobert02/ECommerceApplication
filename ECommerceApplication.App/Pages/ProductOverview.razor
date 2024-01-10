@@ -2,6 +2,7 @@
 @using ECommerceApplication.App.Contracts
 @using ECommerceApplication.App.ViewModels
 
+
 <div class="products-content-container">
     @if (Products == null)
     {
@@ -34,6 +35,9 @@
     public IProductDataService ProductDataService { get; set; }
 
     [Inject]
+    public IOrderItemDataService OrderItemDataService { get; set; }
+
+    [Inject]
     public NavigationManager NavigationManager { get; set; }
 
     public List<ProductViewModel> Products { get; set; }
@@ -45,7 +49,32 @@
 
     private void AddToCart(ProductViewModel product)
     {
+        OrderItemViewModel orderItem = new OrderItemViewModel
+            {
+                ProductId = product.ProductId,
+                Quantity = 1,
+                PricePerUnit = product.Price
+            };
 
+        AddOrderItemToCart(orderItem);
+    }
+
+    private async Task AddOrderItemToCart(OrderItemViewModel orderItem)
+    {
+        // Call the service to add the order item to the cart
+        var response = await OrderItemDataService.CreateOrderItemAsync(orderItem);
+
+        // Check if the operation was successful
+        if (response.IsSuccess)
+        {
+            // Handle success - perhaps show a success message or perform any additional logic
+            Console.WriteLine("Product added to cart successfully!");
+        }
+        else
+        {
+            // Handle failure - display an error message or perform any necessary actions
+            Console.WriteLine($"Failed to add product to cart.");
+        }
     }
 
     private void NavigateToProductDetail(Guid productId)
