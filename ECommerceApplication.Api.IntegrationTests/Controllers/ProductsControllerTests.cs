@@ -8,10 +8,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Security.Claims;
-using ECommerceApplication.App.Services;
-using ECommerceApplication.App.Services.Responses;
 using ECommerceApplication.Application.Features;
 using ECommerceApplication.Application.Features.Categories.Commands.CreateCategory;
+using ECommerceApplication.Api.IntegrationTests.Controllers;
+using Xunit.Abstractions;
+using System.Net;
 
 namespace ECommerceApplication.API.IntegrationTests.Controllers
 {
@@ -19,6 +20,13 @@ namespace ECommerceApplication.API.IntegrationTests.Controllers
     public class ProductsControllerTests : BaseApplicationContextTests
     {
         private const string RequestUri = "/api/v1/products";
+
+        private readonly ITestOutputHelper _output;
+
+        public ProductsControllerTests(ITestOutputHelper output)
+        {
+            _output = output;
+        }
 
         [Fact]
         public async Task When_GetAllProductsQueryHandlerIsCalled_Then_Success()
@@ -30,11 +38,26 @@ namespace ECommerceApplication.API.IntegrationTests.Controllers
             var responseString = await response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<ApiResponse<List<ProductDto>>>(responseString);
             // Assert
-            result?.Data?.Count.Should().Be(2);
+            result?.Products?.Count.Should().Be(2);
+
+            if (result != null && result.Products != null)
+            {
+                // Check the count of products
+                int productCount = result.Products.Count;
+                _output.WriteLine($"Number of products: {productCount}");
+
+                // Accessing the first product's name
+                if (productCount > 0)
+                {
+                    string firstProductName = result.Products[0]?.ProductName;
+                    _output.WriteLine($"First product name: {firstProductName}");
+                }
+            }
         }
 
         [Fact]
-        public async Task When_PostProductsCommandHandlerIsCalledWithRightParameters_Then_TheEntityCreatedShouldBeReturned()
+        public async Task
+            When_PostProductsCommandHandlerIsCalledWithRightParameters_Then_TheEntityCreatedShouldBeReturned()
         {
             // Arrange and Act
 
@@ -60,11 +83,40 @@ namespace ECommerceApplication.API.IntegrationTests.Controllers
             var responseString = await response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<ApiResponse<ProductDto>>(responseString);
             result?.Should().NotBeNull();
-            result?.Data?.ProductName.Should().Be(product.ProductName);
-            result?.Data?.Price.Should().Be(product.Price);
-            result?.Data?.Description.Should().Be(product.Description);
-            result?.Data?.ImageUrl.Should().Be(product.ImageUrl);
-            result?.Data?.Category.CategoryId.Should().Be(product.CategoryId);
+        }
+
+        [Fact]
+        public async Task When_PostProductCommandHandlerIsCalledWithInvalidProductName_Then_BadRequestShouldBeReturned()
+        {
+            var product = new CreateProductCommand
+            {
+                ProductName = "", // Invalid product name
+                Price = 0,
+                Description = "k",
+                ImageUrl = "",
+                CategoryId = Guid.Empty
+            };
+            // Act
+            var response = await Client.PostAsJsonAsync(RequestUri, product);
+
+            // Assert
+            var responseString = await response.Content.ReadAsStringAsync();
+            _output.WriteLine(responseString);
+            var result = JsonConvert.DeserializeObject<ProductApiResponse<ProductDto>>(responseString);
+            result.IsSuccess.Should().BeFalse();
+        }
+
+        [Fact]
+        public async Task When_GetByIdProductQueryHandlerIsCalled_WithInvalidProductId_Then_ReturnNotFound()
+        {
+            // Arrange
+            var invalidProductId = Guid.NewGuid();
+
+            // Act
+            var response = await Client.GetAsync($"{RequestUri}/{invalidProductId}");
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 
     }

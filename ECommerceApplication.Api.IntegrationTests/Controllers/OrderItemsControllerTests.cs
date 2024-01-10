@@ -1,15 +1,14 @@
 ﻿using System.Drawing.Printing;
 using FluentAssertions;
 using ECommerceApplication.API.IntegrationTests.Base;
-using ECommerceApplication.Application.Features.Products.Queries;
-using ECommerceApplication.Application.Features.Products.Commands.CreateProduct;
 using Newtonsoft.Json;
 using System.Net.Http.Json;
-using ECommerceApplication.App.Services.Responses;
+using ECommerceApplication.Api.IntegrationTests.Controllers;
 using ECommerceApplication.Application.Features;
+using Xunit.Abstractions;
 using ECommerceApplication.Application.Features.OrderItems;
 using ECommerceApplication.Application.Features.OrderItems.Commands.CreateOrderItem;
-using Xunit.Abstractions;
+using ECommerceApplication.Application.Features.Products.Queries;
 
 namespace ECommerceApplication.API.IntegrationTests.Controllers
 {
@@ -18,6 +17,13 @@ namespace ECommerceApplication.API.IntegrationTests.Controllers
     {
         private const string RequestUri = "/api/v1/orderitems";
         private const string RequestProductUri = "/api/v1/products";
+        private readonly ITestOutputHelper _output;
+
+        public OrderItemsControllerTests(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+
 
         [Fact]
         public async Task When_GetAllOrderItemsQueryHandlerIsCalled_Then_Success()
@@ -39,20 +45,24 @@ namespace ECommerceApplication.API.IntegrationTests.Controllers
             var responseProduct = await Client.GetAsync(RequestProductUri);
 
             responseProduct.EnsureSuccessStatusCode();
+
             var responseProductString = await responseProduct.Content.ReadAsStringAsync();
+
+            _output.WriteLine(responseProductString);
+
             var resultProduct = JsonConvert.DeserializeObject<ApiResponse<List<ProductDto>>>(responseProductString);
 
-            if (resultProduct.Data == null)
+            if (resultProduct == null)
             {
                 // Handle the error appropriately.
                 // For example, you might want to throw an informative exception,
                 // log an error message, or simply return.
                 throw new Exception("Product data is not available or insufficient.");
             }
-
+            
             var orderItem = new CreateOrderItemCommand
             {
-                ProductId = resultProduct.Data[0].ProductId,
+                ProductId = resultProduct.Products[0].ProductId,
                 Quantity = 4,
                 PricePerUnit = 200
             };
@@ -65,9 +75,9 @@ namespace ECommerceApplication.API.IntegrationTests.Controllers
             var responseString = await response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<ApiResponse<OrderItemDto>>(responseString);
             result?.Should().NotBeNull();
-            result?.Data?.ProductId.Should().Be(orderItem.ProductId);
-            result?.Data?.Quantity.Should().Be(orderItem.Quantity);
-            result?.Data?.PricePerUnit.Should().Be(orderItem.PricePerUnit);
+            result?.Products?.ProductId.Should().Be(orderItem.ProductId);
+            result?.Products?.Quantity.Should().Be(orderItem.Quantity);
+            result?.Products?.PricePerUnit.Should().Be(orderItem.PricePerUnit);
         }
 
 
