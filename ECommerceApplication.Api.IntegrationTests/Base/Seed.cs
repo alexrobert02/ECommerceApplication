@@ -15,7 +15,6 @@ namespace ECommerceApplication.API.IntegrationTests.Base
                 Category.Create("Comedy").Value
             };
             context.Categories.AddRange(categories);
-            context.SaveChanges();
 
             var addresses = new List<Address>
             {
@@ -24,7 +23,6 @@ namespace ECommerceApplication.API.IntegrationTests.Base
             };
 
             context.Addresses.AddRange(addresses);
-            context.SaveChanges();
 
             var product1 = Product.Create("Product1", 10).Value;
             product1.AttachCategory(categories[1]);
@@ -43,7 +41,6 @@ namespace ECommerceApplication.API.IntegrationTests.Base
             };
 
             context.Products.AddRange(products);
-            context.SaveChanges();
 
             var orderItems = new List<OrderItem>
             {
@@ -52,6 +49,7 @@ namespace ECommerceApplication.API.IntegrationTests.Base
             };
 
             context.OrderItem.AddRange(orderItems);
+
             context.SaveChanges();
 
         }
