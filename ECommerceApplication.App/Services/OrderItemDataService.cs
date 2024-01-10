@@ -67,5 +67,23 @@ namespace ECommerceApplication.App.Services
             return response!;
         }
 
+
+        public async Task<ApiResponse<OrderItemDto>> AddOrderItemToCartAsync(OrderItemViewModel orderItemViewModel)
+        {
+            string requestUri = "api/v1/orderitems/addtocart";
+
+            httpClient.DefaultRequestHeaders.Authorization
+                = new AuthenticationHeaderValue("Bearer", await tokenService.GetTokenAsync());
+
+            var result = await httpClient.PostAsJsonAsync(requestUri, orderItemViewModel);
+
+            result.EnsureSuccessStatusCode();
+
+            var response = await result.Content.ReadFromJsonAsync<ApiResponse<OrderItemDto>>();
+            response!.IsSuccess = result.IsSuccessStatusCode;
+
+            return response!;
+        }
+
     }
 }
