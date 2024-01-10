@@ -11,10 +11,20 @@
     <div class="row mb-3 ms-2">
         <label for="productid" class="col-sm-3 form-label">Product id:</label>
         <div class="col-sm-5">
-            <InputText id="productid" class="form-control" @bind-Value="@OrderItemViewModel.StringProductId" placeholder="Enter product id"></InputText>
+            
+            <InputSelect @bind-Value="@OrderItemViewModel.StringProductId" class="form-select" id="productid" placeholder="select a product">
+                <option value="">Select a product...</option>
+                @foreach (var product in Products)
+                {
+                    <option value="@product.ProductId">@product.ProductName</option>
+                }
+            </InputSelect>
             <ValidationMessage For="@(() => OrderItemViewModel.ProductId)" />
         </div>
     </div>
+
+
+
 
     <div class="row mb-3 ms-2">
         <label for="quantity" class="col-sm-3 form-label">Quantity:</label>
@@ -46,9 +56,22 @@
     public OrderItemViewModel OrderItemViewModel { get; set; } = new OrderItemViewModel();
 
     public string Message { get; set; }
+
+    public List<ProductViewModel> Products { get; set; }
+
+    [Inject]
+    public IProductDataService ProductDataService { get; set; }
+
+    private int selectedProductId;
 }
 
 @functions {
+
+    protected override async Task OnInitializedAsync()
+    {
+        Products = (await ProductDataService.GetProductAsync()).ToList();
+    }
+
     private async Task HandleValidSubmit()
     {
         try
