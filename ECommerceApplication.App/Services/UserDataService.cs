@@ -9,7 +9,7 @@ namespace ECommerceApplication.App.Services
 {
     public class UserDataService : IUserDataService
     {
-        private const string RequestUri = "api/v1/Users";
+        private const string RequestUri = "api/v1/User";
         private readonly HttpClient httpClient;
         private readonly ITokenService tokenService;
 

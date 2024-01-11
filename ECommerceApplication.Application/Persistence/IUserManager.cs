@@ -10,6 +10,7 @@ namespace ECommerceApplication.Application.Persistence
         Task<Result<UserDto>> DeleteAsync(Guid userId);
         Task<Result<UserDto>> UpdateAsync(UserDto user);
         Task<Result<UserDto>> UpdateRoleAsync(UserDto user, string role);
+        Task<Result<UserDto>> FindByEmailAsync(string email);
 
     }
 }
