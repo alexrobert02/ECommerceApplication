@@ -3,6 +3,7 @@ using ECommerceApplication.Application.Features.Users.Queries.GetByIdUser;
 using ECommerceApplication.Application.Features.Users.Queries.GetAllUser;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ECommerceApplication.Application.Features.Users.Queries.GetByEmailUser;
 
 namespace ECommerceApplication.API.Controllers
 {
@@ -68,6 +69,17 @@ namespace ECommerceApplication.API.Controllers
             return Ok(result);
         }
 
-
+        [HttpGet("ByEmail/{email}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetUserByEmail(string email)
+        {
+            var query = new GetByEmailUserQuery { Email = email };
+            var result = await Mediator.Send(query);
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
     }
 }
