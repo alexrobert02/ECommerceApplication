@@ -16,6 +16,8 @@ namespace ECommerceApplication.App.ViewModels
 
         public CategoryViewModel Category { get; set; } = new CategoryViewModel();
 
+        public bool IsAddingToCart { get; set; }
+
         public static ProductViewModel FromDto(ProductDto dto)
         {
             return new ProductViewModel
@@ -31,7 +33,8 @@ namespace ECommerceApplication.App.ViewModels
                 {
                     CategoryId = dto.Category.CategoryId,
                     CategoryName = dto.Category.CategoryName
-                }
+                },
+                IsAddingToCart = false
             };
         }
     }
