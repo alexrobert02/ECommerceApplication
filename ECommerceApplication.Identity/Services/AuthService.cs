@@ -66,6 +66,7 @@ namespace ECommerceApplication.Identity.Services
             {
                new Claim(ClaimTypes.Name, user.UserName!),
                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+               new Claim(ClaimTypes.Email, user.Email)
             };
 
             foreach (var userRole in userRoles)
