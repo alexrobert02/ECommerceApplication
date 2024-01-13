@@ -1,13 +1,12 @@
 ﻿<div class="navbar">
     <div class="logo">
-        <img src="/icon-512.png" alt="Logo">
-    </div>
-    <div class="app-name-box">
-        <a class="app-name" href="">ECommerce</a>
+        <NavLink href="/">
+            <img src="/logo.png" alt="Logo">
+        </NavLink>
     </div>
     <div class="search-bar">
-        <input type="text" placeholder="Search">
-        <button type="submit">
+        <input type="text" placeholder="Search" @bind="searchQuery" @onkeyup="@(e => { if (e.Key == "Enter") PerformSearch(); })">
+        <button type="button" @onclick="PerformSearch">
             <svg class="search-icon text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
             </svg>
@@ -30,3 +29,24 @@
         </NavLink>
     </div>
 </div>
+
+
+@code {
+    private string searchQuery = "";
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+
+    private void PerformSearch()
+    {
+        Console.WriteLine($"Performing search for: {searchQuery}");
+
+        //Aici trebuie modificat daca avem timp...eu n-am reusit...
+        NavigationManager.NavigateTo($"/productoverview");
+
+        NavigationManager.NavigateTo($"/search?query={Uri.EscapeDataString(searchQuery)}");
+
+        searchQuery = "";
+        StateHasChanged();
+    }
+}

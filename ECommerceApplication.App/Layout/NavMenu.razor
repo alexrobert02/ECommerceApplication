@@ -3,109 +3,28 @@
 @inject NavigationManager navigationManager
 @inject CustomStateProvider authStateProvider
 
-<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <Microsoft.AspNetCore.Components.Authorization.CascadingAuthenticationState>
-        <Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
-            <Microsoft.AspNetCore.Components.Authorization.AuthorizeView.Authorized>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="categoryoverview">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Categories
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="addcategory">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Add Category
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-              <NavLink class="nav-link" href="updatecategory">
-                            <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Update Category
-             </NavLink>
-         </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="productoverview">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Products
-            </NavLink>
-        </div>
-         <div class="nav-item px-3">
-                <NavLink class="nav-link" href="addproduct">
-                      <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Add Product
-                 </NavLink>
-         </div>
-                    <div class="nav-item px-3">
-                        <NavLink class="nav-link" href="updateproduct">
-                            <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Update Product
-                        </NavLink>
-                    </div>
-
-
-         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="orderitemoverview">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> OrderItems
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-                <NavLink class="nav-link" href="addorderitem">
-                      <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Add OrderItem
-                 </NavLink>
-         </div>
-
-        <div class="nav-item px-3">
-              <NavLink class="nav-link" href="updateorderitem">
-                            <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Update OrderItem
-             </NavLink>
-         </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="addressoverview">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Adresses
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="addaddress">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Add Adress
-            </NavLink>
-        </div>
-                    <div class="nav-item px-3">
-                        <NavLink class="nav-link" href="shoppingcartoverview">
-                            <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> ShoppingCarts
-                        </NavLink>
-                    </div>
-        <div>
-            <div class="nav-item px-3">
-                            <NavLink class="nav-link" href="getbyidshoppingcart">
-                                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> GetByIdShoppingCart
-                            </NavLink>
-            </div>
-        </div>
-        <div class="nav-item px-3">
-            <div class="nav-link" @onclick="OnLogout">
-                <span class="bi bi-person-x" aria-hidden="true"></span> LogOut
-            </div>
-        </div>
-        </Microsoft.AspNetCore.Components.Authorization.AuthorizeView.Authorized>
-        </Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
-        </Microsoft.AspNetCore.Components.Authorization.CascadingAuthenticationState>
+<div class="custom-nav-menu">
+    <nav>
+        <ul>
+            <li><NavLink href="productoverview">Products</NavLink></li>
+            <li><NavLink href="categoryoverview">Categories</NavLink></li>
+            <li><NavLink href="addcategory">Add Category</NavLink></li>
+            <li><NavLink href="updatecategory">Update Category</NavLink></li>
+            <li><NavLink href="addproduct">Add Product</NavLink></li>
+            <li><NavLink href="updateproduct">Update Product</NavLink></li>
+            <li><NavLink href="orderitemoverview">OrderItems</NavLink></li>
+            <li><NavLink href="addorderitem">Add OrderItem</NavLink></li>
+            <li><NavLink href="updateorderitem">Update OrderItem</NavLink></li>
+            <li><NavLink href="addressoverview">Addresses</NavLink></li>
+            <li><NavLink href="addaddress">Add Address</NavLink></li>
+            <li><NavLink href="shoppingcartoverview">Shopping Carts</NavLink></li>
+            <li><NavLink href="getbyidshoppingcart">GetById ShoppingCart</NavLink></li>
+            <li><div @onclick="OnLogout">LogOut</div></li>
+        </ul>
     </nav>
 </div>
 
 @code {
-    private bool collapseNavMenu = true;
-
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-
     public async void OnLogout()
     {
         await authStateProvider.Logout();

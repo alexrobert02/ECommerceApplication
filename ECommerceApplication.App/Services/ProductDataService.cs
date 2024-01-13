@@ -105,24 +105,62 @@ namespace ECommerceApplication.App.Services
         public async Task<ApiResponse<ProductDto>> UpdateProductAsync(ProductViewModel updatedProduct)
         {
             // Asigură-te că ai o rută corectă definită în backend pentru a actualiza categoria
-            string updateUri = $"api/v1/Products/{updatedProduct.ProductId.ToString().ToUpper()}"; 
 
-            // Setează token-ul de autorizare pentru a putea accesa ruta protejată din backend
+            string updateUri = $"{RequestUri}/{updatedProduct.ProductId.ToString().ToUpper()}"; 
+
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await tokenService.GetTokenAsync());
-
-            // Trimite o solicitare PUT către backend pentru a actualiza categoria
             var result = await httpClient.PutAsJsonAsync(updateUri, updatedProduct);
-
-            // Asigură-te că solicitarea a fost realizată cu succes
             result.EnsureSuccessStatusCode();
-
-            // Citește răspunsul JSON primit de la backend și parsează-l într-un obiect ApiResponse<CategoryDto>
             var response = await result.Content.ReadFromJsonAsync<ApiResponse<ProductDto>>();
-
-            // Setează proprietatea IsSuccess pe baza rezultatului solicitării HTTP
             response!.IsSuccess = result.IsSuccessStatusCode;
-
             return response!;
         }
+
+        public async Task<List<ProductViewModel>> SearchProductsAsync(string searchQuery)
+        {
+            var searchUri = $"{RequestUri}/search?query={searchQuery}";
+
+            var result = await httpClient.GetAsync(searchUri, HttpCompletionOption.ResponseHeadersRead);
+            result.EnsureSuccessStatusCode();
+
+            var content = await result.Content.ReadAsStringAsync();
+
+            Console.WriteLine($"Api response content: {content}");
+
+            if (!result.IsSuccessStatusCode)
+            {
+                throw new ApplicationException(content);
+            }
+
+            var apiResponse = JsonSerializer.Deserialize<ApiResponseProduct>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            if (apiResponse == null)
+            {
+                Console.WriteLine("Api response is null");
+                throw new ApplicationException("Api response is null");
+            }
+
+            Console.WriteLine($"Mapped ApiResponseProduct: {JsonSerializer.Serialize(apiResponse)}");
+
+            var products = apiResponse.Products.Select(productDto => new ProductViewModel
+            {
+                ProductId = productDto.ProductId,
+                ProductName = productDto.ProductName,
+                Description = productDto.Description,
+                ImageUrl = productDto.ImageUrl,
+                Price = productDto.Price,
+                CategoryId = productDto.CategoryId,
+                Category = new CategoryViewModel
+                {
+                    CategoryId = productDto.Category.CategoryId,
+                    CategoryName = productDto.Category.CategoryName
+                }
+            }).ToList();
+
+            Console.WriteLine($"Mapped ProductViewModels: {JsonSerializer.Serialize(products)}");
+
+            return products;
+        }
+
     }
 }
