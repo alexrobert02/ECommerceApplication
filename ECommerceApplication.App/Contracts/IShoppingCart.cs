@@ -7,5 +7,8 @@ namespace ECommerceApplication.App.Contracts
         Task<List<ShoppingCartViewModel>> GetShoppingCartsAsync();
         Task<ShoppingCartViewModel> GetShoppingCartByIdAsync(Guid shoppingCartId);
 
+        Task<ShoppingCartViewModel> GetShoppingCartByUserIdAsync(Guid userId);
+
+        Task<ShoppingCartViewModel> AttachOrderItemById(Guid shoppingCartId, Guid orderItemId);
     }
 }

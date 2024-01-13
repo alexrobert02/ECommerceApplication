@@ -80,10 +80,10 @@ namespace ECommerceApplication.Application.Tests.Commands.OrderItemTests
 
             // Assert
             Assert.True(response.Success);
-            Assert.NotNull(response.OrderItem);
-            Assert.Equal(validCommand.ProductId, response.OrderItem.ProductId);
-            Assert.Equal(validCommand.Quantity, response.OrderItem.Quantity);
-            Assert.Equal(validCommand.PricePerUnit, response.OrderItem.PricePerUnit);
+            Assert.NotNull(response.Data);
+            Assert.Equal(validCommand.ProductId, response.Data.ProductId);
+            Assert.Equal(validCommand.Quantity, response.Data.Quantity);
+            Assert.Equal(validCommand.PricePerUnit, response.Data.PricePerUnit);
         }
     }
 }

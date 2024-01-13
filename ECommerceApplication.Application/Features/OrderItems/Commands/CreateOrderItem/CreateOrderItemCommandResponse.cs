@@ -8,6 +8,6 @@ namespace ECommerceApplication.Application.Features.OrderItems.Commands.CreateOr
         {
         }
 
-        public CreateOrderItemDto OrderItem { get; set; }
+        public CreateOrderItemDto Data { get; set; }
     }
 }

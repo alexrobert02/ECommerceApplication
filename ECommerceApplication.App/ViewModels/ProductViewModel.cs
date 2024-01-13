@@ -34,5 +34,17 @@ namespace ECommerceApplication.App.ViewModels
                 }
             };
         }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is ProductViewModel model &&
+                   ProductId.Equals(model.ProductId) &&
+                   CategoryId.Equals(model.CategoryId);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(ProductId, CategoryId);
+        }
     }
 }

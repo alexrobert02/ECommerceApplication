@@ -12,5 +12,19 @@ namespace ECommerceApplication.App.ViewModels
         [Required(ErrorMessage = "PricePerUnit is required")]
         public decimal PricePerUnit { get; set; }
         public string StringProductId { get; set; } = string.Empty;
+
+        public ProductViewModel? Product { get; set; }
+
+        public static OrderItemViewModel FromDto(OrderItemDto dto)
+        {
+            return new OrderItemViewModel
+            {
+                OrderItemId = dto.OrderItemId,
+                ProductId = dto.ProductId,
+                Quantity = dto.Quantity,
+                PricePerUnit = dto.PricePerUnit,
+                StringProductId = dto.ProductId.ToString()
+            };
+        }
     }
 }

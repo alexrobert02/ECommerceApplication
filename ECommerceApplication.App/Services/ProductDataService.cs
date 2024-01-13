@@ -105,7 +105,7 @@ namespace ECommerceApplication.App.Services
         public async Task<ApiResponse<ProductDto>> UpdateProductAsync(ProductViewModel updatedProduct)
         {
             // Asigură-te că ai o rută corectă definită în backend pentru a actualiza categoria
-            string updateUri = $"api/v1/Products/{updatedProduct.ProductId}"; 
+            string updateUri = $"api/v1/Products/{updatedProduct.ProductId.ToString().ToUpper()}"; 
 
             // Setează token-ul de autorizare pentru a putea accesa ruta protejată din backend
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await tokenService.GetTokenAsync());

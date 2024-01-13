@@ -8,6 +8,6 @@ namespace ECommerceApplication.Application.Features.Categories.Commands.CreateCa
         {
         }
 
-        public CreateCategoryDto Category { get; set; } = default!;
+        public CreateCategoryDto Data { get; set; } = default!;
     }
 }

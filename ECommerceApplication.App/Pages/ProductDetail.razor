@@ -22,12 +22,19 @@
                 <div class="price-and-button">
                     <div class="price-button-card-container">
                         <p class="product-price-details">$@Product.Price</p>
+                        <div class="row mb-3 ms-2">
+                            <label for="quantity" class="col-sm-3 form-label">Quantity:</label>
+                            <div class="col-sm-5">
+                                <InputNumber id="quantity" class="form-control" @bind-Value="@OrderItemViewModel.Quantity" placeholder="Enter quantity"></InputNumber>
+                            </div>
+                        </div>
                         <p class="sold-shipped-text">Sold and Shipped by: ECommerce</p>
                         <p class="in-stock-text">In stock</p>
-                        <button class="add-to-cart-button-details" @onclick="() => AddToCart(Product)">
+                        <button class="add-to-cart-button-details" @onclick="() => AddToCartHandler()">
                             <span class="shopping-cart-icon-details">&#128722;</span>
                             Add to Cart
                         </button>
+                        <p class="in-stock-text">@AddToCartMessage</p>
                     </div>
                 </div>
             </div>
@@ -44,20 +51,40 @@
 
 @code {
     [Inject]
+    public NavigationManager NavigationManager { get; set; }
+    [Inject]
+    public ITokenService TokenService { get; set; }
+    [Inject]
+    public IShoppingCartDataService ShoppingCartDataService { get; set; }
+    [Inject]
+    public IOrderItemDataService OrderItemDataService { get; set; }
+    [Inject]
     public IProductDataService ProductDataService { get; set; }
 
     [Parameter]
     public Guid productId { get; set; }
 
+    public string AddToCartMessage { get; set; }
+
+    private OrderItemViewModel OrderItemViewModel { get; set; } = new OrderItemViewModel();
+
     private ProductViewModel Product { get; set; }
+}
+
+@functions {
 
     protected override async Task OnInitializedAsync()
     {
+        AddToCartMessage = "";
+
         if (productId == Guid.Empty)
         {
             Console.WriteLine("ProductId not provided or invalid");
             return;
         }
+
+        OrderItemViewModel.Quantity = 1;
+
 
         Console.WriteLine($"Attempting to retrieve product with ID: {productId}");
 
@@ -81,9 +108,49 @@
         }
     }
 
-    private void AddToCart(ProductViewModel product)
+    private async void AddToCartHandler()
     {
+        await AddToCart();
+        StateHasChanged();
+    }
 
+    private async Task<bool>AddToCart()
+    {
+        try
+        {
+            if (OrderItemViewModel.Quantity == null || OrderItemViewModel.Quantity <= 0)
+            {
+                AddToCartMessage = "Select a valid quantity";
+                return false;
+            }
+            OrderItemViewModel.ProductId = Product.ProductId;
+
+
+            var token = await TokenService.GetTokenAsync();
+            Guid userId = await TokenService.DecodeUserIdFromTokenAsync(token);
+            if (userId == null || userId == Guid.Empty)
+            {
+                AddToCartMessage = "Error adding to cart";
+                return false;
+            }
+            var shoppingCart = await ShoppingCartDataService.GetShoppingCartByUserIdAsync(userId);
+            OrderItemViewModel.PricePerUnit = Product.Price;
+            var result = await OrderItemDataService.CreateOrderItemAsync(OrderItemViewModel);
+            if (!result.IsSuccess)
+            {
+                AddToCartMessage = "Error adding to cart";
+                return false;    
+            }
+            var orderItem = result.Data;
+            var shoppingCartViewModel = await ShoppingCartDataService.AttachOrderItemById(shoppingCart.ShoppingCartId, orderItem.OrderItemId);
+            AddToCartMessage = "Added to cart";
+        }
+        catch (Exception e)
+        {
+            AddToCartMessage = "Error adding to cart";
+            Console.WriteLine(e);
+        }
+        return true;
     }
 
 }

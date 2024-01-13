@@ -31,8 +31,7 @@ namespace ECommerceApplication.Application.Features.Products.Commands.UpdateProd
                 .NotEmpty()
                 .WithMessage("{PropertyName} is required.")
                 .NotNull()
-                .MaximumLength(100)
-                .WithMessage("{PropertyName} must not exceed 100 characters.");
+                .WithMessage("{PropertyName} must not exceed 450 characters.");
             this.repository = repository;
         }
     }

@@ -55,7 +55,7 @@ namespace ECommerceApplication.Application.Features.OrderItems.Commands.CreateOr
             return new CreateOrderItemCommandResponse
             {
                 Success = true,
-                OrderItem = new CreateOrderItemDto
+                Data = new CreateOrderItemDto
                 {
                     OrderItemId = orderItem.Value.OrderItemId,
                     ProductId = orderItem.Value.ProductId,
