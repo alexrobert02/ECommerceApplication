@@ -1,6 +1,7 @@
 ﻿@page "/productoverview"
 @using ECommerceApplication.App.Contracts
 @using ECommerceApplication.App.ViewModels
+@using Microsoft.AspNetCore.Components.Web
 
 
 <div class="products-content-container">
@@ -18,10 +19,20 @@
                     <div class="product-details">
                         <h4 class="product-name">@prod.ProductName</h4>
                         <p class="product-price">$@prod.Price</p>
-                        <button class="add-to-cart-button" @onclick="() => AddToCart(prod)">
-                            <span class="shopping-cart-icon">&#128722;</span>
-                            Add to Cart
+                        <button class="add-to-cart-button" @onclick:preventDefault @onclick:stopPropagation @onclick="() => AddToCart(prod)" disabled="@prod.IsAddingToCart">
+                            @if (prod.IsAddingToCart)
+                            {
+                                <span class="adding-to-cart-text">Adding...</span>
+                            }
+                            else
+                            {
+                                <svg class="shopping-cart-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 15a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 0h8m-8 0-1-4m9 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-9-4h10l2-7H3m2 7L3 4m0 0-.792-3H1" />
+                                </svg>
+                                <span>Add to Cart</span>
+                            }
                         </button>
+
                     </div>
                 </div>
             }
@@ -44,11 +55,21 @@
 
     protected override async Task OnInitializedAsync()
     {
+        // Fetch all products initially
+        await LoadProducts();
+    }
+
+    private async Task LoadProducts()
+    {
         Products = (await ProductDataService.GetProductAsync()).ToList();
     }
 
-    private void AddToCart(ProductViewModel product)
+    private async Task AddToCart(ProductViewModel product)
     {
+        product.IsAddingToCart = true;
+
+        await Task.Delay(2000);
+
         OrderItemViewModel orderItem = new OrderItemViewModel
             {
                 ProductId = product.ProductId,
@@ -56,23 +77,21 @@
                 PricePerUnit = product.Price
             };
 
-        AddOrderItemToCart(orderItem);
+        await AddOrderItemToCart(orderItem);
+
+        product.IsAddingToCart = false;
     }
 
     private async Task AddOrderItemToCart(OrderItemViewModel orderItem)
     {
-        // Call the service to add the order item to the cart
         var response = await OrderItemDataService.CreateOrderItemAsync(orderItem);
 
-        // Check if the operation was successful
         if (response.IsSuccess)
         {
-            // Handle success - perhaps show a success message or perform any additional logic
             Console.WriteLine("Product added to cart successfully!");
         }
         else
         {
-            // Handle failure - display an error message or perform any necessary actions
             Console.WriteLine($"Failed to add product to cart.");
         }
     }
@@ -81,4 +100,5 @@
     {
         NavigationManager.NavigateTo($"/productdetail/{productId}");
     }
+
 }
