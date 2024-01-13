@@ -38,6 +38,5 @@ namespace ECommerceApplication.Infrastructure.Repositories
         {
             return await context.Products.AnyAsync(c => c.ProductId == productId);
         }
-
     }
 }
