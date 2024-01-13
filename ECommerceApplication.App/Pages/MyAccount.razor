@@ -47,6 +47,7 @@ else
 
     public UserViewModel User { get; set; }
     private string email;
+
     protected override async Task OnInitializedAsync()
     {
         var token = await TokenService.GetTokenAsync();

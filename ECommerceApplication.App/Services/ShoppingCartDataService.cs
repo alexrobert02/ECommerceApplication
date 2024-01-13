@@ -1,6 +1,9 @@
 ﻿using ECommerceApplication.App.Contracts;
+using ECommerceApplication.App.Services.Responses;
 using ECommerceApplication.App.ViewModels;
 using System.Data;
+using System.Diagnostics.Contracts;
+using System.Net.Http.Json;
 using System.Text.Json;
 
 namespace ECommerceApplication.App.Services
@@ -14,7 +17,7 @@ namespace ECommerceApplication.App.Services
     }
     public class ShoppingCartDataService : IShoppingCartDataService
     {
-        private const string RequestUri = "api/v1/shoppingCart";
+        private const string RequestUri = "api/v1/ShoppingCart";
         private readonly HttpClient httpClient;
         private readonly ITokenService tokenService;
       
@@ -65,5 +68,42 @@ namespace ECommerceApplication.App.Services
             List<ShoppingCartViewModel> shoppingCarts = apiResponse.ShoppingCarts;
             return shoppingCarts!;
         }
+        public async Task<ShoppingCartViewModel> GetShoppingCartByUserIdAsync(Guid userId)
+        {
+            var response = await httpClient.GetAsync($"{RequestUri}?userId={userId.ToString()}", HttpCompletionOption.ResponseHeadersRead);
+            response.EnsureSuccessStatusCode();
+            var content = await response.Content.ReadFromJsonAsync<ApiResponse<ShoppingCartViewModel>>();
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new ApplicationException();
+            }
+            Console.WriteLine(content);
+            //var apiResponse = JsonSerializer.Deserialize<ApiResponse<ShoppingCartViewModel>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            if (content == null)
+            {
+                Console.WriteLine("Api response is null");
+                throw new ApplicationException("Api response is null");
+            }
+            return content.Data;
+        }
+
+        public async Task<ShoppingCartViewModel> AttachOrderItemById(Guid shoppingCartId, Guid orderItemId) 
+        {
+            var response = await httpClient.PutAsync($"{RequestUri}/{shoppingCartId}/AddItem/{orderItemId}", null);
+            response.EnsureSuccessStatusCode();
+            var content = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new ApplicationException(content);
+            }
+            Console.WriteLine(content);
+            var apiResponse = JsonSerializer.Deserialize<ShoppingCartViewModel>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            if (apiResponse == null)
+            {
+                throw new ApplicationException("Api response is null");
+            }
+            return apiResponse!;
+        }
+
     }
 }

@@ -42,7 +42,7 @@ namespace ECommerceApplication.Application.Features.Categories.Commands.CreateCa
             return new CreateCategoryCommandResponse
             {
                 Success = true,
-                Category = new CreateCategoryDto
+                Data = new CreateCategoryDto
                 {
                     CategoryId = category.Value.CategoryId,
                     CategoryName = category.Value.CategoryName

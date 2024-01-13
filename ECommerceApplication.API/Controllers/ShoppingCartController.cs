@@ -1,6 +1,5 @@
-﻿using ECommerceApplication.Application.Features.Categories.Commands.CreateCategory;
-using ECommerceApplication.Application.Features.Categories.Queries.DeleteCategory;
-using ECommerceApplication.Application.Features.Categories.Queries.GetByIdCategory;
+﻿using ECommerceApplication.Application.Features.Categories.Queries.GetByIdCategory;
+using ECommerceApplication.Application.Features.Categories.Queries.GetByUserIdShoppingCart;
 using ECommerceApplication.Application.Features.ShoppingCarts.Commands.AddOrderItemToCart;
 using ECommerceApplication.Application.Features.ShoppingCarts.Commands.CreateShoppingCart;
 using ECommerceApplication.Application.Features.ShoppingCarts.Commands.DeleteShoppingCart;
@@ -14,9 +13,19 @@ namespace ECommerceApplication.API.Controllers
     {
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] Guid userId)
         {
-            var command = new GetAllShoppingCartsQuery();
+            if (userId== null || userId == Guid.Empty)
+            {
+                var getAllCommand = new GetAllShoppingCartsQuery();
+                var getAllResult = await Mediator.Send(getAllCommand);
+                if (!getAllResult.Success)
+                {
+                    return NotFound(getAllResult);
+                }
+                return Ok(getAllResult);
+            }
+            var command = new GetByUserIdShoppingCartQuery { UserId = userId };
             var result = await Mediator.Send(command);
             if (!result.Success)
             {
@@ -56,12 +65,16 @@ namespace ECommerceApplication.API.Controllers
             }
             return Ok(result);
         }
-        [HttpPut("{shoppingCartId}/AddItem")]
+        [HttpPut("{shoppingCartId}/AddItem/{orderItemId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(AddOrderItemToShoppingCartCommand), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> AddItemToCart(Guid shoppingCartId, AddOrderItemToShoppingCartCommand command)
+        public async Task<IActionResult> AddItemToCart(Guid shoppingCartId, Guid orderItemId)
         {
-            command.ShoppingCartId = shoppingCartId;
+            var command = new AddOrderItemToShoppingCartCommand
+            {
+                ShoppingCartId = shoppingCartId,
+                OrderItemId = orderItemId
+            };
             var result = await Mediator.Send(command);
 
             if (!result.Success)
@@ -92,5 +105,15 @@ namespace ECommerceApplication.API.Controllers
 
             return Ok(result);
         }
+
+        //[HttpGet]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(typeof(GetByIdShoppingCartQuery), StatusCodes.Status404NotFound)]
+        //public async Task<IActionResult> GetByUserId([FromQuery] Guid userId)
+        //{
+        //    var command = new GetByUserIdShoppingCartQuery { UserId = userId };
+        //    var result = await Mediator.Send(command);
+        //    return Ok(result);
+        //}
     }
 }

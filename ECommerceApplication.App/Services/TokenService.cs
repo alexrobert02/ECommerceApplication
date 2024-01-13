@@ -45,5 +45,12 @@ namespace ECommerceApplication.App.Services
         {
             await localStorageService.RemoveItemAsync(TOKEN);
         }
+        public Task<Guid> DecodeUserIdFromTokenAsync(string token) {
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadJwtToken(token);
+            string id = jsonToken.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
+
+            return Task.FromResult(new Guid(id));
+        }
     }
 }

@@ -1,8 +1,9 @@
 ﻿using ECommerceApplication.Application.Persistence;
+using MediatR;
 
 namespace ECommerceApplication.Application.Features.ShoppingCarts.Commands.AddOrderItemToCart
 {
-    public class AddOrderItemToShoppingCartHandler
+    public class AddOrderItemToShoppingCartHandler: IRequestHandler<AddOrderItemToShoppingCartCommand, AddOrderItemToShoppingCartResponse>
     {
         private readonly IShoppingCartRepository _shoppingCartRepository;
         private readonly IOrderItemRepository _orderItemRepository;
@@ -13,7 +14,7 @@ namespace ECommerceApplication.Application.Features.ShoppingCarts.Commands.AddOr
             _orderItemRepository = orderItemRepository;
         }
 
-        public async Task<AddOrderItemToShoppingCartResponse> Handle(AddOrderItemToShoppingCartCommand request)
+        public async Task<AddOrderItemToShoppingCartResponse> Handle(AddOrderItemToShoppingCartCommand request, CancellationToken cancellationToken)
         {
             var shoppingCart = await _shoppingCartRepository.FindByIdAsync(request.ShoppingCartId);
 

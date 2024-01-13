@@ -22,8 +22,15 @@
 @functions {
     protected override async Task OnInitializedAsync()
     {
-        var token = await TokenService.GetTokenAsync();
-        if (token == null)
+        try
+        {
+            var token = await TokenService.GetTokenAsync();
+            if (token == null)
+            {
+                navigationManager.NavigateTo("/login");
+            }
+        }
+        catch (Exception)
         {
             navigationManager.NavigateTo("/login");
         }
