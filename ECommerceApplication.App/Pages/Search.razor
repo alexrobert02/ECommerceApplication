@@ -51,8 +51,9 @@
 
     public List<ProductViewModel> SearchResults { get; set; }
 
+    [SupplyParameterFromQuery]
     [Parameter]
-    public string Query { get; set; }
+    public string? Query { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -62,7 +63,6 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        Query = NavigationManager.Uri.Split('?').LastOrDefault()?.Split('=').LastOrDefault();
         Console.WriteLine($"Query in OnParametersSetAsync: {Query}");
         await LoadSearchResults();
     }
