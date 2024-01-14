@@ -11,6 +11,13 @@
     }
     else
     {
+        @if (AlertMessage.IsEnabled)
+        {
+            <div class="alert alert-@AlertMessage.type alert-dismissible fade show" role="alert">
+                @AlertMessage.Message
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" @onclick="CloseAlert"></button>
+            </div>
+        }
         <div class="product-container">
             @foreach (var prod in Products)
             {
@@ -51,10 +58,23 @@
     [Inject]
     public NavigationManager NavigationManager { get; set; }
 
-    public List<ProductViewModel> Products { get; set; }
+    [Inject]
+    public ITokenService TokenService { get; set; }
 
+    [Inject]
+    public IShoppingCartDataService ShoppingCartDataService { get; set; }
+    public List<ProductViewModel> Products { get; set; }
+    public AlertMessage AlertMessage;
+}
+
+@functions {
     protected override async Task OnInitializedAsync()
     {
+        AlertMessage = new AlertMessage
+            {
+                IsEnabled = false,
+                Message = ""
+            };
         // Fetch all products initially
         await LoadProducts();
     }
@@ -68,7 +88,8 @@
     {
         product.IsAddingToCart = true;
 
-        await Task.Delay(1000);
+        StateHasChanged();
+        await Task.Delay(250);
 
         OrderItemViewModel orderItem = new OrderItemViewModel
             {
@@ -82,23 +103,59 @@
         product.IsAddingToCart = false;
     }
 
-    private async Task AddOrderItemToCart(OrderItemViewModel orderItem)
-    {
-        var response = await OrderItemDataService.CreateOrderItemAsync(orderItem);
 
-        if (response.IsSuccess)
+    public async Task AddOrderItemToCart(OrderItemViewModel orderItem)
+    {
+        try
         {
-            Console.WriteLine("Product added to cart successfully!");
+            if (orderItem.Quantity == null || orderItem.Quantity <= 0)
+            {
+                UpdateAddToCartMessage(false, "Select a valid quantity");
+                return;
+            }
+            var token = await TokenService.GetTokenAsync();
+            Guid userId = await TokenService.DecodeUserIdFromTokenAsync(token);
+            if (userId == null || userId == Guid.Empty)
+            {
+                UpdateAddToCartMessage(false, "Eroor reading the user, try to log in again");
+                return;
+            }
+            var shoppingCart = await ShoppingCartDataService.GetShoppingCartByUserIdAsync(userId);
+            var result = await OrderItemDataService.CreateOrderItemAsync(orderItem);
+            if (!result.IsSuccess)
+            {
+                UpdateAddToCartMessage(false, "Error adding to cart");
+                return;
+            }
+            Guid createdOrderItemId = result.Data.OrderItemId;
+            var shoppingCartViewModel = await ShoppingCartDataService.AttachOrderItemById(shoppingCart.ShoppingCartId, createdOrderItemId);
+            UpdateAddToCartMessage(true, "Added to cart");
         }
-        else
+        catch (Exception e)
         {
-            Console.WriteLine($"Failed to add product to cart.");
+            UpdateAddToCartMessage(false, "Error adding to cart");
+            Console.WriteLine(e);
         }
+    }
+
+    protected void UpdateAddToCartMessage(bool isSucces, string message)
+    {
+        AlertMessage.type = isSucces ? "success" : "danger";
+        AlertMessage.IsEnabled = true;
+        AlertMessage.IsSuccess = isSucces;
+        AlertMessage.Message = message;
+        StateHasChanged();
     }
 
     private void NavigateToProductDetail(Guid productId)
     {
         NavigationManager.NavigateTo($"/productdetail/{productId}");
+    }
+
+    private void CloseAlert(MouseEventArgs e)
+    {
+        AlertMessage.IsEnabled = false;
+        StateHasChanged();
     }
 
 }

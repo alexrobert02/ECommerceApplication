@@ -48,7 +48,7 @@ namespace ECommerceApplication.App.Services
         public Task<Guid> DecodeUserIdFromTokenAsync(string token) {
             var handler = new JwtSecurityTokenHandler();
             var jsonToken = handler.ReadJwtToken(token);
-            string id = jsonToken.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
+            var id = jsonToken.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
 
             return Task.FromResult(new Guid(id));
         }

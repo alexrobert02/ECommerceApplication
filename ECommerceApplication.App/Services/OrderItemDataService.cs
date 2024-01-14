@@ -85,5 +85,22 @@ namespace ECommerceApplication.App.Services
             return response!;
         }
 
+        public async Task<ApiResponse<OrderItemDto>> RemoveItemFromCartAsync(Guid orderItemId)
+        {
+            string requestUri = $"{RequestUri}/{orderItemId.ToString()}";
+            httpClient.DefaultRequestHeaders.Authorization
+                = new AuthenticationHeaderValue("Bearer", await tokenService.GetTokenAsync());
+
+            var response = await httpClient.DeleteAsync(requestUri);
+
+            response.EnsureSuccessStatusCode();
+
+            var result = await response.Content.ReadFromJsonAsync<ApiResponse<OrderItemDto>>();
+
+            result!.IsSuccess = response.IsSuccessStatusCode;
+
+            return result!;
+        }
+
     }
 }
