@@ -637,7 +637,8 @@ margin-left: 0.1rem;
 
 .profile-name,
 .profile-email,
-.profile-phone {
+.profile-phone,
+.profile-address{
     margin-bottom: 10px;
 }
 

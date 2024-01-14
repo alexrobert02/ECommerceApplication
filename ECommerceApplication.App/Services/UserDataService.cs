@@ -1,8 +1,8 @@
 ﻿using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text.Json;
-using System.Threading.Tasks;
-using Blazored.LocalStorage;
 using ECommerceApplication.App.Contracts;
+using ECommerceApplication.App.Services.Responses;
 using ECommerceApplication.App.ViewModels;
 
 namespace ECommerceApplication.App.Services
@@ -17,11 +17,6 @@ namespace ECommerceApplication.App.Services
         {
             this.httpClient = httpClient;
             this.tokenService = tokenService;
-        }
-
-        public Task<List<UserViewModel>> GetAssignedUsersByProjectId(Guid projectId)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<UserViewModel> GetUserByEmailAsync(string email)
@@ -62,6 +57,17 @@ namespace ECommerceApplication.App.Services
                 Console.WriteLine($"Exception during deserialization: {ex}");
                 throw;
             }
+        }
+
+        public async Task<ApiResponse<UpdateUserDto>> UpdateUserAsync(string id, UpdateUserDto updateUserDto)
+        {
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await tokenService.GetTokenAsync());
+            var result = await httpClient.PutAsJsonAsync($"{RequestUri}/{id}", updateUserDto);
+
+            result.EnsureSuccessStatusCode();
+            var response = await result.Content.ReadFromJsonAsync<ApiResponse<UpdateUserDto>>();
+            response!.IsSuccess = result.IsSuccessStatusCode;
+            return response!;
         }
 
     }

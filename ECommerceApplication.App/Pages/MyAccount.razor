@@ -14,64 +14,105 @@
                 <p>@User.Username</p>
             </div>
             <div class="profile-info">
-                <div class="profile-name">
-                    <span class="field-name">Name:</span>
-                        <span class="field-value">@($"{User.FirstName} {User.LastName}")</span>
-                </div>
-                <div class="profile-email">
-                    <span class="field-name">Email:</span>
-                    <span class="field-value">@User.Email</span>
-                </div>
-                <div class="profile-phone">
-                    <span class="field-name">Phone:</span>
-                    <span class="field-value">@User.PhoneNumber</span>
-                </div>
+	            @if (!IsEditing)
+	            {
+		            <!-- Display non-editable fields when not in editing mode -->
+		            <div class="profile-name">
+			            <span class="field-name">Name:</span>
+			            <span class="field-value">@($"{User.FirstName} {User.LastName}")</span>
+		            </div>
+		            <div class="profile-email">
+			            <span class="field-name">Email:</span>
+			            <span class="field-value">@User.Email</span>
+		            </div>
+		            <div class="profile-phone">
+			            <span class="field-name">Phone:</span>
+			            <span class="field-value">@User.PhoneNumber</span>
+		            </div>
+                    <div class="profile-address">
+                        <span class="field-name">Address:</span>
+                        <span class="field-value">@User.Address</span>
+                    </div>
+			    }
+	            @if (IsEditing)
+	            {
+		            <!-- Editing mode: display input fields for editing -->
+		            <div class="profile-name">
+			            <span class="field-name">Name:</span>
+			            <input type="text" @bind="User.FirstName" />
+			            <input type="text" @bind="User.LastName" />
+		            </div>
+		            <div class="profile-email">
+			            <span class="field-name">Email:</span>
+			            <input type="text" @bind="User.Email" />
+		            </div>
+		            <div class="profile-phone">
+			            <span class="field-name">Phone:</span>
+			            <input type="text" @bind="User.PhoneNumber" />
+		            </div>
+		            <div class="profile-address">
+			            <span class="field-name">Address:</span>
+			            <input type="text" @bind="User.Address" />
+		            </div>
+	            }
+            </div>
+            @if (!IsEditing)
+            {
+	            <button @onclick="StartEditing">Edit</button>
+            }
+            <div class="profile-buttons">
+                @if (IsEditing)
+                {
+                    <!-- Display Save and Cancel buttons when in editing mode -->
+                    <button @onclick="SaveChanges">Save</button>
+                    <button @onclick="CancelEditing">Cancel</button>
+                }
             </div>
         </div>
         <div class="thank-you-card">
-                <p class="thank-you-text">Thank you for becoming a new client of <span class="ecommerce-text">ECommerce</span></p>
-            <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="1.70666in" height="1.70666in" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd" viewBox="0 0 1707 1707" xmlns:xlink="http://www.w3.org/1999/xlink">
-                <defs>
-                <style type="text/css">
+	        <p class="thank-you-text">Thank you for becoming a new client of <span class="ecommerce-text">ECommerce</span></p>
+	        <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="1.70666in" height="1.70666in" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd" viewBox="0 0 1707 1707" xmlns:xlink="http://www.w3.org/1999/xlink">
+		        <defs>
+			        <style type="text/css">
 
-                    .fil3 {
-                        fill: #1AA1FF
-                    }
+        				.fil3 {
+					        fill: #1AA1FF
+				        }
 
-                    .fil0 {
-                        fill: #333333
-                    }
+				        .fil0 {
+					        fill: #333333
+				        }
 
-                    .fil4 {
-                        fill: #7DD63E
-                    }
+				        .fil4 {
+					        fill: #7DD63E
+				        }
 
-                    .fil1 {
-                        fill: #C06000
-                    }
+				        .fil1 {
+					        fill: #C06000
+				        }
 
-                    .fil2 {
-                        fill: #FF9E5C
-                    }
-                </style>
-                </defs>
-                        <g id="Layer_x0020_1">
-                        <metadata id="CorelCorpID_0Corel-Layer"></metadata>
-                        <path class="fil0" d="M178 842c-28,-44 -37,-84 -27,-120 10,-34 36,-53 49,-61 21,-39 65,-64 115,-64 51,0 95,25 115,64 14,8 41,27 51,62 11,35 2,75 -26,119 -5,18 17,89 -52,144l19 33 39 1c43,-75 124,-126 217,-126l34 0 33 -57c-97,-73 -67,-178 -73,-199 -39,-59 -51,-113 -37,-160 13,-47 49,-72 66,-81 26,-52 84,-86 152,-86 67,0 126,33 151,86 18,9 55,34 69,82 14,47 2,100 -36,159 -6,20 24,127 -75,199l33 57 34 0c92,0 174,51 217,126l39 -1 19 -33c-68,-56 -46,-126 -51,-144 -28,-44 -37,-84 -27,-120 10,-34 36,-53 50,-61 20,-39 64,-64 114,-64 51,0 95,25 115,64 14,8 41,27 51,62 11,35 2,75 -26,119 -5,18 17,89 -52,144l19 33 21 0c104,0 188,85 188,188l0 165c0,13 -11,23 -23,23l-1659 0c-13,0 -23,-10 -23,-23l0 -165c0,-103 84,-188 188,-188l21 0 19 -33c-50,-41 -51,-85 -51,-144zm608 -34c22,10 42,18 68,18 74,0 136,-60 136,-136l0 -57c-6,-176 -269,-119 -272,-1l0 58c0,50 28,94 68,118zm0 52l-33 56 100 132 100 -132 -32 -56c-42,17 -93,16 -135,0zm-98 -289c62,-110 274,-145 334,-5 11,-28 13,-52 6,-74 -15,-52 -55,-49 -63,-69 -35,-86 -189,-86 -225,0 -8,20 -46,17 -61,69 -6,23 -3,49 9,79zm-192 483c-14,35 -22,51 -22,91l0 204 110 0 0 -156c0,-30 47,-30 47,0l0 156 445 0 0 -156c0,-30 47,-30 47,0l0 156 109 0 0 -210c-2,-106 -91,-198 -203,-198l-36 0 -121 160c-9,12 -28,12 -37,0l-121 -160 -36 0c-80,0 -149,46 -182,113zm-61 30c2,-6 3,-12 5,-18l-20 0 -86 114c-9,12 -28,12 -37,0l-85 -114 -23 0c-78,0 -142,63 -142,141l0 142 381 0 0 -204c0,-21 2,-41 7,-61zm831 -18c9,26 13,52 13,79l0 204 380 0 0 -142c0,-78 -63,-141 -141,-141l-23 0 -86 114c-8,11 -28,11 -37,0l-85 -114 -21 0zm125 -49c-16,0 -32,-3 -46,-8l-19 32 65 86 65 -86 -19 -32c-14,5 -30,8 -46,8zm-92 -181c0,52 -3,93 49,123 59,34 135,-13 135,-81l0 -41c-4,-119 -180,-80 -184,-1zm-26 -59c53,-72 189,-89 239,-6 14,-61 -38,-65 -46,-85 -24,-57 -127,-57 -151,0 -8,20 -62,25 -42,91zm-865 59l0 0c-8,-122 -183,-74 -184,0 0,52 -3,92 49,123 59,35 135,-14 135,-81l0 -42zm-92 181c-16,0 -32,-3 -46,-8l-19 32 65 86 65 -86 -19 -32c-14,5 -30,8 -46,8zm120 -246c15,-61 -37,-65 -45,-85 -24,-57 -127,-57 -151,0 -8,20 -63,25 -42,91 54,-73 189,-89 238,-6z"></path>
-                        <path class="fil1" d="M679 492c-6,23 -3,49 9,79 62,-110 274,-145 334,-5 11,-28 13,-52 6,-74 -15,-52 -55,-49 -63,-69 -35,-86 -189,-86 -225,0 -8,20 -46,17 -61,69z"></path>
-                        <path class="fil2" d="M990 633c-6,-176 -269,-119 -272,-1l0 58c0,50 28,94 68,118 22,10 42,18 68,18 74,0 136,-60 136,-136l0 -57z"></path>
-                        <path class="fil2" d="M921 860c-42,17 -93,16 -135,0l-33 56 100 132 100 -132 -32 -56z"></path>
-                        <path class="fil3" d="M835 1101l-121 -160 -36 0c-80,0 -149,46 -182,113 -14,35 -22,51 -22,91l0 204 110 0 0 -156c0,-30 47,-30 47,0l0 156 445 0 0 -156c0,-30 47,-30 47,0l0 156 109 0 0 -210c-2,-106 -91,-198 -203,-198l-36 0 -121 160c-9,12 -28,12 -37,0z"></path>
-                        <path class="fil2" d="M316 1127l65 -86 -19 -32c-14,5 -30,8 -46,8 -16,0 -32,-3 -46,-8l-19 32 65 86z"></path>
-                        <path class="fil4" d="M297 1180l-85 -114 -23 0c-78,0 -142,63 -142,141l0 142 381 0 0 -204c0,-21 2,-41 7,-61 2,-6 3,-12 5,-18l-20 0 -86 114c-9,12 -28,12 -37,0z"></path>
-                        <path class="fil2" d="M273 959c59,35 135,-14 135,-81l0 -42 0 0c-8,-122 -183,-74 -184,0 0,52 -3,92 49,123z"></path>
-                        <path class="fil1" d="M198 777c54,-73 189,-89 238,-6 15,-61 -37,-65 -45,-85 -24,-57 -127,-57 -151,0 -8,20 -63,25 -42,91z"></path>
-                        <path class="fil1" d="M1466 686c-24,-57 -127,-57 -151,0 -8,20 -62,25 -42,91 53,-72 189,-89 239,-6 14,-61 -38,-65 -46,-85z"></path>
-                        <path class="fil2" d="M1483 837c-4,-119 -180,-80 -184,-1 0,52 -3,93 49,123 59,34 135,-13 135,-81l0 -41z"></path>
-                        <path class="fil2" d="M1437 1009c-14,5 -30,8 -46,8 -16,0 -32,-3 -46,-8l-19 32 65 86 65 -86 -19 -32z"></path>
-                        <path class="fil4" d="M1495 1066l-86 114c-8,11 -28,11 -37,0l-85 -114 -21 0c9,26 13,52 13,79l0 204 380 0 0 -142c0,-78 -63,-141 -141,-141l-23 0z"></path>
-                 </g>
-            </svg>
+				        .fil2 {
+					        fill: #FF9E5C
+				        }
+        			</style>
+		        </defs>
+		        <g id="Layer_x0020_1">
+			        <metadata id="CorelCorpID_0Corel-Layer"></metadata>
+			        <path class="fil0" d="M178 842c-28,-44 -37,-84 -27,-120 10,-34 36,-53 49,-61 21,-39 65,-64 115,-64 51,0 95,25 115,64 14,8 41,27 51,62 11,35 2,75 -26,119 -5,18 17,89 -52,144l19 33 39 1c43,-75 124,-126 217,-126l34 0 33 -57c-97,-73 -67,-178 -73,-199 -39,-59 -51,-113 -37,-160 13,-47 49,-72 66,-81 26,-52 84,-86 152,-86 67,0 126,33 151,86 18,9 55,34 69,82 14,47 2,100 -36,159 -6,20 24,127 -75,199l33 57 34 0c92,0 174,51 217,126l39 -1 19 -33c-68,-56 -46,-126 -51,-144 -28,-44 -37,-84 -27,-120 10,-34 36,-53 50,-61 20,-39 64,-64 114,-64 51,0 95,25 115,64 14,8 41,27 51,62 11,35 2,75 -26,119 -5,18 17,89 -52,144l19 33 21 0c104,0 188,85 188,188l0 165c0,13 -11,23 -23,23l-1659 0c-13,0 -23,-10 -23,-23l0 -165c0,-103 84,-188 188,-188l21 0 19 -33c-50,-41 -51,-85 -51,-144zm608 -34c22,10 42,18 68,18 74,0 136,-60 136,-136l0 -57c-6,-176 -269,-119 -272,-1l0 58c0,50 28,94 68,118zm0 52l-33 56 100 132 100 -132 -32 -56c-42,17 -93,16 -135,0zm-98 -289c62,-110 274,-145 334,-5 11,-28 13,-52 6,-74 -15,-52 -55,-49 -63,-69 -35,-86 -189,-86 -225,0 -8,20 -46,17 -61,69 -6,23 -3,49 9,79zm-192 483c-14,35 -22,51 -22,91l0 204 110 0 0 -156c0,-30 47,-30 47,0l0 156 445 0 0 -156c0,-30 47,-30 47,0l0 156 109 0 0 -210c-2,-106 -91,-198 -203,-198l-36 0 -121 160c-9,12 -28,12 -37,0l-121 -160 -36 0c-80,0 -149,46 -182,113zm-61 30c2,-6 3,-12 5,-18l-20 0 -86 114c-9,12 -28,12 -37,0l-85 -114 -23 0c-78,0 -142,63 -142,141l0 142 381 0 0 -204c0,-21 2,-41 7,-61zm831 -18c9,26 13,52 13,79l0 204 380 0 0 -142c0,-78 -63,-141 -141,-141l-23 0 -86 114c-8,11 -28,11 -37,0l-85 -114 -21 0zm125 -49c-16,0 -32,-3 -46,-8l-19 32 65 86 65 -86 -19 -32c-14,5 -30,8 -46,8zm-92 -181c0,52 -3,93 49,123 59,34 135,-13 135,-81l0 -41c-4,-119 -180,-80 -184,-1zm-26 -59c53,-72 189,-89 239,-6 14,-61 -38,-65 -46,-85 -24,-57 -127,-57 -151,0 -8,20 -62,25 -42,91zm-865 59l0 0c-8,-122 -183,-74 -184,0 0,52 -3,92 49,123 59,35 135,-14 135,-81l0 -42zm-92 181c-16,0 -32,-3 -46,-8l-19 32 65 86 65 -86 -19 -32c-14,5 -30,8 -46,8zm120 -246c15,-61 -37,-65 -45,-85 -24,-57 -127,-57 -151,0 -8,20 -63,25 -42,91 54,-73 189,-89 238,-6z"></path>
+			        <path class="fil1" d="M679 492c-6,23 -3,49 9,79 62,-110 274,-145 334,-5 11,-28 13,-52 6,-74 -15,-52 -55,-49 -63,-69 -35,-86 -189,-86 -225,0 -8,20 -46,17 -61,69z"></path>
+			        <path class="fil2" d="M990 633c-6,-176 -269,-119 -272,-1l0 58c0,50 28,94 68,118 22,10 42,18 68,18 74,0 136,-60 136,-136l0 -57z"></path>
+			        <path class="fil2" d="M921 860c-42,17 -93,16 -135,0l-33 56 100 132 100 -132 -32 -56z"></path>
+			        <path class="fil3" d="M835 1101l-121 -160 -36 0c-80,0 -149,46 -182,113 -14,35 -22,51 -22,91l0 204 110 0 0 -156c0,-30 47,-30 47,0l0 156 445 0 0 -156c0,-30 47,-30 47,0l0 156 109 0 0 -210c-2,-106 -91,-198 -203,-198l-36 0 -121 160c-9,12 -28,12 -37,0z"></path>
+			        <path class="fil2" d="M316 1127l65 -86 -19 -32c-14,5 -30,8 -46,8 -16,0 -32,-3 -46,-8l-19 32 65 86z"></path>
+			        <path class="fil4" d="M297 1180l-85 -114 -23 0c-78,0 -142,63 -142,141l0 142 381 0 0 -204c0,-21 2,-41 7,-61 2,-6 3,-12 5,-18l-20 0 -86 114c-9,12 -28,12 -37,0z"></path>
+			        <path class="fil2" d="M273 959c59,35 135,-14 135,-81l0 -42 0 0c-8,-122 -183,-74 -184,0 0,52 -3,92 49,123z"></path>
+			        <path class="fil1" d="M198 777c54,-73 189,-89 238,-6 15,-61 -37,-65 -45,-85 -24,-57 -127,-57 -151,0 -8,20 -63,25 -42,91z"></path>
+			        <path class="fil1" d="M1466 686c-24,-57 -127,-57 -151,0 -8,20 -62,25 -42,91 53,-72 189,-89 239,-6 14,-61 -38,-65 -46,-85z"></path>
+			        <path class="fil2" d="M1483 837c-4,-119 -180,-80 -184,-1 0,52 -3,93 49,123 59,34 135,-13 135,-81l0 -41z"></path>
+			        <path class="fil2" d="M1437 1009c-14,5 -30,8 -46,8 -16,0 -32,-3 -46,-8l-19 32 65 86 65 -86 -19 -32z"></path>
+			        <path class="fil4" d="M1495 1066l-86 114c-8,11 -28,11 -37,0l-85 -114 -21 0c9,26 13,52 13,79l0 204 380 0 0 -142c0,-78 -63,-141 -141,-141l-23 0z"></path>
+		        </g>
+	        </svg>
         </div>
     </div>
     <div class="profile-second-row">
@@ -130,6 +171,7 @@ else
 
     public UserViewModel User { get; set; }
     private string email;
+    private string error;
 
     private bool IsEditing { get; set; } = false;
 
@@ -172,8 +214,42 @@ else
     private async Task SaveChanges()
     {
         // Save changes to the database (update user information)
-        //await UserDataService.UpdateUserAsync(User);
+        await UpdateProfile();
         IsEditing = false;
+    }
+
+    private async Task UpdateProfile()
+    {
+
+	    try
+	    {
+		    UpdateUserDto updateUserDto = new UpdateUserDto
+		    {
+			    Id = User.UserId,
+			    Username = User.Username,
+			    Email = User.Email,
+			    FirstName = User.FirstName,
+			    LastName = User.LastName,
+                Address = User.Address,
+                PhoneNumber = User.PhoneNumber,
+                Role = User.Role
+		    };
+		    Console.WriteLine("Updating user profile");
+
+		    var result = await UserDataService.UpdateUserAsync(User.UserId, updateUserDto);
+
+		    if (result.IsSuccess)
+		    {
+                NavigationManager.NavigateTo($"/myaccount");
+			    await authStateProvider.Logout();
+			    NavigationManager.NavigateTo("/login");
+		    }
+
+	    }
+	    catch (Exception ex)
+	    {
+		    error = "Something went wrong updating the profile";
+	    }
     }
 
 }
