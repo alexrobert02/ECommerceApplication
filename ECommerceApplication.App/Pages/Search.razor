@@ -3,41 +3,54 @@
 @using ECommerceApplication.App.ViewModels
 @using Microsoft.AspNetCore.Components.Web
 
-<div class="products-content-container">
-    <div class="result-count-card">
-        @if(@SearchResults.Count == 1){
-            <p class="result-count-text">@SearchResults.Count result for <span class="results-query-text">"@Query"</span></p>
-        }
-        else{
-            <p class="result-count-text">@SearchResults.Count results for <span class="results-query-text">"@Query"</span></p>
-        }
-    </div>
-    <div class="product-container">
-        @foreach (var prod in SearchResults)
-        {
-            <div class="product-card" @onclick="() => NavigateToProductDetail(prod.ProductId)">
-                <img src="@prod.ImageUrl" alt="@prod.ProductName" class="product-image" />
-                <div class="product-details">
-                    <h4 class="product-name">@prod.ProductName</h4>
-                    <p class="product-price">$@prod.Price</p>
-                    <button class="add-to-cart-button" @onclick="() => AddToCart(prod)" disabled="@prod.IsAddingToCart">
-                        @if (prod.IsAddingToCart)
-                        {
-                            <span class="adding-to-cart-text">Adding...</span>
-                        }
-                        else
-                        {
-                            <svg class="shopping-cart-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 15a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 0h8m-8 0-1-4m9 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-9-4h10l2-7H3m2 7L3 4m0 0-.792-3H1" />
-                            </svg>
-                            <span>Add to Cart</span>
-                        }
-                    </button>
+@if (!IsInitialized)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="products-content-container">
+        <div class="result-count-card">
+            @if (@SearchResults.Count == 0)
+            {
+                <p class="result-count-text">No results for: <span class="results-query-text">"@Query"</span></p>
+            }
+            else if (@SearchResults.Count == 1)
+            {
+                <p class="result-count-text">@SearchResults.Count result for: <span class="results-query-text">"@Query"</span></p>
+            }
+            else
+            {
+                <p class="result-count-text">@SearchResults.Count results for: <span class="results-query-text">"@Query"</span></p>
+            }
+        </div>
+        <div class="product-container">
+            @foreach (var prod in SearchResults)
+            {
+                <div class="product-card" @onclick="() => NavigateToProductDetail(prod.ProductId)">
+                    <img src="@prod.ImageUrl" alt="@prod.ProductName" class="product-image" />
+                    <div class="product-details">
+                        <h4 class="product-name">@prod.ProductName</h4>
+                        <p class="product-price">$@prod.Price</p>
+                        <button class="add-to-cart-button" @onclick:preventDefault @onclick:stopPropagation @onclick="() => AddToCart(prod)" disabled="@prod.IsAddingToCart">
+                            @if (prod.IsAddingToCart)
+                            {
+                                <span class="adding-to-cart-text">Adding...</span>
+                            }
+                            else
+                            {
+                                <svg class="shopping-cart-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 15a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 0h8m-8 0-1-4m9 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-9-4h10l2-7H3m2 7L3 4m0 0-.792-3H1" />
+                                </svg>
+                                <span>Add to Cart</span>
+                            }
+                        </button>
+                    </div>
                 </div>
-            </div>
-        }
+            }
+        </div>
     </div>
-</div>
+}
 
 @code {
     [Inject]
@@ -55,10 +68,13 @@
     [Parameter]
     public string? Query { get; set; }
 
+    private bool IsInitialized { get; set; } = false;
+
     protected override async Task OnInitializedAsync()
     {
         Console.WriteLine($"Query in OnInitializedAsync: {Query}");
         await LoadSearchResults();
+        IsInitialized = true;
     }
 
     protected override async Task OnParametersSetAsync()
