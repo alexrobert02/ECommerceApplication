@@ -1,12 +1,11 @@
 ﻿using ECommerceApplication.App.Services.Responses;
 using ECommerceApplication.App.ViewModels;
-using System.Threading.Tasks;
 
 namespace ECommerceApplication.App.Contracts
 {
     public interface IUserDataService
     {
         Task<UserViewModel> GetUserByEmailAsync(string email);
-        Task<string> GetUserIdByEmailAsync(string email);
+        Task<ApiResponse<UpdateUserDto>> UpdateUserAsync(string id, UpdateUserDto updateUserDto);
     }
 }
