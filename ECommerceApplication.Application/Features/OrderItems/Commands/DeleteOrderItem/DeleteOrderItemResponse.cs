@@ -8,6 +8,6 @@ namespace ECommerceApplication.Application.Features.OrderItems.Commands.DeleteCa
         {
         }
 
-        public CategoryDto Category { get; set; }
+        public OrderItemDto Data { get; set; }
     }
 }

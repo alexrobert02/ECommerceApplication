@@ -12,6 +12,8 @@ namespace ECommerceApplication.App.Contracts
 
         Task<ApiResponse<OrderItemDto>> UpdateOrderItemAsync(OrderItemViewModel orderItemViewModel);
 
+        Task<ApiResponse<OrderItemDto>> RemoveItemFromCartAsync(Guid orderItemId);
+
 
     }
 }
