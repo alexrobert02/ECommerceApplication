@@ -69,6 +69,15 @@
         <label for="inputUsername" class="sr-only">Username</label>
         <InputText id="inputUsername" class="form-control" @bind-Value="registerRequest.Username" autofocus placeholder="Username" />
         <ValidationMessage For="@(() => registerRequest.Username)" />
+            
+        <label for="inputRole" class="sr-only">Role</label>
+        <InputSelect id="inputRole" class="form-control" @bind-Value="registerRequest.Role" autofocus>
+	        <option value="" disabled selected>Select Role</option>
+	        <option value="User">User</option>
+	        <option value="Company">Company</option>
+        </InputSelect>
+        <ValidationMessage For="@(() => registerRequest.Role)" />
+
 
         <label for="inputPassword" class="sr-only">Password</label>
         <div class="input-group password-toggle">
