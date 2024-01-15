@@ -28,8 +28,8 @@ namespace ECommercerApplication.Application.Tests.Queries
             // Arrange
             var dummyUsers = new List<UserDto>
             {
-                new UserDto { UserId = Guid.NewGuid().ToString(), Username = "User1", Email = "user1@example.com", FirstName = "First1", LastName = "Last1", Address = "Address1", PhoneNumber = "1234567890", Role = "Role1" },
-                new UserDto { UserId = Guid.NewGuid().ToString(), Username = "User2", Email = "user2@example.com", FirstName = "First2", LastName = "Last2", Address = "Address2", PhoneNumber = "0987654321", Role = "Role2" }
+                new UserDto { UserId = Guid.NewGuid().ToString(), Username = "User1", Email = "user1@example.com", FirstName = "First1", LastName = "Last1", PhoneNumber = "1234567890", Role = "Role1" },
+                new UserDto { UserId = Guid.NewGuid().ToString(), Username = "User2", Email = "user2@example.com", FirstName = "First2", LastName = "Last2", PhoneNumber = "0987654321", Role = "Role2" }
                 // Add more users as needed
             };
             _userRepository.GetAllAsync().Returns(Task.FromResult(Result<List<UserDto>>.Success(dummyUsers)));
@@ -49,7 +49,6 @@ namespace ECommercerApplication.Application.Tests.Queries
                 Assert.Equal(user.Email, userDto.Email);
                 Assert.Equal(user.FirstName, userDto.FirstName);
                 Assert.Equal(user.LastName, userDto.LastName);
-                Assert.Equal(user.Address, userDto.Address);
                 Assert.Equal(user.PhoneNumber, userDto.PhoneNumber);
                 Assert.Equal(user.Role, userDto.Role);
             }

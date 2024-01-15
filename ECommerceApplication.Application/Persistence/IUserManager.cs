@@ -1,4 +1,5 @@
-﻿using ECommerceApplication.Application.Features.Users.Queries;
+﻿using ECommerceApplication.Application.Features.Addresses.Queries;
+using ECommerceApplication.Application.Features.Users.Queries;
 using ECommerceApplication.Domain.Common;
 
 namespace ECommerceApplication.Application.Persistence
@@ -11,6 +12,5 @@ namespace ECommerceApplication.Application.Persistence
         Task<Result<UserDto>> UpdateAsync(UserDto user);
         Task<Result<UserDto>> UpdateRoleAsync(UserDto user, string role);
         Task<Result<UserDto>> FindByEmailAsync(string email);
-
     }
 }

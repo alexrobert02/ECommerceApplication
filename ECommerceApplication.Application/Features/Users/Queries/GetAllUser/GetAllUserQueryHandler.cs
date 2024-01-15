@@ -24,7 +24,6 @@ namespace ECommerceApplication.Application.Features.Users.Queries.GetAllUser
                     Email = u.Email,
                     FirstName = u.FirstName,
                     LastName = u.LastName,
-                    Address = u.Address,
                     PhoneNumber = u.PhoneNumber,
                     Role = u.Role,
 

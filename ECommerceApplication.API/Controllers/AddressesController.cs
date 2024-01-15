@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using ECommerceApplication.Application.Features.Addresses.Commands.CreateAddress;
 using ECommerceApplication.Application.Features.Addresses.Queries.GetAllAddress;
 using ECommerceApplication.Application.Features.Addresses.Commands.UpdateAddress;
+using ECommerceApplication.Application.Features.Addresses.Queries.GetAddressByUserId;
+using ECommerceApplication.Application.Features.Users.Queries.GetByIdUser;
 
 namespace ECommerceApplication.API.Controllers
 {
@@ -31,6 +33,18 @@ namespace ECommerceApplication.API.Controllers
             if (!result.Success)
             {
                 return NotFound(result);
+            }
+            return Ok(result);
+        }
+        [HttpGet("ByUserId/{userId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAddressByUserId(Guid userId)
+        {
+            var query = new GetAddressByUserIdQuery { UserId = userId };
+            var result = await Mediator.Send(query);
+            if (!result.Success)
+            {
+                return BadRequest(result);
             }
             return Ok(result);
         }

@@ -16,6 +16,7 @@ namespace ECommerceApplication.Infrastructure.Migrations
                 columns: table => new
                 {
                     AddressId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     Street = table.Column<string>(type: "text", nullable: false),
                     City = table.Column<string>(type: "text", nullable: false),
                     State = table.Column<string>(type: "text", nullable: false),
@@ -182,6 +183,12 @@ namespace ECommerceApplication.Infrastructure.Migrations
                         principalTable: "Orders",
                         principalColumn: "OrderId");
                     table.ForeignKey(
+                        name: "FK_OrderItem_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "ProductId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_OrderItem_ShoppingCarts_ShoppingCartId",
                         column: x => x.ShoppingCartId,
                         principalTable: "ShoppingCarts",
@@ -213,6 +220,11 @@ namespace ECommerceApplication.Infrastructure.Migrations
                 name: "IX_OrderItem_OrderId",
                 table: "OrderItem",
                 column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderItem_ProductId",
+                table: "OrderItem",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderItem_ShoppingCartId",

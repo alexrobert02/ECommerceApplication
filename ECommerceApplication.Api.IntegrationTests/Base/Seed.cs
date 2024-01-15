@@ -18,8 +18,8 @@ namespace ECommerceApplication.API.IntegrationTests.Base
 
             var addresses = new List<Address>
             {
-                Address.Create("Street1", "City1", "State1", "PostalCode1", true).Value,
-                Address.Create("Street2", "City2", "State2", "PostalCode2", true).Value
+                Address.Create(Guid.NewGuid(), "Street1", "City1", "State1", "PostalCode1", true).Value,
+                Address.Create(Guid.NewGuid(), "Street2", "City2", "State2", "PostalCode2", true).Value
             };
 
             context.Addresses.AddRange(addresses);

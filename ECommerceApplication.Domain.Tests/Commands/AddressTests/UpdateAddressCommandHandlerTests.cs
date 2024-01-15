@@ -58,7 +58,7 @@ namespace ECommerceApplication.Application.Tests.Commands.AddressTests
         {
             // Arrange
             var addressId = Guid.NewGuid();
-            var mockAddress = Address.Create("TestStreet", "TestCity", "TestState", "TestPostalCode", false).Value;
+            var mockAddress = Address.Create(Guid.NewGuid(), "TestStreet", "TestCity", "TestState", "TestPostalCode", false).Value;
             var validCommand = new UpdateAddressCommand
             {
                 AddressId = mockAddress.AddressId,
@@ -99,7 +99,7 @@ namespace ECommerceApplication.Application.Tests.Commands.AddressTests
                 PostalCode = "TestPostalCode",
                 IsDefault = false
             };
-            var mockAddress = Address.Create("TestStreet", "TestCity", "TestState", "TestPostalCode", false).Value;
+            var mockAddress = Address.Create(Guid.NewGuid(), "TestStreet", "TestCity", "TestState", "TestPostalCode", false).Value;
             _repository.FindByIdAsync(addressId)
                 .Returns(Task.FromResult<Result<Address>>(Result<Address>.Success(mockAddress)));
 

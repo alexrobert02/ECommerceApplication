@@ -27,7 +27,6 @@ namespace ECommerceApplication.Application.Features.Users.Queries.GetByIdUser
                     Email = userDto.Email,
                     FirstName = userDto.FirstName,
                     LastName = userDto.LastName,
-                    Address = userDto.Address,
                     PhoneNumber = userDto.PhoneNumber,
                     Role = userDto.Role,
                 }

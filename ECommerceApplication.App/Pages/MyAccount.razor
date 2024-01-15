@@ -29,10 +29,6 @@
 			            <span class="field-name">Phone:</span>
 			            <span class="field-value">@User.PhoneNumber</span>
 		            </div>
-                    <div class="profile-address">
-                        <span class="field-name">Address:</span>
-                        <span class="field-value">@User.Address</span>
-                    </div>
 			    }
 	            @if (IsEditing)
 	            {
@@ -49,10 +45,6 @@
 		            <div class="profile-phone">
 			            <span class="field-name">Phone:</span>
 			            <input type="text" @bind="User.PhoneNumber" />
-		            </div>
-		            <div class="profile-address">
-			            <span class="field-name">Address:</span>
-			            <input type="text" @bind="User.Address" />
 		            </div>
 	            }
             </div>
@@ -230,7 +222,6 @@ else
 			    Email = User.Email,
 			    FirstName = User.FirstName,
 			    LastName = User.LastName,
-                Address = User.Address,
                 PhoneNumber = User.PhoneNumber,
                 Role = User.Role
 		    };

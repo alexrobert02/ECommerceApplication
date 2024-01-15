@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ECommerceApplication.Infrastructure.Migrations
 {
     [DbContext(typeof(ECommerceApplicationContext))]
-    [Migration("20240110154513_InitialCreate")]
+    [Migration("20240114201022_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -61,6 +61,9 @@ namespace ECommerceApplication.Infrastructure.Migrations
                     b.Property<string>("Street")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("AddressId");
 
@@ -198,6 +201,8 @@ namespace ECommerceApplication.Infrastructure.Migrations
                     b.HasKey("OrderItemId");
 
                     b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
 
                     b.HasIndex("ShoppingCartId");
 
@@ -355,9 +360,17 @@ namespace ECommerceApplication.Infrastructure.Migrations
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId");
 
+                    b.HasOne("ECommerceApplication.Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ECommerceApplication.Domain.Entities.ShoppingCart", null)
                         .WithMany("OrderItems")
                         .HasForeignKey("ShoppingCartId");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("ECommerceApplication.Domain.Entities.Payment", b =>

@@ -44,7 +44,6 @@ namespace ECommerceApplication.Application.Features.Users.Commands.UpdateUser
             request.Email ??= user.Value.Email;
             request.FirstName ??= user.Value.FirstName;
             request.LastName ??= user.Value.LastName;
-            request.Address ??= user.Value.Address;
             request.PhoneNumber ??= user.Value.PhoneNumber;
             request.Role ??= user.Value.Role;
 
@@ -57,7 +56,6 @@ namespace ECommerceApplication.Application.Features.Users.Commands.UpdateUser
                 Email = request.Email,
                 FirstName = request.FirstName,
                 LastName = request.LastName,
-                Address = request.Address,
                 PhoneNumber = request.PhoneNumber,
                 Role = request.Role
 
@@ -85,7 +83,6 @@ namespace ECommerceApplication.Application.Features.Users.Commands.UpdateUser
                     Email = result.Value.Email,
                     FirstName = result.Value.FirstName,
                     LastName = result.Value.LastName,
-                    Address = result.Value.Address,
                     PhoneNumber = result.Value.PhoneNumber,
                     Role = result.Value.Role
                 }

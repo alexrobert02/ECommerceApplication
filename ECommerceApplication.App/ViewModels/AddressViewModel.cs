@@ -6,6 +6,8 @@ namespace ECommerceApplication.App.ViewModels
     {
         public Guid AddressId { get; set; }
 
+        public Guid UserId { get; set; }
+
         [Required(ErrorMessage = "Street is required.")]
         public string Street { get; set; } = string.Empty;
 
