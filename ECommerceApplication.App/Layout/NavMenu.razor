@@ -4,11 +4,15 @@
 @inject CustomStateProvider authStateProvider
 
 <div class="custom-nav-menu">
-    <nav>
-        <ul>
-            <li><NavLink href="productoverview">Products</NavLink></li>
-            <li><NavLink href="categoryoverview">Categories</NavLink></li>
-            <li><NavLink href="addcategory">Add Category</NavLink></li>
+    <nav class="custom-nav">
+        <ul class="custom-list">
+            <li class="custom-list-element"><NavLink href="productoverview">Products</NavLink></li>
+            <li class="custom-list-element"><NavLink href="categoryoverview">Categories</NavLink></li>
+            <li class="custom-list-element"><NavLink href="">Offers</NavLink></li>
+            <div style="text-align:right">
+                <li class="custom-list-element"><NavLink href="">ECommerce Help</NavLink></li>
+            </div>
+            <!-- <li><NavLink href="addcategory">Add Category</NavLink></li>
             <li><NavLink href="updatecategory">Update Category</NavLink></li>
             <li><NavLink href="addproduct">Add Product</NavLink></li>
             <li><NavLink href="updateproduct">Update Product</NavLink></li>
@@ -19,7 +23,7 @@
             <li><NavLink href="addaddress">Add Address</NavLink></li>
             <li><NavLink href="shoppingcartoverview">Shopping Carts</NavLink></li>
             <li><NavLink href="getbyidshoppingcart">GetById ShoppingCart</NavLink></li>
-            <li><div @onclick="OnLogout">LogOut</div></li>
+            <li><div @onclick="OnLogout">LogOut</div></li> -->
         </ul>
     </nav>
 </div>
