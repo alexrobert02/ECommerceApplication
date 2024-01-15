@@ -3,49 +3,69 @@
 @using ECommerceApplication.App.ViewModels
 @using Microsoft.AspNetCore.Components.Web
 
-
-<div class="products-content-container">
-    @if (Products == null)
-    {
-        <p><em>Loading...</em></p>
-    }
-    else
-    {
-        @if (AlertMessage.IsEnabled)
-        {
-            <div class="alert alert-@AlertMessage.type alert-dismissible fade show" role="alert">
-                @AlertMessage.Message
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" @onclick="CloseAlert"></button>
-            </div>
-        }
-        <div class="product-container">
-            @foreach (var prod in Products)
+<div class="all-products">
+    <div class="filters-sidebar">
+    </div>
+    <div class="products-main-content">
+        <div class="sorting-container">
+            <label for="sortDropdown">Sort by:</label>
+            <select id="sortDropdown" @onchange="SortProducts">
+                <option value="name">Name</option>
+                <option value="price">Price</option>
+            </select>
+        </div>
+        <div class="products-content-container">
+            @if (Products == null)
             {
-                <div class="product-card" @onclick="() => NavigateToProductDetail(prod.ProductId)">
-                    <img src="@prod.ImageUrl" alt="@prod.ProductName" class="product-image" />
-                    <div class="product-details">
-                        <h4 class="product-name">@prod.ProductName</h4>
-                        <p class="product-price">$@prod.Price</p>
-                        <button class="add-to-cart-button" @onclick:preventDefault @onclick:stopPropagation @onclick="() => AddToCart(prod)" disabled="@prod.IsAddingToCart">
-                            @if (prod.IsAddingToCart)
-                            {
-                                <span class="adding-to-cart-text">Adding...</span>
-                            }
-                            else
-                            {
-                                <svg class="shopping-cart-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 15a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 0h8m-8 0-1-4m9 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-9-4h10l2-7H3m2 7L3 4m0 0-.792-3H1" />
-                                </svg>
-                                <span>Add to Cart</span>
-                            }
-                        </button>
-
+                <p><em>Loading...</em></p>
+            }
+            else
+            {
+                @if (AlertMessage.IsEnabled)
+                {
+                    <div class="alert alert-@AlertMessage.type alert-dismissible fade show" role="alert">
+                        @AlertMessage.Message
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" @onclick="CloseAlert"></button>
                     </div>
+                }
+                <div class="product-container">
+                    @foreach (var prod in Products)
+                    {
+                        <div class="product-card" @onclick="() => NavigateToProductDetail(prod.ProductId)">
+                            <div class="product-image-container">
+                                <img src="@prod.ImageUrl" alt="@prod.ProductName" class="product-image" />
+                            </div>
+                            <div class="product-details">
+                                <div class="product-name-container">
+                                    <h4 class="product-name">@prod.ProductName</h4>
+                                </div>
+                                <div class="product-price-container">
+                                    <p class="product-price">$@prod.Price</p>
+                                </div>
+                                <div class="product-button-container">
+                                    <button class="add-to-cart-button" @onclick:preventDefault @onclick:stopPropagation @onclick="() => AddToCart(prod)" disabled="@prod.IsAddingToCart">
+                                        @if (prod.IsAddingToCart)
+                                        {
+                                            <span class="adding-to-cart-text">Adding...</span>
+                                        }
+                                        else
+                                        {
+                                            <svg class="shopping-cart-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 15a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 0h8m-8 0-1-4m9 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-9-4h10l2-7H3m2 7L3 4m0 0-.792-3H1" />
+                                            </svg>
+                                            <span>Add to Cart</span>
+                                        }
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    }
                 </div>
             }
         </div>
-    }
+    </div>
 </div>
+    
 
 
 @code {
@@ -65,6 +85,8 @@
     public IShoppingCartDataService ShoppingCartDataService { get; set; }
     public List<ProductViewModel> Products { get; set; }
     public AlertMessage AlertMessage;
+
+    private string selectedSortOption = "name";
 }
 
 @functions {
@@ -82,6 +104,16 @@
     private async Task LoadProducts()
     {
         Products = (await ProductDataService.GetProductAsync()).ToList();
+
+        switch (selectedSortOption)
+        {
+            case "name":
+                Products = Products.OrderBy(p => p.ProductName).ToList();
+                break;
+            case "price":
+                Products = Products.OrderBy(p => p.Price).ToList();
+                break;
+        }
     }
 
     private async Task AddToCart(ProductViewModel product)
@@ -158,4 +190,9 @@
         StateHasChanged();
     }
 
+    private async Task SortProducts(ChangeEventArgs e)
+    {
+        selectedSortOption = e.Value.ToString();
+        await LoadProducts();
+    }
 }
