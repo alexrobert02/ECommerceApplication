@@ -31,7 +31,7 @@ namespace ECommercerApplication.Application.Tests.Queries.OrderItemTests
 
             _repository.FindByIdAsync(Arg.Any<Guid>()).Returns(Task.FromResult(Result<OrderItem>.Success(mockOrderItem.Value)));
 
-            var query = new GetByIdOrderItemQuery { OrderItemId = orderItemId };
+            var query = new GetByFilterOrderItemQuery { OrderItemId = orderItemId };
 
             // Act
             var result = await _handler.Handle(query, new CancellationToken());
@@ -51,7 +51,7 @@ namespace ECommercerApplication.Application.Tests.Queries.OrderItemTests
             var orderItemId = Guid.NewGuid();
             _repository.FindByIdAsync(orderItemId).Returns(Task.FromResult(Result<OrderItem>.Failure("Not found")));
 
-            var query = new GetByIdOrderItemQuery { OrderItemId = orderItemId };
+            var query = new GetByFilterOrderItemQuery { OrderItemId = orderItemId };
 
             // Act
             var result = await _handler.Handle(query, new CancellationToken());

@@ -9,6 +9,6 @@ namespace ECommerceApplication.App.Contracts
 
         Task<ShoppingCartViewModel> GetShoppingCartByUserIdAsync(Guid userId);
 
-        Task<ShoppingCartViewModel> AttachOrderItemById(Guid shoppingCartId, Guid orderItemId);
+        Task<ShoppingCartViewModel> AttachOrderItemById(Guid shoppingCartId, OrderItemDto orderItemId);
     }
 }
