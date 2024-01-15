@@ -54,8 +54,9 @@
                                         </button>
 
                                         <div class="form-outline">
-                                            <input id="form1" min="0" name="quantity" value="1" type="number" class="form-control" />
+                                            <input id="form1" min="0" name="quantity" value="@orderItem.Quantity" type="number" class="form-control" />
                                             <label class="form-label" for="form1">Quantity</label>
+                                            <span>@orderItem.Quantity</span>
                                         </div>
 
                                         <button class="btn btn-primary px-3 ms-2"
