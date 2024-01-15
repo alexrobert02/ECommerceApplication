@@ -24,7 +24,8 @@ namespace ECommerceApplication.Application.Features.OrderItems.Queries.GetAllOrd
                     OrderItemId = o.OrderItemId,
                     ProductId = o.ProductId,
                     Quantity = o.Quantity,
-                    PricePerUnit = o.PricePerUnit
+                    PricePerUnit = o.PricePerUnit,
+                    ShoppingCartId = o.ShoppingCartId
                 }).ToList();
             }
             return response;

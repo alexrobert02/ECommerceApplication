@@ -102,5 +102,22 @@ namespace ECommerceApplication.App.Services
             return result!;
         }
 
+        public async Task<List<OrderItemViewModel>> getByShoppingCartIdAndProductId(Guid shoppingCartId, Guid productId) { 
+            string requestUri = $"{RequestUri}?shoppingCartId={shoppingCartId.ToString()}&productId={productId.ToString()}";
+
+            httpClient.DefaultRequestHeaders.Authorization
+                = new AuthenticationHeaderValue("Bearer", await tokenService.GetTokenAsync());
+
+            var response = await httpClient.GetAsync(requestUri);
+
+            response.EnsureSuccessStatusCode();
+
+            var result = await response.Content.ReadFromJsonAsync<ApiResponse<List<OrderItemViewModel>>>();
+
+            result!.IsSuccess = response.IsSuccessStatusCode;
+
+            return result!.Data;
+        }
+
     }
 }

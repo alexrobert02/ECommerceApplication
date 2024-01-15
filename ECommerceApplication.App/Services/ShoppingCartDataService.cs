@@ -20,9 +20,11 @@ namespace ECommerceApplication.App.Services
         private const string RequestUri = "api/v1/ShoppingCart";
         private readonly HttpClient httpClient;
         private readonly ITokenService tokenService;
-      
-        public ShoppingCartDataService(HttpClient httpClient, ITokenService tokenService)
+        private readonly IOrderItemDataService orderItemDataService;
+
+        public ShoppingCartDataService(HttpClient httpClient, ITokenService tokenService, IOrderItemDataService orderItemDataService)
         {
+            this.orderItemDataService = orderItemDataService;
             this.httpClient = httpClient;
             this.tokenService = tokenService;
         }
@@ -52,16 +54,16 @@ namespace ECommerceApplication.App.Services
             if (!response.IsSuccessStatusCode)
             {
                 throw new ApplicationException(content);
-            }   
+            }
             Console.WriteLine(content);
             //var shoppingCart = JsonSerializer.Deserialize<List<ShoppingCartViewModel>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            
+
             //var jsonDocument = JsonDocument.Parse(content);
             //var shoppingCartsElement = jsonDocument.RootElement.GetProperty("shoppingCarts");
             //var shoppingCart = JsonSerializer.Deserialize<List<ShoppingCartViewModel>>(shoppingCartsElement.GetRawText(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            
+
             var apiResponse = JsonSerializer.Deserialize<ApiResponseShoppingCart>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            if (apiResponse ==null)
+            if (apiResponse == null)
             {
                 throw new ApplicationException("Api response is null");
             }
@@ -87,22 +89,30 @@ namespace ECommerceApplication.App.Services
             return content.Data;
         }
 
-        public async Task<ShoppingCartViewModel> AttachOrderItemById(Guid shoppingCartId, Guid orderItemId) 
+        public async Task<ShoppingCartViewModel> AttachOrderItemById(Guid shoppingCartId, OrderItemDto orderItem)
         {
-            var response = await httpClient.PutAsync($"{RequestUri}/{shoppingCartId}/AddItem/{orderItemId}", null);
-            response.EnsureSuccessStatusCode();
-            var content = await response.Content.ReadAsStringAsync();
-            if (!response.IsSuccessStatusCode)
+            var orderItems = await orderItemDataService.getByShoppingCartIdAndProductId(shoppingCartId, orderItem.ProductId);
+            if (orderItems.Count <= 0)
             {
-                throw new ApplicationException(content);
+                var response = await httpClient.PutAsync($"{RequestUri}/{shoppingCartId}/AddItem/{orderItem.OrderItemId}", null);
+                response.EnsureSuccessStatusCode();
+                var content = await response.Content.ReadAsStringAsync();
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new ApplicationException(content);
+                }
+                var apiResponse = JsonSerializer.Deserialize<ShoppingCartViewModel>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                if (apiResponse == null)
+                {
+                    throw new ApplicationException("Api response is null");
+                }
+                return apiResponse!;
             }
-            Console.WriteLine(content);
-            var apiResponse = JsonSerializer.Deserialize<ShoppingCartViewModel>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            if (apiResponse == null)
-            {
-                throw new ApplicationException("Api response is null");
-            }
-            return apiResponse!;
+            OrderItemViewModel duplicateOrderItem = orderItems[0];
+            duplicateOrderItem.Quantity += orderItem.Quantity;
+            orderItemDataService.UpdateOrderItemAsync(duplicateOrderItem);
+            return null;
+
         }
 
     }

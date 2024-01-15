@@ -127,8 +127,8 @@
                 UpdateAddToCartMessage(false, "Error adding to cart");
                 return;
             }
-            Guid createdOrderItemId = result.Data.OrderItemId;
-            var shoppingCartViewModel = await ShoppingCartDataService.AttachOrderItemById(shoppingCart.ShoppingCartId, createdOrderItemId);
+            OrderItemDto createdOrderItem = result.Data;
+            var shoppingCartViewModel = await ShoppingCartDataService.AttachOrderItemById(shoppingCart.ShoppingCartId, createdOrderItem);
             UpdateAddToCartMessage(true, "Added to cart");
         }
         catch (Exception e)
