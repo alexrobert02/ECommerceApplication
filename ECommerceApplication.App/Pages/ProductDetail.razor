@@ -141,8 +141,8 @@
                 AddToCartMessage = "Error adding to cart";
                 return false;    
             }
-            var orderItem = result.Data;
-            var shoppingCartViewModel = await ShoppingCartDataService.AttachOrderItemById(shoppingCart.ShoppingCartId, orderItem.OrderItemId);
+            OrderItemDto orderItem = result.Data;
+            var shoppingCartViewModel = await ShoppingCartDataService.AttachOrderItemById(shoppingCart.ShoppingCartId, orderItem);
             AddToCartMessage = "Added to cart";
         }
         catch (Exception e)

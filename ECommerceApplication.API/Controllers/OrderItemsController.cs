@@ -5,10 +5,11 @@ using ECommerceApplication.Application.Features.OrderItems.Commands.UpdateOrderI
 using ECommerceApplication.Application.Features.OrderItems.Queries.GetByIdOrderItem;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebSockets;
+using ECommerceApplication.Application.Features.OrderItems.Queries.GetByFilterOrderItem;
 
 namespace ECommerceApplication.API.Controllers
 {
-    public class OrderItemsController: ApiControllerBase 
+    public class OrderItemsController : ApiControllerBase
     {
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -46,18 +47,29 @@ namespace ECommerceApplication.API.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] Guid? shoppingCartId, [FromQuery] Guid? productId)
         {
-            var result = await Mediator.Send(new GetAllOrderItemQuery());
-            return Ok(result.OrderItems);
+            if (shoppingCartId == null && productId == null)
+            {
+                var findAllResult = await Mediator.Send(new GetAllOrderItemQuery());
+                return Ok(findAllResult);
+            }
+            var result = await Mediator.Send(new GetByFilterOrderItemQuery
+            {
+                ShoppingCartId = shoppingCartId,
+                ProductId = productId
+            });
+            return Ok(result);
+            
+
         }
 
         [HttpGet("{orderItemId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(GetByIdOrderItemQuery), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(GetByFilterOrderItemQuery), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(Guid orderItemId)
         {
-            var command = new GetByIdOrderItemQuery { OrderItemId = orderItemId };
+            var command = new GetByFilterOrderItemQuery { OrderItemId = orderItemId };
             var result = await Mediator.Send(command);
             return Ok(result);
         }
