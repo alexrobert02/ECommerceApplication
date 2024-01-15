@@ -63,5 +63,40 @@ namespace ECommerceApplication.App.Services
 
             return response!;
         }
+
+
+        public async Task<List<AddressViewModel>> GetUserAddressesAsync(Guid userId)
+        {
+            try
+            {
+                var uri = $"{RequestUri}/ByUserId/{userId}";
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", await tokenService.GetTokenAsync());
+                var result = await httpClient.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead);
+                result.EnsureSuccessStatusCode();
+                var content = await result.Content.ReadAsStringAsync();
+
+                if (!result.IsSuccessStatusCode)
+                {
+                    throw new ApplicationException(content);
+                }
+
+                var addresses = JsonSerializer.Deserialize<AddressesResponse>(content, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+
+                return addresses?.Addresses ?? new List<AddressViewModel>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception during deserialization: {ex}");
+                throw;
+            }
+        }
+    }
+
+    public class AddressesResponse
+    {
+        public List<AddressViewModel>? Addresses { get; set; }
     }
 }

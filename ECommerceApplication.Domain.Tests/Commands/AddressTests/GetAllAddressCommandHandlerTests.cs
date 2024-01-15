@@ -30,8 +30,8 @@ namespace ECommercerApplication.Application.Tests.Queries.AddressTests
             // Arrange
             var addresses = new List<Address>
             {
-                Address.Create("Street 1","City 1","State 1", "12345",true ).Value,
-                Address.Create("Street 2", "City 2", "State 2", "54321", false).Value
+                Address.Create(Guid.NewGuid(), "Street 1","City 1","State 1", "12345",true ).Value,
+                Address.Create(Guid.NewGuid(), "Street 2", "City 2", "State 2", "54321", false).Value
                 // Add more addresses as needed
             };
             var result = Result<IReadOnlyList<Address>>.Success(addresses);

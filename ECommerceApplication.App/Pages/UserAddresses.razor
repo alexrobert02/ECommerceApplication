@@ -1,5 +1,6 @@
-﻿@page "/addressoverview"
+﻿@page "/useraddresses"
 @using ECommerceApplication.App.Contracts
+@using ECommerceApplication.App.Services
 @using ECommerceApplication.App.ViewModels
 
 <h3>Address Overview</h3>
@@ -44,12 +45,22 @@ else
     [Inject]
     public NavigationManager NavigationManager { get; set; }
 
+    [Inject]
+    public ITokenService TokenService { get; set; }
+
     public List<AddressViewModel> Addresses { get; set; }
 }
 
 @functions {
     protected override async Task OnInitializedAsync()
     {
-        Addresses = (await AddressDataService.GetAddressesAsync()).ToList();
+	    var token = await TokenService.GetTokenAsync();
+	    Guid userId = await TokenService.DecodeUserIdFromTokenAsync(token);
+	    if (userId == null || userId == Guid.Empty)
+		    return;
+        Addresses = (await AddressDataService.GetUserAddressesAsync(userId)).ToList();
+        if (Addresses == null)
+	        return;
+
     }
 }

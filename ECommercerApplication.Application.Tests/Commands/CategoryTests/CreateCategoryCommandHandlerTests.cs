@@ -42,8 +42,8 @@ namespace ECommercerApplication.Application.Tests.Commands.CategoryTests
 
             // Assert
             Assert.True(response.Success);
-            Assert.NotNull(response.Category);
-            Assert.Equal("Electronics", response.Category.CategoryName);
+            Assert.NotNull(response.Data);
+            Assert.Equal("Electronics", response.Data.CategoryName);
         }
 
 

@@ -11,7 +11,7 @@ namespace ECommerceApplication.Domain.Tests
         public void When_CreateAddressIsCalled_WithValidParameters_Then_SuccessIsReturned()
         {
             // Arrange && Act
-            var result = Address.Create("123 Main St", "City", "State", "12345", true);
+            var result = Address.Create(Guid.NewGuid(),"123 Main St", "City", "State", "12345", true);
 
             // Assert
             result.IsSuccess.Should().BeTrue();
@@ -22,7 +22,7 @@ namespace ECommerceApplication.Domain.Tests
         public void When_CreateAddressIsCalled_WithInvalidStreet_Then_FailureIsReturned()
         {
             // Arrange && Act
-            var result = Address.Create("", "City", "State", "12345", true);
+            var result = Address.Create(Guid.NewGuid(), "", "City", "State", "12345", true);
 
             // Assert
             result.IsSuccess.Should().BeFalse();
@@ -33,7 +33,7 @@ namespace ECommerceApplication.Domain.Tests
         public void When_CreateAddressIsCalled_WithInvalidCity_Then_FailureIsReturned()
         {
             // Arrange && Act
-            var result = Address.Create("123 Main St", "", "State", "12345", true);
+            var result = Address.Create(Guid.NewGuid(), "123 Main St", "", "State", "12345", true);
 
             // Assert
             result.IsSuccess.Should().BeFalse();
@@ -44,7 +44,7 @@ namespace ECommerceApplication.Domain.Tests
         public void When_CreateAddressIsCalled_WithInvalidState_Then_FailureIsReturned()
         {
             // Arrange && Act
-            var result = Address.Create("123 Main St", "City", "", "12345", true);
+            var result = Address.Create(Guid.NewGuid(), "123 Main St", "City", "", "12345", true);
 
             // Assert
             result.IsSuccess.Should().BeFalse();
@@ -55,7 +55,7 @@ namespace ECommerceApplication.Domain.Tests
         public void When_CreateAddressIsCalled_WithInvalidPostalCode_Then_FailureIsReturned()
         {
             // Arrange && Act
-            var result = Address.Create("123 Main St", "City", "State", "", true);
+            var result = Address.Create(Guid.NewGuid(), "123 Main St", "City", "State", "", true);
 
             // Assert
             result.IsSuccess.Should().BeFalse();
@@ -66,7 +66,7 @@ namespace ECommerceApplication.Domain.Tests
         public void When_UpdateAddressIsCalled_WithValidParameters_Then_AddressIsUpdatedSuccessfully()
         {
             // Arrange
-            var address = Address.Create("123 Main St", "City", "State", "12345", true);
+            var address = Address.Create(Guid.NewGuid(), "123 Main St", "City", "State", "12345", true);
 
             // Act
             address.Value.Update("456 New St", "New City", "New State", "54321", false);

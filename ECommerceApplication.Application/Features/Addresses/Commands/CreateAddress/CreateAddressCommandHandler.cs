@@ -33,7 +33,7 @@ namespace ECommerceApplication.Application.Features.Addresses.Commands.CreateAdd
                 };
             }
 
-            var @address = Address.Create(request.Street, request.City, request.State, request.PostalCode, request.IsDefault);
+            var @address = Address.Create(request.UserId, request.Street, request.City, request.State, request.PostalCode, request.IsDefault);
             if (@address.IsSuccess)
             {
 
@@ -45,6 +45,7 @@ namespace ECommerceApplication.Application.Features.Addresses.Commands.CreateAdd
                     Address = new CreateAddressDto
                     {
                         AddressId = @address.Value.AddressId,
+                        UserId = @address.Value.UserId,
                         Street = @address.Value.Street,
                         City = @address.Value.City,
                         State = @address.Value.State,

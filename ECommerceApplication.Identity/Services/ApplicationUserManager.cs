@@ -108,7 +108,6 @@ namespace ECommerceApplication.Identity.Services
             user.Email = userDto.Email;
             user.FirstName = userDto.FirstName;
             user.LastName = userDto.LastName;
-            user.Address = userDto.Address;
             user.PhoneNumber = userDto.PhoneNumber;
             user.Role = userDto.Role;
         }
@@ -121,7 +120,6 @@ namespace ECommerceApplication.Identity.Services
                 Email = user.Email,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Address = user.Address,
                 PhoneNumber = user.PhoneNumber,
                 Role = user.Role
 

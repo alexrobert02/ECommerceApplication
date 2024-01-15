@@ -10,5 +10,7 @@ namespace ECommerceApplication.App.Contracts
         Task<ApiResponse<AddressDto>> CreateAddressAsync(AddressViewModel addressViewModel);
 
         Task<ApiResponse<AddressDto>> UpdateAddressAsync(AddressViewModel addressViewModel);
+
+        Task<List<AddressViewModel>> GetUserAddressesAsync(Guid userId);
     }
 }

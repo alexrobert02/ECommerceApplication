@@ -59,6 +59,9 @@ namespace ECommerceApplication.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("AddressId");
 
                     b.ToTable("Addresses");
@@ -195,6 +198,8 @@ namespace ECommerceApplication.Infrastructure.Migrations
                     b.HasKey("OrderItemId");
 
                     b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
 
                     b.HasIndex("ShoppingCartId");
 
@@ -352,9 +357,17 @@ namespace ECommerceApplication.Infrastructure.Migrations
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId");
 
+                    b.HasOne("ECommerceApplication.Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ECommerceApplication.Domain.Entities.ShoppingCart", null)
                         .WithMany("OrderItems")
                         .HasForeignKey("ShoppingCartId");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("ECommerceApplication.Domain.Entities.Payment", b =>
