@@ -161,12 +161,10 @@
         var token = await TokenService.GetTokenAsync();
         if (token != null)
         {
-	        Guid userId = await TokenService.DecodeUserIdFromTokenAsync(token);
-	        if (userId == null || userId == Guid.Empty)
-		        return;
-	        ShoppingCart = await ShoppingCartDataService.GetShoppingCartByUserIdAsync(userId);
-	        if (ShoppingCart == null)
-		        return;
+            Guid userId = await TokenService.DecodeUserIdFromTokenAsync(token);
+            if (userId == null || userId == Guid.Empty)
+                return;
+            ShoppingCart = await ShoppingCartDataService.GetShoppingCartByUserIdAsync(userId);
         }
     }
 

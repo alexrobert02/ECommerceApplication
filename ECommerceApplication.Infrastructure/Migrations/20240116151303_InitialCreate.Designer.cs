@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ECommerceApplication.Infrastructure.Migrations
 {
     [DbContext(typeof(ECommerceApplicationContext))]
-    [Migration("20240115231059_InitialCreate")]
+    [Migration("20240116151303_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -284,7 +284,7 @@ namespace ECommerceApplication.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Review");
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("ECommerceApplication.Domain.Entities.ShoppingCart", b =>
