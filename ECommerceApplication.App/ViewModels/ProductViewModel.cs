@@ -5,6 +5,7 @@ namespace ECommerceApplication.App.ViewModels
     public class ProductViewModel
     {
         public Guid ProductId { get; set; }
+        public Guid CompanyId { get; set; }
         [Required(ErrorMessage = "Product name is required")]
         public string ProductName { get; set; } = string.Empty;
         [Required(ErrorMessage = "Product price is required")]
@@ -23,6 +24,7 @@ namespace ECommerceApplication.App.ViewModels
             return new ProductViewModel
             {
                 ProductId = dto.ProductId,
+                CompanyId = dto.CategoryId,
                 ProductName = dto.ProductName,
                 Price = dto.Price,
                 Description = dto.Description,

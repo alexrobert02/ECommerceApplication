@@ -25,8 +25,8 @@ namespace ECommerceApplication.Identity.Services
                 return Result<UserDto>.Failure($"User with id {userId} not found");
             }
             var userDtos = MapToUserDto(user);
-            var role = await userManager.GetRolesAsync(user);
-            userDtos.Role = role.ToString();
+            var roles = await userManager.GetRolesAsync(user);
+            userDtos.Role = roles.FirstOrDefault();
             return Result<UserDto>.Success(userDtos);
         }
         public async Task<Result<UserDto>> FindByEmailAsync(string email)
@@ -34,8 +34,11 @@ namespace ECommerceApplication.Identity.Services
             var user = await userManager.FindByEmailAsync(email);
             if (user == null)
                 return Result<UserDto>.Failure($"User with email {email} not found");
+            var userDto = MapToUserDto(user);
+            var roles = await userManager.GetRolesAsync(user);
+            userDto.Role = roles.FirstOrDefault();
 
-            return Result<UserDto>.Success(MapToUserDto(user));
+            return Result<UserDto>.Success(userDto);
         }
 
 

@@ -46,7 +46,7 @@ namespace ECommerceApplication.Application.Features.Products.Commands.CreateProd
                     ValidationsErrors = new List<string> { "Category with the provided ID does not exist." }
                 };
             }
-            var @event = Product.Create(request.ProductName, request.Price);
+            var @event = Product.Create(request.CompanyId, request.ProductName, request.Price);
             if (@event.IsSuccess)
             {
                 var category = await categoryRepository.FindByIdAsync(request.CategoryId);
@@ -66,7 +66,7 @@ namespace ECommerceApplication.Application.Features.Products.Commands.CreateProd
                 //@event.Value.AttachManufacturer(request.ManufacturerId);
 #pragma warning restore CS8604 // Possible null reference argument.
 
-                var result = productRepository.AddAsync(@event.Value);
+                await productRepository.AddAsync(@event.Value);
                 var email = new Mail
                 {
                     Body = $"A new event with name:{@event.Value.ProductName} and price: {@event.Value.Price} has been created",
@@ -95,6 +95,7 @@ namespace ECommerceApplication.Application.Features.Products.Commands.CreateProd
                     Product = new ProductDto
                     {
                         ProductId = @event.Value.ProductId,
+                        CompanyId = @event.Value.CompanyId,
                         ProductName = @event.Value.ProductName,
                         Price = @event.Value.Price,
                         Description = @event.Value.Description,

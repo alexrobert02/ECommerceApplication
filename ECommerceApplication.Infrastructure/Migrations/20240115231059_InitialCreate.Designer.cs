@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ECommerceApplication.Infrastructure.Migrations
 {
     [DbContext(typeof(ECommerceApplicationContext))]
-    [Migration("20240114201022_InitialCreate")]
+    [Migration("20240115231059_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -95,45 +95,6 @@ namespace ECommerceApplication.Infrastructure.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("ECommerceApplication.Domain.Entities.Company", b =>
-                {
-                    b.Property<Guid>("CompanyId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("CompanyAddress")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("CompanyName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("LastModifiedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("CompanyId");
-
-                    b.ToTable("Companies");
                 });
 
             modelBuilder.Entity("ECommerceApplication.Domain.Entities.Order", b =>
@@ -265,7 +226,7 @@ namespace ECommerceApplication.Infrastructure.Migrations
                     b.Property<Guid>("CategoryId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("CompanyId")
+                    b.Property<Guid>("CompanyId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("CreatedBy")
@@ -296,8 +257,6 @@ namespace ECommerceApplication.Infrastructure.Migrations
                     b.HasKey("ProductId");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("CompanyId");
 
                     b.ToTable("Products");
                 });
@@ -390,10 +349,6 @@ namespace ECommerceApplication.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ECommerceApplication.Domain.Entities.Company", null)
-                        .WithMany("Products")
-                        .HasForeignKey("CompanyId");
-
                     b.Navigation("Category");
                 });
 
@@ -404,11 +359,6 @@ namespace ECommerceApplication.Infrastructure.Migrations
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("ECommerceApplication.Domain.Entities.Company", b =>
-                {
-                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("ECommerceApplication.Domain.Entities.Order", b =>
