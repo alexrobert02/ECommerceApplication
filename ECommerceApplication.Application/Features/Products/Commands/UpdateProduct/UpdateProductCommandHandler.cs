@@ -40,6 +40,7 @@ namespace ECommerceApplication.Application.Features.Products.Commands.UpdateProd
             {
                 Success = true,
                 ProductId = @event.Value.ProductId,
+                CompanyId = @event.Value.CompanyId,
                 ProductName = @event.Value.ProductName,
                 Price = @event.Value.Price,
                 Description = @event.Value.Description,

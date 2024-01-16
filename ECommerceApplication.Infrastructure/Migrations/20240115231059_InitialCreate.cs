@@ -49,25 +49,6 @@ namespace ECommerceApplication.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Companies",
-                columns: table => new
-                {
-                    CompanyId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CompanyName = table.Column<string>(type: "text", nullable: false),
-                    CompanyAddress = table.Column<string>(type: "text", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "text", nullable: false),
-                    Email = table.Column<string>(type: "text", nullable: false),
-                    CreatedBy = table.Column<string>(type: "text", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    LastModifiedBy = table.Column<string>(type: "text", nullable: true),
-                    LastModifiedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Companies", x => x.CompanyId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
                 {
@@ -105,12 +86,12 @@ namespace ECommerceApplication.Infrastructure.Migrations
                 columns: table => new
                 {
                     ProductId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CompanyId = table.Column<Guid>(type: "uuid", nullable: false),
                     ProductName = table.Column<string>(type: "text", nullable: false),
                     Price = table.Column<decimal>(type: "numeric", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: true),
                     ImageUrl = table.Column<string>(type: "text", nullable: true),
                     CategoryId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CompanyId = table.Column<Guid>(type: "uuid", nullable: true),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true),
@@ -125,11 +106,6 @@ namespace ECommerceApplication.Infrastructure.Migrations
                         principalTable: "Categories",
                         principalColumn: "CategoryId",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Products_Companies_CompanyId",
-                        column: x => x.CompanyId,
-                        principalTable: "Companies",
-                        principalColumn: "CompanyId");
                 });
 
             migrationBuilder.CreateTable(
@@ -165,10 +141,10 @@ namespace ECommerceApplication.Infrastructure.Migrations
                 {
                     OrderItemId = table.Column<Guid>(type: "uuid", nullable: false),
                     ProductId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ShoppingCartId = table.Column<Guid>(type: "uuid", nullable: true),
                     Quantity = table.Column<int>(type: "integer", nullable: false),
                     PricePerUnit = table.Column<decimal>(type: "numeric", nullable: false),
                     OrderId = table.Column<Guid>(type: "uuid", nullable: true),
-                    ShoppingCartId = table.Column<Guid>(type: "uuid", nullable: true),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true),
@@ -243,11 +219,6 @@ namespace ECommerceApplication.Infrastructure.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_CompanyId",
-                table: "Products",
-                column: "CompanyId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Review_ProductId",
                 table: "Review",
                 column: "ProductId");
@@ -279,9 +250,6 @@ namespace ECommerceApplication.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Categories");
-
-            migrationBuilder.DropTable(
-                name: "Companies");
         }
     }
 }

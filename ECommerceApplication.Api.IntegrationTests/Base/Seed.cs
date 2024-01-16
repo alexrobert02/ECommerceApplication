@@ -24,12 +24,12 @@ namespace ECommerceApplication.API.IntegrationTests.Base
 
             context.Addresses.AddRange(addresses);
 
-            var product1 = Product.Create("Product1", 10).Value;
+            var product1 = Product.Create(Guid.NewGuid(), "Product1", 10).Value;
             product1.AttachCategory(categories[1]);
             product1.AttachDescription("Description1");
             product1.AttachImageUrl("ImageUrl1");
 
-            var product2 = Product.Create("Product2", 20).Value;
+            var product2 = Product.Create(Guid.NewGuid(), "Product2", 20).Value;
             product2.AttachCategory(categories[2]);
             product2.AttachDescription("Description2");
             product2.AttachImageUrl("ImageUrl2");

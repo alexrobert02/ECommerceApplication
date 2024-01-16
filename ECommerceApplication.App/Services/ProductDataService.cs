@@ -34,6 +34,7 @@ namespace ECommerceApplication.App.Services
             result.EnsureSuccessStatusCode();
             var response = await result.Content.ReadFromJsonAsync<ApiResponse<ProductDto>>();
             response!.IsSuccess = result.IsSuccessStatusCode;
+            Console.WriteLine(response);
             return response!;
         }
 

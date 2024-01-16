@@ -14,7 +14,7 @@ public class ProductTests
     public void When_CreateProductIsCalled_WithValidParameters_Then_SuccessIsReturned()
     {
         // Arrange && Act
-        var result = Product.Create("Test Product", 10.0m);
+        var result = Product.Create(Guid.NewGuid(), "Test Product", 10.0m);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -25,7 +25,7 @@ public class ProductTests
     public void When_CreateProductIsCalled_WithInvalidName_Then_FailureIsReturned()
     {
         // Arrange && Act
-        var result = Product.Create("", 10.0m);
+        var result = Product.Create(Guid.NewGuid(), "", 10.0m);
 
         // Assert
         result.IsSuccess.Should().BeFalse();
@@ -36,7 +36,7 @@ public class ProductTests
     public void When_CreateProductIsCalled_WithInvalidPrice_Then_FailureIsReturned()
     {
         // Arrange && Act
-        var result = Product.Create("Test Product", 0.0m);
+        var result = Product.Create(Guid.NewGuid(), "Test Product", 0.0m);
 
         // Assert
         result.IsSuccess.Should().BeFalse();
@@ -47,7 +47,7 @@ public class ProductTests
     public void When_UpdateProductIsCalled_WithValidParameters_Then_ProductIsUpdatedSuccessfully()
     {
         // Arrange
-        var product = Product.Create("Initial Product", 20.0m).Value;
+        var product = Product.Create(Guid.NewGuid(), "Initial Product", 20.0m).Value;
         var categoryId = Guid.NewGuid();
 
         // Act
@@ -65,7 +65,7 @@ public class ProductTests
     public void When_AttachDescriptionIsCalled_WithValidDescription_Then_DescriptionIsAttached()
     {
         // Arrange
-        var product = Product.Create("Test Product", 10.0m).Value;
+        var product = Product.Create(Guid.NewGuid(), "Test Product", 10.0m).Value;
 
         // Act
         product.AttachDescription("Test Description");
@@ -78,7 +78,7 @@ public class ProductTests
     public void When_AttachDescriptionIsCalled_WithEmptyDescription_Then_DescriptionIsNotAttached()
     {
         // Arrange
-        var product = Product.Create("Test Product", 10.0m).Value;
+        var product = Product.Create(Guid.NewGuid(), "Test Product", 10.0m).Value;
 
         // Act
         product.AttachDescription("");
@@ -91,7 +91,7 @@ public class ProductTests
     public void When_AttachImageUrlIsCalled_WithValidImageUrl_Then_ImageUrlIsAttached()
     {
         // Arrange
-        var product = Product.Create("Test Product", 10.0m).Value;
+        var product = Product.Create(Guid.NewGuid(), "Test Product", 10.0m).Value;
 
         // Act
         product.AttachImageUrl("https://example.com/image.jpg");
@@ -104,7 +104,7 @@ public class ProductTests
     public void When_AttachImageUrlIsCalled_WithEmptyImageUrl_Then_ImageUrlIsNotAttached()
     {
         // Arrange
-        var product = Product.Create("Test Product", 10.0m).Value;
+        var product = Product.Create(Guid.NewGuid(), "Test Product", 10.0m).Value;
 
         // Act
         product.AttachImageUrl("");
@@ -117,7 +117,7 @@ public class ProductTests
     public void When_AttachCategoryIsCalled_WithValidCategory_Then_CategoryIsAttached()
     {
         // Arrange
-        var product = Product.Create("Test Product", 10.0m).Value;
+        var product = Product.Create(Guid.NewGuid(), "Test Product", 10.0m).Value;
         var category = Category.Create("Test Category");
 
         // Act
@@ -132,7 +132,7 @@ public class ProductTests
     public void When_AddReviewIsCalled_Then_ReviewIsAddedToProduct()
     {
         // Arrange
-        var product = Product.Create("Test Product", 10.0m).Value;
+        var product = Product.Create(Guid.NewGuid(), "Test Product", 10.0m).Value;
         var review = Review.Create(product.ProductId, Guid.NewGuid(), "Good product", 5);
 
         // Act
