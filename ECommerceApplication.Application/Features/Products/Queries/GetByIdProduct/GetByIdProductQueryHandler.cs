@@ -30,6 +30,7 @@ namespace ECommerceApplication.Application.Features.Products.Queries.GetByIdProd
                 Product = new ProductDto
                 {
                     ProductId = @event.Value.ProductId,
+                    CompanyId = @event.Value.CompanyId,
                     ProductName = @event.Value.ProductName,
                     Price = @event.Value.Price,
                     Description = @event.Value.Description,

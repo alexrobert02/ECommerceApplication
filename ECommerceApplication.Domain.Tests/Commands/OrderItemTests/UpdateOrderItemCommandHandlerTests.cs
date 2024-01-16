@@ -80,11 +80,12 @@ namespace ECommerceApplication.Application.Tests.Commands.OrderItemTests
         {
             // Arrange
             var orderItemId = Guid.NewGuid();
+            var companyId = Guid.NewGuid();
             var command = new UpdateOrderItemCommand { OrderItemId = orderItemId, ProductId = Guid.NewGuid(), Quantity = 1, PricePerUnit = 10.0M };
             _orderItemRepository.FindByIdAsync(orderItemId)
                 .Returns(Task.FromResult<Result<OrderItem>>(Result<OrderItem>.Success(OrderItem.Create(Guid.NewGuid(), 10, 10).Value)));
             _productRepository.FindByIdAsync(command.ProductId)
-                .Returns(Task.FromResult<Result<Product>>(Result<Product>.Success(Product.Create("Iphone 15", 100).Value)));
+                .Returns(Task.FromResult<Result<Product>>(Result<Product>.Success(Product.Create(companyId, "Iphone 15", 100).Value)));
             _orderItemRepository.UpdateAsync(Arg.Any<OrderItem>())
                 .Returns(Task.FromResult<Result<OrderItem>>(Result<OrderItem>.Success((OrderItem.Create(Guid.NewGuid(), 10, 10).Value))));
 
@@ -105,11 +106,12 @@ namespace ECommerceApplication.Application.Tests.Commands.OrderItemTests
         {
             // Arrange
             var orderItemId = Guid.NewGuid();
+            var companyId = Guid.NewGuid();
             var command = new UpdateOrderItemCommand { OrderItemId = orderItemId, ProductId = Guid.NewGuid(), Quantity = 1, PricePerUnit = -1 };
             _orderItemRepository.FindByIdAsync(orderItemId)
                 .Returns(Task.FromResult<Result<OrderItem>>(Result<OrderItem>.Success(OrderItem.Create(Guid.NewGuid(), 10, 10).Value)));
             _productRepository.FindByIdAsync(command.ProductId)
-                .Returns(Task.FromResult<Result<Product>>(Result<Product>.Success(Product.Create("Iphone 15", 100).Value)));
+                .Returns(Task.FromResult<Result<Product>>(Result<Product>.Success(Product.Create(companyId, "Iphone 15", 100).Value)));
             _orderItemRepository.UpdateAsync(Arg.Any<OrderItem>())
                 .Returns(Task.FromResult<Result<OrderItem>>(Result<OrderItem>.Failure("Update failed")));
 

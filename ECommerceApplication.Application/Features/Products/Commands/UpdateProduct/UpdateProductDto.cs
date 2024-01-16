@@ -5,6 +5,7 @@ namespace ECommerceApplication.Application.Features.Products.Commands.UpdateProd
     public class UpdateProductDto : BaseResponse
     {
         public Guid ProductId { get; set; }
+        public Guid CompanyId { get; set; }
         public string ProductName { get; set; } = string.Empty;
         public decimal Price { get; set; }
         public string? Description { get; set; }

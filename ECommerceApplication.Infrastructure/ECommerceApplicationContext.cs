@@ -17,7 +17,6 @@ namespace ECommerceApplication.Infrastructure
         }
 
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Company> Companies { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Product> Products { get; set; }
