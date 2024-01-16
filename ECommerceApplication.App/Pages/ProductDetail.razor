@@ -2,118 +2,6 @@
 @using ECommerceApplication.App.Contracts
 @using ECommerceApplication.App.ViewModels
 @using System.Text.Json
-@inject IReviewDataService ReviewDataService
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-    .details-content-container {
-        background-color: #f5f5f5;
-        padding: 20px;
-    }
-
-    .product-detail {
-        background-color: #ffffff;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        padding: 20px;
-    }
-
-    .category-and-title {
-        color: #6a1b9a;
-    }
-
-    .product-info {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 20px;
-    }
-
-    .price-button-card-container {
-        background-color: #9c4dcc;
-        color: #ffffff;
-        border-radius: 8px;
-        padding: 15px;
-    }
-
-    .product-image {
-        max-width: 100%;
-        height: auto;
-        border-radius: 8px;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .add-to-cart-button-details {
-        background-color: #6a1b9a;
-        color: #ffffff;
-        border: none;
-        padding: 10px 15px;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    .product-description {
-        margin-top: 20px;
-        color: #333333;
-    }
-
-    .category-text {
-        font-weight: bold;
-    }
-
-    /* Stilurile pentru sectiunea de review */
-    .review-section {
-        margin-top: 20px;
-        padding: 20px;
-        background-color: #ffffff;
-        border-radius: 8px;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .star {
-        font-size: 24px;
-        color: #ffffff;
-        cursor: pointer;
-        text-shadow: 0 0 2px #000000;
-    }
-
-    textarea {
-        width: 100%;
-        padding: 10px;
-        margin-top: 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        box-sizing: border-box;
-    }
-
-    button {
-        background-color: #6a1b9a;
-        color: #ffffff;
-        border: none;
-        padding: 10px 15px;
-        border-radius: 5px;
-        cursor: pointer;
-        margin-top: 10px;
-
-    }
-
-    .star.selected {
-        color: #ffd700; 
-    }
-
-    h2, h3 { 
-        color: #6a1b9a;
-        font-weight: bold;
-    }
-
-    .rating {
-        font-weight: bold; /* Adaugă stilul bold pentru Rating */
-    }
-
-    .description-label {
-        font-weight: bold;
-    }
-</style>
 
 <div class="details-content-container">
     @if (Product == null)
@@ -419,65 +307,6 @@
             <div class="product-description">
                 <p>@Product.Description</p>
             </div>
-            <!-- Review Section -->
-            <div class="review-section">
-                <h2>Customer Reviews</h2>
-                @if (!reviewSubmitted)
-                {
-                    <p>Please rate the product:</p>
-                    <div>
-                        <span class="star @(userRating >= 1 ? "selected" : "")" @onclick="() => RateProduct(1)">★</span>
-                        <span class="star @(userRating >= 2 ? "selected" : "")" @onclick="() => RateProduct(2)">★</span>
-                        <span class="star @(userRating >= 3 ? "selected" : "")" @onclick="() => RateProduct(3)">★</span>
-                        <span class="star @(userRating >= 4 ? "selected" : "")" @onclick="() => RateProduct(4)">★</span>
-                        <span class="star @(userRating >= 5 ? "selected" : "")" @onclick="() => RateProduct(5)">★</span>
-                    </div>
-                    <p>Your Rating: @userRating stars</p>
-                    <textarea @bind="userReview" placeholder="Write your review here"></textarea>
-                    <button @onclick="SubmitReview">Submit Review</button>
-                }
-                else
-                {
-                    <p class="description-label">Thank you for your review!</p>
-                }
-                <br/>
-                <div>
-                <h3>Other customers reviews</h3>
-                @if (ProductReviews != null && ProductReviews.Any())
-                {
-                    @foreach (var review in ProductReviews)
-                    {
-                        <div class="review">
-                           
-                            <div class="rating">
-                                Rating:
-                                @{
-                                    for (int i = 1; i <= review.Rating; i++)
-                                    {
-                                        <span class="star" style="color: #ffd700;">★</span>
-                                    }
-
-                                    for (int i=review.Rating+1; i<=5;i++)
-                                    {
-                                        <span class="star">★</span>
-                                    }
-                                }
-                            </div>
-                                <p class="review-text"><span class="description-label">Description:</span> @review.ReviewText</p>
-                                @if (review.UserId == currentUserId)
-                                {
-                                    <button class="delete-review-button" @onclick="() => DeleteReview(review.ReviewId)">Delete</button>
-                                }
-                            <!-- Adaugă orice alte detalii ale recenziei pe care dorești să le afișezi -->
-                        </div>
-                    }
-                }
-                else
-                {
-                    <p class="review-text">No reviews for this product yet.</p>
-                }
-                </div>
-            </div>
         </div>
     }
 </div>
@@ -497,8 +326,6 @@
     public IOrderItemDataService OrderItemDataService { get; set; }
     [Inject]
     public IProductDataService ProductDataService { get; set; }
-    public List<ReviewViewModel> ProductReviews { get; set; }
-    private bool reviewSubmitted = false;
 
     [Parameter]
     public Guid productId { get; set; }
@@ -508,80 +335,13 @@
     private OrderItemViewModel OrderItemViewModel { get; set; } = new OrderItemViewModel();
 
     private ProductViewModel Product { get; set; }
-    private int userRating = 0;
-    private string userReview = "";
-    private Guid currentUserId;
 }
 
 @functions {
 
-    private void RateProduct(int rating)
-    {
-        userRating = rating;
-    }
-
-    private async void SubmitReview()
-    {
-        if (userRating == 0)
-        {
-            // Afiseaza un mesaj de eroare sau ia alte masuri daca nu este setata nicio evaluare.
-            return;
-        }
-
-        // Creează un obiect ReviewViewModel pentru a fi trimis la serviciu pentru crearea review-ului.
-        var newReview = new ReviewViewModel
-            {
-                ProductId = productId,
-                ReviewText = userReview,
-                Rating = userRating,
-                // Obține UserId utilizând serviciul TokenService.
-                UserId = currentUserId
-            };
-
-        // Trimite noul review către serviciul ReviewDataService pentru a-l crea.
-        var createReviewResult = await ReviewDataService.CreateReviewAsync(newReview);
-
-        if (createReviewResult.IsSuccess)
-        {
-            // Dacă crearea review-ului este reușită, reîmprospătează lista de recenzii pentru produs.
-            ProductReviews = await ReviewDataService.GetReviewByProductId(productId);
-
-            // Resetează valorile pentru următoarea recenzie.
-            userRating = 0;
-            userReview = "";
-            reviewSubmitted = true;
-        }
-        else
-        {
-            // Afiseaza un mesaj de eroare sau ia alte masuri daca crearea review-ului a esuat.
-            Console.WriteLine($"Error creating review: {createReviewResult.Message}");
-        }
-    }
-
-    private async void DeleteReview(Guid reviewId)
-    {
-        var deleteReviewResult = await ReviewDataService.DeleteReviewAsync(reviewId);
-
-        if (deleteReviewResult.IsSuccess)
-        {
-            // Reîmprospătează lista de recenzii pentru produs.
-            ProductReviews = await ReviewDataService.GetReviewByProductId(productId);
-
-            // Declanșează reîmprospătarea componentei.
-            //StateHasChanged();
-        }
-        else
-        {
-            // Tratează eroarea de ștergere a recenziei, de exemplu, afișează un mesaj de eroare.
-            Console.WriteLine($"Error deleting review: {deleteReviewResult.Message}");
-        }
-    }
-
-
     protected override async Task OnInitializedAsync()
     {
         AddToCartMessage = "";
-        currentUserId = await TokenService.DecodeUserIdFromTokenAsync(await TokenService.GetTokenAsync());
 
         if (productId == Guid.Empty)
         {
@@ -612,11 +372,6 @@
         {
             Console.WriteLine($"Error retrieving product: {ex.Message}");
         }
-        Console.WriteLine($"Attempting to retrieve reviews for product with ID: {productId}");
-
-        ProductReviews = await ReviewDataService.GetReviewByProductId(productId);
-        Console.WriteLine($"Found {ProductReviews.Count} reviews for product with ID: {productId}");
-        Console.WriteLine($"Reviews:{ProductReviews}");
     }
 
     private async void AddToCartHandler()

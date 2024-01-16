@@ -172,7 +172,7 @@ namespace ECommerceApplication.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Reviews",
+                name: "Review",
                 columns: table => new
                 {
                     ReviewId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -183,9 +183,9 @@ namespace ECommerceApplication.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Reviews", x => x.ReviewId);
+                    table.PrimaryKey("PK_Review", x => x.ReviewId);
                     table.ForeignKey(
-                        name: "FK_Reviews_Products_ProductId",
+                        name: "FK_Review_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "ProductId",
@@ -219,18 +219,8 @@ namespace ECommerceApplication.Infrastructure.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-<<<<<<<< Updated upstream:ECommerceApplication.Infrastructure/Migrations/20240115231059_InitialCreate.cs
                 name: "IX_Review_ProductId",
                 table: "Review",
-========
-                name: "IX_Products_CompanyId",
-                table: "Products",
-                column: "CompanyId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Reviews_ProductId",
-                table: "Reviews",
->>>>>>>> Stashed changes:ECommerceApplication.Infrastructure/Migrations/20240115213154_InitialCreate.cs
                 column: "ProductId");
         }
 
@@ -247,7 +237,7 @@ namespace ECommerceApplication.Infrastructure.Migrations
                 name: "Payments");
 
             migrationBuilder.DropTable(
-                name: "Reviews");
+                name: "Review");
 
             migrationBuilder.DropTable(
                 name: "ShoppingCarts");

@@ -281,7 +281,7 @@ namespace ECommerceApplication.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Review");
                 });
 
             modelBuilder.Entity("ECommerceApplication.Domain.Entities.ShoppingCart", b =>
