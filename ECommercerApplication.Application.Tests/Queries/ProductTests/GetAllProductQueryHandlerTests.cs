@@ -22,10 +22,11 @@ namespace ECommercerApplication.Application.Tests.Queries.ProductTests
         [Fact]
         public async Task Handle_ReturnAllProducts()
         {
+            var companyId = Guid.NewGuid();
             var product = new List<Product>
             {
-                Product.Create("Product 1",10).Value,
-                Product.Create("Product 2", 2).Value
+                Product.Create(companyId, "Product 1",10).Value,
+                Product.Create(companyId, "Product 2", 2).Value
             };
 
             var result = Result<IReadOnlyList<Product>>.Success(product);

@@ -4,22 +4,29 @@ namespace ECommerceApplication.Domain.Entities
 {
     public class Product : AuditableEntity
     {
-        private Product(string productName, decimal price)
+        private Product(Guid companyId, string productName, decimal price)
         {
             ProductId = Guid.NewGuid();
+            CompanyId = companyId;
             ProductName = productName;
             Price = price;
             Reviews = new List<Review>();
         }
         public Guid ProductId { get; private set; }
+        public Guid CompanyId { get; private set; }
         public string ProductName { get; private set; } = string.Empty;
         public decimal Price { get; private set; }
         public string? Description { get; private set; } 
         public string? ImageUrl { get; private set; }
         public List<Review> Reviews { get; private set; }
 
-        public static Result<Product> Create(string productName, decimal price)
+        public static Result<Product> Create(Guid companyId, string productName, decimal price)
         {
+            if (companyId == Guid.Empty)
+            {
+                return Result<Product>.Failure("Company Id required.");
+            }
+
             if (string.IsNullOrWhiteSpace(productName))
             {
                 return Result<Product>.Failure("Product Name is required.");
@@ -28,7 +35,7 @@ namespace ECommerceApplication.Domain.Entities
             {
                 return Result<Product>.Failure("Price must be greater than zero.");
             }
-            return Result<Product>.Success(new Product(productName, price));
+            return Result<Product>.Success(new Product(companyId, productName, price));
         }
         public Guid CategoryId { get; private set; }
         public Category Category { get; private set; }

@@ -19,6 +19,7 @@ namespace ECommerceApplication.Application.Features.Products.Queries.GetAllProdu
             response.Products = result.Value.Select(e => new ProductDto
             {
                 ProductId = e.ProductId,
+                CompanyId = e.CompanyId,
                 ProductName = e.ProductName,
                 Price = e.Price,
                 Description = e.Description,

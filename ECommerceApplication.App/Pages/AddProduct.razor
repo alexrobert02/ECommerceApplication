@@ -2,67 +2,74 @@
 @using ECommerceApplication.App.Contracts
 @using ECommerceApplication.App.ViewModels
 
-<h3>New Product</h3>
-<EditForm Model="@ProductViewModel" OnValidSubmit="@HandleValidSubmit">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+@if (User.Role == "Company")
+{
+	<h3>New Product</h3>
+	<EditForm Model="@ProductViewModel" OnValidSubmit="@HandleValidSubmit">
+		<DataAnnotationsValidator/>
+		<ValidationSummary/>
 
-    <div class="container mt-4">
-        <div class="row mb-3">
-            <label for="productName" class="col-sm-3 form-label">Product Name:</label>
-            <div class="col-sm-5">
-                <InputText id="productName" class="form-control" @bind-Value="@ProductViewModel.ProductName" placeholder="Enter product name" />
-                <ValidationMessage For="@(() => ProductViewModel.ProductName)" />
-            </div>
-        </div>
+		<div class="container mt-4">
+			<div class="row mb-3">
+				<label for="productName" class="col-sm-3 form-label">Product Name:</label>
+				<div class="col-sm-5">
+					<InputText id="productName" class="form-control" @bind-Value="@ProductViewModel.ProductName" placeholder="Enter product name"/>
+					<ValidationMessage For="@(() => ProductViewModel.ProductName)"/>
+				</div>
+			</div>
 
-        <div class="row mb-3">
-            <label for="productPrice" class="col-sm-3 form-label">Price:</label>
-            <div class="col-sm-5">
-                <InputNumber id="productPrice" class="form-control" @bind-Value="@ProductViewModel.Price" placeholder="Enter price" />
-                <ValidationMessage For="@(() => ProductViewModel.Price)" />
-            </div>
-        </div>
+			<div class="row mb-3">
+				<label for="productPrice" class="col-sm-3 form-label">Price:</label>
+				<div class="col-sm-5">
+					<InputNumber id="productPrice" class="form-control" @bind-Value="@ProductViewModel.Price" placeholder="Enter price"/>
+					<ValidationMessage For="@(() => ProductViewModel.Price)"/>
+				</div>
+			</div>
 
-        <div class="row mb-3">
-            <label for="productDescription" class="col-sm-3 form-label">Description:</label>
-            <div class="col-sm-5">
-                <InputText id="productDescription" class="form-control" @bind-Value="@ProductViewModel.Description" placeholder="Enter description" />
-                <ValidationMessage For="@(() => ProductViewModel.Description)" />
-            </div>
-        </div>
+			<div class="row mb-3">
+				<label for="productDescription" class="col-sm-3 form-label">Description:</label>
+				<div class="col-sm-5">
+					<InputText id="productDescription" class="form-control" @bind-Value="@ProductViewModel.Description" placeholder="Enter description"/>
+					<ValidationMessage For="@(() => ProductViewModel.Description)"/>
+				</div>
+			</div>
 
-        <div class="row mb-3">
-            <label for="productImage" class="col-sm-3 form-label">Image:</label>
-            <div class="col-sm-5">
-                <InputText id="productImage" class="form-control" @bind-Value="@ProductViewModel.ImageUrl" placeholder="Enter image" />
-                <ValidationMessage For="@(() => ProductViewModel.ImageUrl)" />
-            </div>
-        </div>
+			<div class="row mb-3">
+				<label for="productImage" class="col-sm-3 form-label">Image:</label>
+				<div class="col-sm-5">
+					<InputText id="productImage" class="form-control" @bind-Value="@ProductViewModel.ImageUrl" placeholder="Enter image"/>
+					<ValidationMessage For="@(() => ProductViewModel.ImageUrl)"/>
+				</div>
+			</div>
 
-        <div class="row mb-3">
-            <label for="productCategory" class="col-sm-3 form-label">Category Id:</label>
-            <div class="col-sm-5">
-                <InputSelect @bind-Value="@ProductViewModel.StringCategoryId" class="form-select" id="productCategory" placeholder="select a category">
-                    <option value="">Select a category...</option>
-                    @foreach (var category in Categories)
-                    {
-                        <option value="@category.CategoryId">@category.CategoryName</option>
-                    }
-                </InputSelect>
-                <ValidationMessage For="@(() => ProductViewModel.StringCategoryId)" />
-            </div>
-        </div>
+			<div class="row mb-3">
+				<label for="productCategory" class="col-sm-3 form-label">Category Id:</label>
+				<div class="col-sm-5">
+					<InputSelect @bind-Value="@ProductViewModel.StringCategoryId" class="form-select" id="productCategory" placeholder="select a category">
+						<option value="">Select a category...</option>
+						@foreach (var category in Categories)
+						{
+							<option value="@category.CategoryId">@category.CategoryName</option>
+						}
+					</InputSelect>
+					<ValidationMessage For="@(() => ProductViewModel.StringCategoryId)"/>
+				</div>
+			</div>
 
-        <div class="row">
-            <div class="col-sm-5">
-                <button type="submit" class="btn btn-primary">Save product</button>
-                <button class="btn btn-primary ms-3" @onclick="Cancel">Cancel</button>
-            </div>
-        </div>
-        <p class="mt-3">@Message</p>
-    </div>
-</EditForm>
+			<div class="row">
+				<div class="col-sm-5">
+					<button type="submit" class="btn btn-primary">Save product</button>
+					<button class="btn btn-primary ms-3" @onclick="Cancel">Cancel</button>
+				</div>
+			</div>
+			<p class="mt-3">@Message</p>
+		</div>
+	</EditForm>
+}
+else
+{
+	<p>Loading...</p>
+}
 
 @code {
     [Inject]
@@ -72,7 +79,15 @@
     public IProductDataService ProductDataService { get; set; }
 
     [Inject]
+	public ITokenService TokenService { get; set; }
+
+	[Inject]
+	public IUserDataService UserDataService { get; set; }
+
+    [Inject]
     public NavigationManager NavigationManager { get; set; }
+
+    public UserViewModel User { get; set; }
 
     public ProductViewModel ProductViewModel { get; set; } = new ProductViewModel();
 
@@ -87,19 +102,36 @@
     protected override async Task OnInitializedAsync()
     {
         Categories = (await CategoryDataService.GetCategoriesAsync()).ToList();
-    }
+		var token = await TokenService.GetTokenAsync();
+		var email = await TokenService.DecodeEmailFromTokenAsync(token);
 
+		if (!string.IsNullOrEmpty(email))
+		{
+			User = await UserDataService.GetUserByEmailAsync(email);
+		}
+
+    }
 
     private async Task HandleValidSubmit()
     {
         try
         {
-            // Convert string to Guid for CategoryId
+            
+	        var token = await TokenService.GetTokenAsync();
+	        Guid companyId = await TokenService.DecodeUserIdFromTokenAsync(token);
+	        if (companyId == null || companyId == Guid.Empty)
+	        {
+		        throw new FormatException("Invalid Company ID");
+	        }
+	        
+	        // Convert string to Guid for CategoryId
             if (Guid.TryParse(ProductViewModel.StringCategoryId, out Guid categoryIdGuid))
             {
                 ProductViewModel.CategoryId = categoryIdGuid;
+                ProductViewModel.CompanyId = companyId;
 
                 var result = await ProductDataService.CreateProductAsync(ProductViewModel);
+                Console.WriteLine(result);
 
                 if (result.IsSuccess)
                 {

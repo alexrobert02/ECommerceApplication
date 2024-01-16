@@ -1,4 +1,6 @@
 ﻿@using ECommerceApplication.App.Auth
+@using ECommerceApplication.App.Contracts
+@using ECommerceApplication.App.Services
 @using ECommerceApplication.App.ViewModels
 @inject NavigationManager navigationManager
 @inject CustomStateProvider authStateProvider
@@ -9,6 +11,11 @@
             <li class="custom-list-element"><NavLink href="productoverview">Products</NavLink></li>
             <li class="custom-list-element"><NavLink href="categoryoverview">Categories</NavLink></li>
             <li class="custom-list-element"><NavLink href="">Offers</NavLink></li>
+            @if (User != null && User.Role == "Company")
+            {
+	            <li class="custom-list-element"><NavLink href="addproduct">Add Products</NavLink></li>
+            }
+            <li class="custom-list-element"><div @onclick="OnLogout">Logout</div></li>
             <div style="text-align:right">
                 <li class="custom-list-element"><NavLink href="">ECommerce Help</NavLink></li>
             </div>
@@ -29,9 +36,38 @@
 </div>
 
 @code {
-    public async void OnLogout()
+
+	[Inject]
+	public ITokenService TokenService { get; set; }
+
+	public UserViewModel User { get; set; }
+	private string email;
+
+	[Inject]
+	public IUserDataService UserDataService { get; set; }
+	
+	protected override async Task OnInitializedAsync()
+	{
+		await LoadUserData();
+	}
+
+	public async void OnLogout()
     {
         await authStateProvider.Logout();
         navigationManager.NavigateTo("/login");
+    }
+
+
+    private async Task LoadUserData()
+    {
+	    var token = await TokenService.GetTokenAsync();
+	    email = await TokenService.DecodeEmailFromTokenAsync(token);
+
+	    if (!string.IsNullOrEmpty(email))
+	    {
+		    User = await UserDataService.GetUserByEmailAsync(email);
+	    }
+
+        Console.WriteLine("User Role: " + User.Role);
     }
 }
