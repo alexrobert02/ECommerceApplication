@@ -399,14 +399,39 @@ margin-left: 0.1rem;
     text-align: left;
 }
 
+.sorting-label{
+    font-size: 1.5rem;
+}
+
+.sorting-select{
+    width: 10rem;
+    height: 1.7rem;
+    font-size: 1rem;
+    border-radius:5px;
+    margin-left: 0.5rem;
+}
+
+.sorting-option{
+    font-size: 1rem;
+}
+
 .products-content-container {
     background-color: #f2f2f7;
+}
+
+.search-content-container {
+    background-color: #f2f2f7;
+    width:82%;
 }
 
 .product-container {
     display: flex;
     flex-wrap: wrap;
     padding: 0.5rem;
+}
+
+.product-image-container {
+    width: 100%;
 }
 
 .product-card {
@@ -633,25 +658,103 @@ margin-left: 0.1rem;
 .product-detail {
     display: flex;
     flex-direction: column;
-}
-
-.category-and-title {
-    margin-bottom: 1%;
-    margin-top: 1%;
+    padding: 0.5rem 1rem 1rem 1rem;
 }
 
 .product-info {
     display: flex;
+    flex-direction: row;
 }
 
-.product-image-container {
-    flex: 1;
+.product-details-image-container {
+    width: 35%;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.middle-column{
+    width: 35%;
+    display: flex;
+    flex-direction: column;
+    margin-right: 2rem;
+}
+
+.reviews-container{
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+}
+
+.review-first-row{
+    display: flex;
+    flex-direction: row;
+}
+
+.stars-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.stars-container svg {
+    width:1.7rem;
+    height: 1.7rem;
+    margin-right: 0.1rem;
+}
+
+.review-score-container{
+    text-align: center;
+    margin: 0.2rem 0 0 0.8rem;
+}
+
+.review-score-text{
+    font-weight:500;
+}
+
+.shipping-details{
+    display: flex;
+    flex-direction: row;
+    margin-top: 1rem;
+}
+
+.shipping-details svg {
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-right: 1rem;
+}
+
+#shipping-text,
+#benefits-text {
+    margin-top: 0.5rem;
+}
+
+#benefits-container{
+    display: flex;
+    flex-direction: column;
+    margin-top: 1.5rem;
+}
+
+#benefits-img-and-text {
+    display: flex;
+    flex-direction: row;
+}
+
+#benefits-img-and-text svg {
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-right: 1rem;
+}
+
+#benefits-list {
+    margin-left: 0.5rem;
+    list-style-type: none;
 }
 
 .price-and-button {
+    width: 30%;
     display: flex;
     flex-direction: column;
-    margin-right: 3rem;
+    justify-content: space-between;
+    margin-right: 1rem;
 }
 
 .price-container {
@@ -677,6 +780,22 @@ margin-left: 0.1rem;
     margin-bottom: 0.5vh;
 }
 
+.quantity-container{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 1rem;
+}
+
+.quantity-label{
+    margin-top: 0.5rem;
+    margin-right: 0.5rem;
+}
+
+.quantity-field{
+    height: 1rem;
+    width: 4rem;
+}
+
 
 .product-description {
     margin-top: 20px;
@@ -693,11 +812,9 @@ margin-left: 0.1rem;
     display: inline-flex;
     align-items: center;
     font-size: 14px;
-    margin-top: 10px;
     cursor: pointer;
     width: 100%;
     transition: background-color 0.2s ease, color 0.2s ease;
-    margin-top: auto;
 }
 
 .add-to-cart-button-details:hover {
@@ -900,23 +1017,33 @@ margin-left: 0.1rem;
     flex-direction: row;
 }
 
-.orders-card {
+.second-row-card {
     background-color:white;
     width: 33%;
     border: 1px solid #ccc;
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin: 0 1.5rem 1.5rem 1.5rem;
+    margin: 0 1.3rem 1.5rem 1.3rem;
     cursor: pointer;
 }
 
-.orders-card:hover {
+.second-row-card:first-child {
+    margin: 0 0 1.5rem 1.5rem;
+    cursor: pointer;
+}
+
+.second-row-card:last-child {
+    margin: 0 1.5rem 1.5rem 0;
+    cursor: pointer;
+}
+
+.second-row-card:hover {
     transform: scale(1.02);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.my-orders-text{
+.second-row-text{
     font-size: 2rem;
     font-weight: 500;
     margin: 1rem 1rem 0 1.5rem;
@@ -926,10 +1053,18 @@ margin-left: 0.1rem;
     text-align:center;
 }
 
-.orders-card svg {
+.second-row-card svg {
     width: 10rem;
     height: 10rem;
     margin-bottom: 1rem;
+}
+
+#Flat_gradient{
+    margin-left: 6rem;
+}
+
+#Gradient{
+    margin-left: 6rem;
 }
 
 .profile-third-row {
