@@ -9,7 +9,7 @@
 <Navbar />
 <NavMenu />
 <div class="custom-page">
-    <main class="custom-main">
+    <main>
         @Body
     </main>
 </div>
@@ -17,15 +17,8 @@
 @functions {
     protected override async Task OnInitializedAsync()
     {
-        try
-        {
-            var token = await TokenService.GetTokenAsync();
-            if (token == null)
-            {
-                navigationManager.NavigateTo("/login");
-            }
-        }
-        catch (Exception)
+        var token = await TokenService.GetTokenAsync();
+        if (token == null)
         {
             navigationManager.NavigateTo("/login");
         }

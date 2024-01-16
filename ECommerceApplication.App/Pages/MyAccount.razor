@@ -187,19 +187,18 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadUserData();
+	    var token = await TokenService.GetTokenAsync();
+	    if (token != null)
+	    {
+		    email = await TokenService.DecodeEmailFromTokenAsync(token);
+
+		    if (!string.IsNullOrEmpty(email))
+		    {
+			    User = await UserDataService.GetUserByEmailAsync(email);
+		    }
+	    }
     }
 
-    private async Task LoadUserData()
-    {
-        var token = await TokenService.GetTokenAsync();
-        email = await TokenService.DecodeEmailFromTokenAsync(token);
-
-        if (!string.IsNullOrEmpty(email))
-        {
-            User = await UserDataService.GetUserByEmailAsync(email);
-        }
-    }
 
     private void GoToOrdersHistory()
     {
@@ -234,7 +233,7 @@ else
     {
         IsEditing = false;
         // Reload user data to discard any changes made during editing
-        LoadUserData();
+        //LoadUserData();
     }
 
     // Method to save changes

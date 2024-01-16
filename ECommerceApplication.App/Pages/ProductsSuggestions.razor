@@ -3,7 +3,7 @@
 
 @{
     var random = new Random();
-    var shuffledCategories = Categories.OrderBy(x => random.Next()).ToList();
+    List<CategoryViewModel> shuffledCategories = Categories?.OrderBy(x => random.Next()).ToList() ?? new List<CategoryViewModel>();
 }
 
 <div class="products-suggestions">
