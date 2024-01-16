@@ -8,10 +8,11 @@
     </div>
     <div class="products-main-content">
         <div class="sorting-container">
-            <label for="sortDropdown">Sort by:</label>
-            <select id="sortDropdown" @onchange="SortProducts">
-                <option value="name">Name</option>
-                <option value="price">Price</option>
+            <label class="sorting-label" for="sortDropdown">Sort by:</label>
+            <select class="sorting-select" id="sortDropdown" @onchange="SortProducts">
+                <option class="sorting-option" value="name">Name</option>
+                <option class="sorting-option" value="price-asc">Price (Low to High)</option>
+                <option class="sorting-option" value="price-desc">Price (High to Low)</option>
             </select>
         </div>
         <div class="products-content-container">
@@ -110,8 +111,11 @@
             case "name":
                 Products = Products.OrderBy(p => p.ProductName).ToList();
                 break;
-            case "price":
+            case "price-asc":
                 Products = Products.OrderBy(p => p.Price).ToList();
+                break;
+            case "price-desc":
+                Products = Products.OrderByDescending(p => p.Price).ToList();
                 break;
         }
     }
