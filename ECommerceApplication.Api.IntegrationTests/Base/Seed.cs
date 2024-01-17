@@ -48,7 +48,7 @@ namespace ECommerceApplication.API.IntegrationTests.Base
                 OrderItem.Create(product2.ProductId, 2, 200).Value
             };
 
-            context.OrderItem.AddRange(orderItems);
+            context.OrderItems.AddRange(orderItems);
 
             context.SaveChanges();
 

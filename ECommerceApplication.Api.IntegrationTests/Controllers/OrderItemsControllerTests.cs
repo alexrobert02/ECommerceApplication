@@ -60,7 +60,7 @@ namespace ECommerceApplication.API.IntegrationTests.Controllers
                 throw new Exception("Product data is not available or insufficient.");
             }
             
-            var orderItem = new CreateOrderItemCommand
+            var orderItem = new CreateOrderCommand
             {
                 ProductId = resultProduct.Products[0].ProductId,
                 Quantity = 4,

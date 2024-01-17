@@ -7,6 +7,7 @@ using MediatR;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using ECommerceApplication.Application.Features.Order.Commands.CreateOrder;
 
 namespace ECommerceApplication.Application.Tests.Commands.OrderItemTests
 {
@@ -14,7 +15,7 @@ namespace ECommerceApplication.Application.Tests.Commands.OrderItemTests
     {
         private readonly IOrderItemRepository _repository;
         private readonly IProductRepository _productRepository;
-        private readonly CreateOrderItemCommandHandler _handler;
+        private readonly CreateOrderCommandHandler _handler;
 
         public CreateOrderItemCommandHandlerTests()
         {
@@ -26,7 +27,7 @@ namespace ECommerceApplication.Application.Tests.Commands.OrderItemTests
         [Fact]
         public async Task Handle_InvalidInput_ReturnsFailure()
         {
-            var invalidCommand = new CreateOrderItemCommand { ProductId = Guid.Empty, Quantity = 0, PricePerUnit = -1 };
+            var invalidCommand = new CreateOrderCommand { ProductId = Guid.Empty, Quantity = 0, PricePerUnit = -1 };
             var response = await _handler.Handle(invalidCommand, new CancellationToken());
             Assert.False(response.Success);
             Assert.NotNull(response.ValidationsErrors);
@@ -37,7 +38,7 @@ namespace ECommerceApplication.Application.Tests.Commands.OrderItemTests
         public async Task Handle_ProductDoesNotExist_ReturnsFailure()
         {
             // Arrange
-            var validCommand = new CreateOrderItemCommand { ProductId = Guid.NewGuid(), Quantity = 1, PricePerUnit = 10.0M };
+            var validCommand = new CreateOrderCommand { ProductId = Guid.NewGuid(), Quantity = 1, PricePerUnit = 10.0M };
             _productRepository.ProductExists(validCommand.ProductId).Returns(false);
 
             // Act
@@ -53,7 +54,7 @@ namespace ECommerceApplication.Application.Tests.Commands.OrderItemTests
         public async Task Handle_OrderItemCreationFailure_ReturnsFailure()
         {
             // Arrange
-            var validCommand = new CreateOrderItemCommand { ProductId = Guid.NewGuid(), Quantity = 1, PricePerUnit = 10.0M };
+            var validCommand = new CreateOrderCommand { ProductId = Guid.NewGuid(), Quantity = 1, PricePerUnit = 10.0M };
             _productRepository.ProductExists(validCommand.ProductId).Returns(true);
             var orderItem = OrderItem.Create(validCommand.ProductId, validCommand.Quantity, validCommand.PricePerUnit);
             Assert.True(orderItem.IsSuccess);
@@ -71,7 +72,7 @@ namespace ECommerceApplication.Application.Tests.Commands.OrderItemTests
         public async Task Handle_ValidInput_ReturnsSuccess()
         {
             // Arrange
-            var validCommand = new CreateOrderItemCommand { ProductId = Guid.NewGuid(), Quantity = 1, PricePerUnit = 10.0M };
+            var validCommand = new CreateOrderCommand { ProductId = Guid.NewGuid(), Quantity = 1, PricePerUnit = 10.0M };
             _productRepository.ProductExists(validCommand.ProductId).Returns(true);
             _repository.AddAsync(Arg.Any<OrderItem>()).Returns(Task.CompletedTask);
 
