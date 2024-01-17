@@ -38,7 +38,7 @@
 			<div class="row mb-3">
 				<label for="productImage" class="col-sm-3 form-label">Image:</label>
 				<div class="col-sm-5">
-					<InputFile id="productImage" class="form-control" OnChange="HandleSelectedFile" accept=".png" />
+					<InputFile id="productImage" class="form-control" OnChange="HandleSelectedFile" />
 					<ValidationMessage For="@(() => ProductViewModel.Photo)" />
 				</div>
 			</div>
