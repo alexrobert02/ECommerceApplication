@@ -6,6 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+
 <div class="details-content-container">
     @if (Product == null)
     {
@@ -327,7 +328,7 @@
                 </div>
                 <p>Your Rating: @userRating stars</p>
                 <textarea @bind="userReview" placeholder="Write your review here"></textarea>
-                <button @onclick="SubmitReview">Submit Review</button>
+                <button class="submit-review-button" @onclick="SubmitReview">Submit Review</button>
             }
             else
             {
@@ -335,7 +336,7 @@
             }
             <br />
             <div>
-                <h3>Other customers reviews</h3>
+                <h3>Reviews</h3>
                 @if (ProductReviews != null && ProductReviews.Any())
                 {
                     @foreach (var review in ProductReviews)
