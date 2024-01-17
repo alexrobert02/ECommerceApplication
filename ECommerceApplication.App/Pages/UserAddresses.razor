@@ -19,17 +19,17 @@
 @if (Addresses == null)
 {
     <p><em>You have no addresses yet.</em></p>
-    <div class="row">
-        <div class="col-md-4 mb-3">
+      <div class="col-md-4 mb-3">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Add New Address</h5>
-                    <p class="card-text">Click to add a new address</p>
-                    <button class="btn btn-success" @onclick="AddNewAddress">Add</button>
+                    <div class="card-body text-center align-middle">
+                        <h5 class="card-title">Add New Address</h5>
+                        <p class="card-text">Click to add a new address</p>
+                        <button class="btn btn-success" @onclick="() => ShowAddAddressModal = true">Add</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
 }
 else

@@ -10,7 +10,7 @@ namespace ECommerceApplication.Domain.Entities
             // Required by Entity Framework Core
         }
 
-        private Order(List<OrderItem> orderItems, Guid userId)
+        private Order(List<OrderItem> orderItems, Guid userId, Guid addressId)
         {
             OrderId = Guid.NewGuid();
             UserId = userId;
@@ -21,9 +21,14 @@ namespace ECommerceApplication.Domain.Entities
         public Guid UserId { get; private set; }
         public bool OrderPaid { get; private set; }
         public Payment Payment { get; private set; }
+
+        public Guid AddressId { get; private set; }
+        public Address Address { get; private set; }
+
+        
         public List<OrderItem> OrderItems { get; private set; }
 
-        public static Result<Order> Create(List<OrderItem> orderItems, Guid userId)
+        public static Result<Order> Create(List<OrderItem> orderItems, Guid userId, Guid addressId)
         {
             if (orderItems.Count == 0)
             {
@@ -34,7 +39,7 @@ namespace ECommerceApplication.Domain.Entities
                 return Result<Order>.Failure("User id should not be default");
             }
 
-            return Result<Order>.Success(new Order(orderItems, userId));
+            return Result<Order>.Success(new Order(orderItems, userId, addressId));
         }
 
 
