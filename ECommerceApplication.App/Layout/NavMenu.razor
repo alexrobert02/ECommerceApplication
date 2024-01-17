@@ -63,13 +63,16 @@
     private async Task LoadUserData()
     {
 	    var token = await TokenService.GetTokenAsync();
-	    email = await TokenService.DecodeEmailFromTokenAsync(token);
+        if (token != null)
+        {
+	        email = await TokenService.DecodeEmailFromTokenAsync(token);
 
-	    if (!string.IsNullOrEmpty(email))
-	    {
-		    User = await UserDataService.GetUserByEmailAsync(email);
-	    }
+	        if (!string.IsNullOrEmpty(email))
+	        {
+		        User = await UserDataService.GetUserByEmailAsync(email);
+	        }
 
-        Console.WriteLine("User Role: " + User.Role);
+	        Console.WriteLine("User Role: " + User.Role);
+        }
     }
 }

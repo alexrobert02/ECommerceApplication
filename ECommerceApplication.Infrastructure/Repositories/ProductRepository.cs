@@ -38,5 +38,17 @@ namespace ECommerceApplication.Infrastructure.Repositories
         {
             return await context.Products.AnyAsync(c => c.ProductId == productId);
         }
+
+        public async Task<Result<List<Product>>> GetProductByCategoryIdAsync(Guid categoryId)
+        {
+            var products = await context.Products
+                .Where(x => x.CategoryId == categoryId)
+                .ToListAsync();
+            if (products.Count == 0)
+            {
+                return Result<List<Product>>.Failure($"Products for category with id {categoryId} not found");
+            }
+            return Result<List<Product>>.Success(products);
+        }
     }
 }

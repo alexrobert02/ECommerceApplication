@@ -48,36 +48,34 @@
 
 
 @code {
-    private string searchQuery = "";
+	private string searchQuery = "";
 
-    [Inject]
-    private NavigationManager NavigationManager { get; set; }
+	[Inject] private NavigationManager NavigationManager { get; set; }
 
-    [Inject]
-    public IUserDataService UserDataService { get; set; }
+	[Inject] public IUserDataService UserDataService { get; set; }
 
-    [Inject]
-    public ITokenService TokenService { get; set; }
+	[Inject] public ITokenService TokenService { get; set; }
 
 
-    public UserViewModel User { get; set; }
-    private string email;
+	public UserViewModel User { get; set; }
+	private string email;
+}
 
-    protected override async Task OnInitializedAsync()
+@functions {
+protected override async Task OnInitializedAsync()
     {
-        await LoadUserData();
-    }
-
-    private async Task LoadUserData()
-    {
-        var token = await TokenService.GetTokenAsync();
-        email = await TokenService.DecodeEmailFromTokenAsync(token);
-
-        if (!string.IsNullOrEmpty(email))
+	    var token = await TokenService.GetTokenAsync();
+        if (token != null)
         {
-            User = await UserDataService.GetUserByEmailAsync(email);
+	        email = await TokenService.DecodeEmailFromTokenAsync(token);
+
+	        if (!string.IsNullOrEmpty(email))
+	        {
+		        User = await UserDataService.GetUserByEmailAsync(email);
+	        }
         }
     }
+
 
     private void GoToAccount()
     {
