@@ -8,6 +8,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using ECommerceApplication.Application.Persistence;
+using ECommerceApplication.Domain.Entities;
 
 namespace ECommerceApplication.Identity.Services
 {
@@ -17,8 +19,13 @@ namespace ECommerceApplication.Identity.Services
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly IConfiguration configuration;
-        public AuthService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, SignInManager<ApplicationUser> signInManager)
+        private readonly IShoppingCartRepository shoppingCartRepository;
+        private readonly IUserManager userRepository;
+        public AuthService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, SignInManager<ApplicationUser> signInManager, IShoppingCartRepository shoppingCartRepository, IUserManager userRepository
+            )
         {
+            this.userRepository = userRepository;
+            this.shoppingCartRepository = shoppingCartRepository;
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.configuration = configuration;
@@ -51,6 +58,17 @@ namespace ECommerceApplication.Identity.Services
             if (await roleManager.RoleExistsAsync(UserRoles.User))
                 await userManager.AddToRoleAsync(user, role);
 
+            var resultCreatedUser = await userRepository.FindByEmailAsync(model.Email);
+            if (!resultCreatedUser.IsSuccess)
+            {
+                string concatenatedErrors =
+                    string.Join(Environment.NewLine,
+                    createUserResult.Errors.Select(error => $"{error.Code}: {error.Description}"));
+                return (0, concatenatedErrors);
+            }
+            var userDto = resultCreatedUser.Value;
+
+            var result = await shoppingCartRepository.AddAsync(ShoppingCart.Create(Guid.Parse(userDto.UserId)).Value);
             return (1, "User created successfully!");
         }
 
