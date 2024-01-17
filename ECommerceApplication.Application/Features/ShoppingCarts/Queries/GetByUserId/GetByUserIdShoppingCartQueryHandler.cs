@@ -35,7 +35,8 @@ namespace ECommerceApplication.Application.Features.Categories.Queries.GetByUser
                 {
                     UserId = result.Value.UserId,
                     ShoppingCartId = result.Value.ShoppingCartId,
-                    OrderItems = result.Value.OrderItems
+                    OrderItems = result.Value.OrderItems,
+                    Total = result.Value.CalculateTotal()
                 }
             };
         }

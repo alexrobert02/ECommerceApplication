@@ -66,6 +66,7 @@
 			<p class="mt-3">@Message</p>
 		</div>
 	</EditForm>
+}
 
 
 @code {
@@ -109,6 +110,7 @@
 		var token = await TokenService.GetTokenAsync();
 		var email = await TokenService.DecodeEmailFromTokenAsync(token);
 
+		
 		if (!string.IsNullOrEmpty(email))
 		{
 			User = await UserDataService.GetUserByEmailAsync(email);
