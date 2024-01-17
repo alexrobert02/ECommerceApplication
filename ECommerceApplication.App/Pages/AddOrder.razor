@@ -1,31 +1,32 @@
-﻿@page "/{shoppingCartId:guid}/createOrder"
+﻿@page "/cart/{shoppingCartId:guid}/createOrder"
 @using ECommerceApplication.App.Contracts
 @using ECommerceApplication.App.ViewModels
 @using System.Text.Json
 @inject IReviewDataService ReviewDataService
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<div>
 
-
-<h3>AddOrder</h3>
-
-<div class="row mb-3">
-    <label for="productCategory" class="col-sm-3 form-label">Category Id:</label>
-    <div class="col-sm-5">
-        <InputSelect @bind-Value="@AddressId" class="form-select" id="productCategory" placeholder="select a category">
-            <option value="">Select a category...</option>
-            @foreach (var address in addresses)
-            {
-                <option value="@address.AddressId">@address.City / @address.State</option>
-            }
-        </InputSelect>
+    <h3>AddOrder</h3>
+    <EditForm Model="@AddressId" OnValidSubmit="@HandleAddToCart">
+    <div class="row mb-3">
+        <label for="productCategory" class="col-sm-3 form-label">Category Id:</label>
+        <div class="col-sm-5">
+            <InputSelect @bind-Value="@AddressId" class="form-select" id="productCategory" placeholder="select a category">
+                <option value="">Select a category...</option>
+                @foreach (var address in addresses)
+                {
+                    <option value="@address.AddressId">@address.City / @address.State</option>
+                }
+            </InputSelect>
+        </div>
+        <button type="button" 
+                class="btn btn-primary btn-lg btn-block">
+            Go to checkout
+        </button>
     </div>
+    </EditForm>
 </div>
-
-<button type="button" @onclick="()=> HandleAddToCart()"
-        class="btn btn-primary btn-lg btn-block">
-    Go to checkout
-</button>
 
 
 
@@ -46,13 +47,12 @@
     public IOrderDataService orderDataService { get; set; }
     public List<ReviewViewModel> ProductReviews { get; set; }
     private bool reviewSubmitted = false;
-<<<<<<< Updated upstream
-=======
+
+
     public List<AddressViewModel> addresses { get; set; }
     public Guid AddressId { get; set; }
     [Parameter]
     public Guid shoppingCartId { get; set; }
->>>>>>> Stashed changes
 
     [Parameter]
     public Guid productId { get; set; }
@@ -71,6 +71,7 @@
 @functions {
     protected override async Task OnInitializedAsync()
     {
+        AddressId = Guid.Empty;
         addresses = await AddressDataService.GetAddressesAsync();
     }
 

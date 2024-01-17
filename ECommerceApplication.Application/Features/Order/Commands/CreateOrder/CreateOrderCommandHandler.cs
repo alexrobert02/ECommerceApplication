@@ -49,7 +49,7 @@ namespace ECommerceApplication.Application.Features.Order.Commands.CreateOrder
                     ValidationsErrors = new List<string> { "Shopping Cart with the provided ID does not exist." }
                 };
             }
-            shoppingCartExists.Value.MarkAsUsed();
+            //shoppingCartExists.Value.MarkAsUsed();
 
             var result = await shoppingCartRepository.AddAsync(ShoppingCart.Create(shoppingCartExists.Value.UserId).Value);
 
