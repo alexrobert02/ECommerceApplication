@@ -9,6 +9,26 @@
 
 <h3>AddOrder</h3>
 
+<div class="row mb-3">
+    <label for="productCategory" class="col-sm-3 form-label">Category Id:</label>
+    <div class="col-sm-5">
+        <InputSelect @bind-Value="@AddressId" class="form-select" id="productCategory" placeholder="select a category">
+            <option value="">Select a category...</option>
+            @foreach (var address in addresses)
+            {
+                <option value="@address.AddressId">@address.City / @address.State</option>
+            }
+        </InputSelect>
+    </div>
+</div>
+
+<button type="button" @onclick="()=> HandleAddToCart()"
+        class="btn btn-primary btn-lg btn-block">
+    Go to checkout
+</button>
+
+
+
 @code {
     [Inject]
     public NavigationManager NavigationManager { get; set; }
@@ -20,8 +40,19 @@
     public IOrderItemDataService OrderItemDataService { get; set; }
     [Inject]
     public IProductDataService ProductDataService { get; set; }
+    [Inject]
+    public IAddressDataService AddressDataService { get; set; }
+    [Inject]
+    public IOrderDataService orderDataService { get; set; }
     public List<ReviewViewModel> ProductReviews { get; set; }
     private bool reviewSubmitted = false;
+<<<<<<< Updated upstream
+=======
+    public List<AddressViewModel> addresses { get; set; }
+    public Guid AddressId { get; set; }
+    [Parameter]
+    public Guid shoppingCartId { get; set; }
+>>>>>>> Stashed changes
 
     [Parameter]
     public Guid productId { get; set; }
@@ -34,47 +65,17 @@
     private int userRating = 0;
     private string userReview = "";
     private Guid currentUserId;
+
 }
 
 @functions {
     protected override async Task OnInitializedAsync()
     {
-        AddToCartMessage = "";
-        currentUserId = await TokenService.DecodeUserIdFromTokenAsync(await TokenService.GetTokenAsync());
+        addresses = await AddressDataService.GetAddressesAsync();
+    }
 
-        if (productId == Guid.Empty)
-        {
-            Console.WriteLine("ProductId not provided or invalid");
-            return;
-        }
-
-        OrderItemViewModel.Quantity = 1;
-
-
-        Console.WriteLine($"Attempting to retrieve product with ID: {productId}");
-
-        try
-        {
-            Product = await ProductDataService.GetProductByIdAsync(productId);
-
-            if (Product == null)
-            {
-                Console.WriteLine("Product not found or API response is null");
-                // Handle the null response more gracefully, e.g., redirect the user or show an error message.
-            }
-            else
-            {
-                Console.WriteLine($"Product found: {@Product.ProductName}, {Product.Description}, {Product.ImageUrl}, {Product.Price}");
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error retrieving product: {ex.Message}");
-        }
-        Console.WriteLine($"Attempting to retrieve reviews for product with ID: {productId}");
-
-        ProductReviews = await ReviewDataService.GetReviewByProductId(productId);
-        Console.WriteLine($"Found {ProductReviews.Count} reviews for product with ID: {productId}");
-        Console.WriteLine($"Reviews:{ProductReviews}");
+    protected async Task HandleAddToCart()
+    {
+        orderDataService.Create(shoppingCartId, AddressId);
     }
 }
