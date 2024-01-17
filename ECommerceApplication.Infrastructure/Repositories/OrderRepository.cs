@@ -14,8 +14,8 @@ namespace ECommerceApplication.Infrastructure.Repositories
             try
             {
                 var orders = await context.Orders
-                    .Where(order => (userId == null || order.UserId == userId))
-                    .Include(o => o.OrderItems).ThenInclude(oi=> oi.Product)
+                    .Where(order => (!userId.HasValue || order.UserId == userId.Value))
+                    .Include(o => o.OrderItems).ThenInclude(orderItem => orderItem.Product)
                     .ToListAsync();
 
                 return Result<IReadOnlyList<Order>>.Success(orders);

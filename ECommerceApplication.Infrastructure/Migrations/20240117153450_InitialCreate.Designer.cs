@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ECommerceApplication.Infrastructure.Migrations
 {
     [DbContext(typeof(ECommerceApplicationContext))]
-    [Migration("20240116151303_InitialCreate")]
+    [Migration("20240117153450_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -103,6 +103,9 @@ namespace ECommerceApplication.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("AddressId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
@@ -122,6 +125,8 @@ namespace ECommerceApplication.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("OrderId");
+
+                    b.HasIndex("AddressId");
 
                     b.ToTable("Orders");
                 });
@@ -308,9 +313,23 @@ namespace ECommerceApplication.Infrastructure.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
+                    b.Property<bool>("used")
+                        .HasColumnType("boolean");
+
                     b.HasKey("ShoppingCartId");
 
                     b.ToTable("ShoppingCarts");
+                });
+
+            modelBuilder.Entity("ECommerceApplication.Domain.Entities.Order", b =>
+                {
+                    b.HasOne("ECommerceApplication.Domain.Entities.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Address");
                 });
 
             modelBuilder.Entity("ECommerceApplication.Domain.Entities.OrderItem", b =>
