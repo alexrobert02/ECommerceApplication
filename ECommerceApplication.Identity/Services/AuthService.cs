@@ -55,7 +55,7 @@ namespace ECommerceApplication.Identity.Services
             if (!await roleManager.RoleExistsAsync(role))
                 await roleManager.CreateAsync(new IdentityRole(role));
 
-            if (await roleManager.RoleExistsAsync(UserRoles.User))
+            //if (await roleManager.RoleExistsAsync(UserRoles.User))
                 await userManager.AddToRoleAsync(user, role);
 
             var resultCreatedUser = await userRepository.FindByEmailAsync(model.Email);

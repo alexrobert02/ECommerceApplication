@@ -17,7 +17,7 @@ namespace ECommerceApplication.Infrastructure.Repositories
             var shoppingCart = await context.ShoppingCarts
                 .Include(x => x.OrderItems)
                 .ThenInclude(orderItem => orderItem.Product)
-                .FirstOrDefaultAsync(x => x.UserId == userId);
+                .FirstOrDefaultAsync(x => x.UserId == userId && !x.used);
             if (shoppingCart == null)
             {
                 return Result<ShoppingCart>.Failure($"Shopping cart for user with id {userId} not found");
