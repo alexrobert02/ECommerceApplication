@@ -18,6 +18,7 @@ namespace ECommerceApplication.Application.Features.Addresses.Queries.GetAllAddr
             var addresses = result.Value.Select(a => new AddressDto
             {
                 AddressId = a.AddressId,
+                UserId = a.UserId,
                 Street = a.Street,
                 City = a.City,
                 State = a.State,
