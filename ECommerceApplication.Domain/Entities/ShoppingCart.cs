@@ -6,6 +6,7 @@ namespace ECommerceApplication.Domain.Entities
     {
         private ShoppingCart(Guid userId)
         {
+            used = false;
             ShoppingCartId = Guid.NewGuid();
             UserId = userId;
             OrderItems = new List<OrderItem>();
@@ -13,6 +14,7 @@ namespace ECommerceApplication.Domain.Entities
 
         public Guid ShoppingCartId { get; private set; }
         public Guid UserId { get; private set; }
+        public bool used { get; private set; } 
         public List<OrderItem> OrderItems { get; private set; }
         public static Result<ShoppingCart> Create(Guid userId)
         {
@@ -21,6 +23,10 @@ namespace ECommerceApplication.Domain.Entities
                 return Result<ShoppingCart>.Failure("User id is required.");
             }
             return Result<ShoppingCart>.Success(new ShoppingCart(userId));
+        }
+        public void MarkAsUsed()
+        {
+            used = true;
         }
 
         public void AddProduct(OrderItem orderItem)
