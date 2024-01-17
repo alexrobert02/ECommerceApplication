@@ -5,6 +5,29 @@
 
 <div class="all-products">
     <div class="filters-sidebar">
+        <div class="sidebar-card">
+            <div class="filters-element">
+                <p id="filters-text-p">Filters</p>
+            </div>
+            <div class="filters-element">
+                <label class="filter-text" for="categoryFilter">Category:</label>
+                <select id="categoryFilter" @onchange="FilterByCategory">
+                    <option value="">All Categories</option>
+                    @foreach (var category in GetUniqueCategories())
+                    {
+                        <option value="@category">@category</option>
+                    }
+                </select>
+            </div>
+            <div class="filters-element">
+                <label class="filter-text" for="minPrice">Min Price:</label>
+                <input class="filter-input" type="number" id="minPrice" @bind="minPrice" @oninput="FilterByPrice" @onkeyup="OnEnterKeyPressed" />
+            </div>
+            <div class="filters-element">
+                <label class="filter-text" for="maxPrice">Max Price:</label>
+                <input class="filter-input" type="number" id="maxPrice" @bind="maxPrice" @oninput="FilterByPrice" @onkeyup="OnEnterKeyPressed" />
+            </div>
+        </div>
     </div>
     <div class="products-main-content">
         <div class="sorting-container">
@@ -85,9 +108,13 @@
     [Inject]
     public IShoppingCartDataService ShoppingCartDataService { get; set; }
     public List<ProductViewModel> Products { get; set; }
+    public List<ProductViewModel> ProductsCopy { get; set; }
     public AlertMessage AlertMessage;
 
     private string selectedSortOption = "name";
+    private string selectedCategory = "";
+    private int? minPrice;
+    private int? maxPrice;
 }
 
 @functions {
@@ -105,6 +132,26 @@
     private async Task LoadProducts()
     {
         Products = (await ProductDataService.GetProductAsync()).ToList();
+        ProductsCopy = Products;
+
+        var filteredProducts = Products;
+
+        if (!string.IsNullOrEmpty(selectedCategory))
+        {
+            filteredProducts = filteredProducts.Where(p => p.Category.CategoryName == selectedCategory).ToList();
+        }
+
+        if (minPrice.HasValue)
+        {
+            filteredProducts = filteredProducts.Where(p => p.Price >= minPrice).ToList();
+        }
+
+        if (maxPrice.HasValue)
+        {
+            filteredProducts = filteredProducts.Where(p => p.Price <= maxPrice).ToList();
+        }
+
+        Products = filteredProducts.ToList();
 
         switch (selectedSortOption)
         {
@@ -117,6 +164,30 @@
             case "price-desc":
                 Products = Products.OrderByDescending(p => p.Price).ToList();
                 break;
+        }
+    }
+
+    private IEnumerable<string> GetUniqueCategories()
+    {
+        return ProductsCopy.Select(p => p.Category.CategoryName).Distinct();
+    }
+
+    private async Task FilterByCategory(ChangeEventArgs e)
+    {
+        selectedCategory = e.Value.ToString();
+        await LoadProducts();
+    }
+
+    private async Task FilterByPrice()
+    {
+        await LoadProducts();
+    }
+
+    private async Task OnEnterKeyPressed(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            await LoadProducts();
         }
     }
 

@@ -1,4 +1,4 @@
-html, body {
+﻿html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
@@ -579,6 +579,42 @@ margin-left: 0.1rem;
 }
 
 
+.sidebar-card {
+    margin: 1rem 0 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    padding: 1rem;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.filters-element{
+    margin: 0.3rem 0 0 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-text {
+    font-size: 1rem;
+}
+
+#filters-text-p{
+    font-size: 1.5rem;
+    margin-bottom: 0;
+}
+
+.filter-input {
+    width: 50%;
+    height: 1.8rem;
+    border-radius: 5px;
+}
+
+#categoryFilter {
+    width: 100%;
+    height: 1.8rem;
+    border-radius: 5px;
+}
 
 
 /*Home Category Sidebar*/
@@ -1180,3 +1216,55 @@ margin-left: 0.1rem;
     background-color: mediumpurple;
     color: #fff;
 }
+
+
+/* Stilurile pentru sectiunea de review */
+.review-section {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.star {
+    font-size: 24px;
+    color: #ffffff;
+    cursor: pointer;
+    text-shadow: 0 0 2px #000000;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.submit-review-button {
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    background-color: rebeccapurple;
+    color: white;
+    border-radius: 10px;
+    padding: 0.6rem;
+    cursor: pointer;
+    width: 8.5rem;
+}
+
+.star.selected {
+    color: #ffd700;
+}
+
+.rating {
+    font-weight: bold;
+}
+
+.description-label {
+    font-weight: bold;
+}
+
+
+
