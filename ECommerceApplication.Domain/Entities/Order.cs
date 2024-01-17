@@ -1,4 +1,5 @@
 ﻿using ECommerceApplication.Domain.Common;
+using Stripe;
 
 namespace ECommerceApplication.Domain.Entities
 {
@@ -12,6 +13,7 @@ namespace ECommerceApplication.Domain.Entities
 
         private Order(List<OrderItem> orderItems, Guid userId, Guid addressId)
         {
+            AddressId = addressId;
             OrderId = Guid.NewGuid();
             UserId = userId;
             OrderItems = orderItems;
@@ -25,7 +27,7 @@ namespace ECommerceApplication.Domain.Entities
         public Guid AddressId { get; private set; }
         public Address Address { get; private set; }
 
-        
+
         public List<OrderItem> OrderItems { get; private set; }
 
         public static Result<Order> Create(List<OrderItem> orderItems, Guid userId, Guid addressId)

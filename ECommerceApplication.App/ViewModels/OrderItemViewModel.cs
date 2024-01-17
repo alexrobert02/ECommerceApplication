@@ -14,7 +14,11 @@ namespace ECommerceApplication.App.ViewModels
         public string StringProductId { get; set; } = string.Empty;
 
         public ProductViewModel? Product { get; set; }
-
+        
+        public decimal CalculateTotal()
+        {
+            return Quantity * PricePerUnit;
+        }
         public static OrderItemViewModel FromDto(OrderItemDto dto)
         {
             return new OrderItemViewModel

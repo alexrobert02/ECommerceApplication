@@ -16,11 +16,7 @@
             </div>
             <li class="custom-list-element"><div @onclick="OnLogout">Logout</div></li>
             
-                    
-            @if (User != null && User.Role == "Company")
-            {
                 <li class="custom-list-element"><NavLink href="addproduct">Add Products</NavLink></li>
-            }
 <!--<li><NavLink href="addcategory">Add Category</NavLink></li>
 <li><NavLink href="updatecategory">Update Category</NavLink></li>
             <li><NavLink href="addproduct">Add Product</NavLink></li>
