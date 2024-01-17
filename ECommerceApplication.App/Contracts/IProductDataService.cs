@@ -1,4 +1,5 @@
-﻿using ECommerceApplication.App.Services.Responses;
+﻿using ECommerceApplication.App.Services;
+using ECommerceApplication.App.Services.Responses;
 using ECommerceApplication.App.ViewModels;
 
 namespace ECommerceApplication.App.Contracts
@@ -7,7 +8,7 @@ namespace ECommerceApplication.App.Contracts
     {
         Task<List<ProductViewModel>> GetProductAsync();
         Task<ProductViewModel> GetProductByIdAsync(Guid productId);
-        Task <ApiResponse<ProductDto>> CreateProductAsync(ProductViewModel productViewModel);
-        Task<ApiResponse<ProductDto>> UpdateProductAsync(ProductViewModel prouctViewModel);
+        Task <ApiResponseForProduct> CreateProductAsync(ProductViewModel productViewModel);
+        Task<ApiResponse<ProductDto>> UpdateProductAsync(ProductViewModel productViewModel);
     }
 }

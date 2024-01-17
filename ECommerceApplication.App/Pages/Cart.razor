@@ -135,7 +135,7 @@
                         <button type="button" class="btn btn-primary btn-lg btn-block" @onclick=NavigateToAddOrder>
                                 Go to checkout
                             </button>
-                        
+                        </NavLink>
                     </div>
                 </div>
             </div>
@@ -188,5 +188,10 @@
     private void NavigateToAddOrder()
     {
         NavigationManager.NavigateTo($"cart/{ShoppingCart.UserId}/createOrder");
+    }
+
+    private void NavigateToCreateOrder()
+    {
+        NavigationManager.NavigateTo($"/cart/{ShoppingCart.ShoppingCartId}/createOrder");
     }
 }
