@@ -214,6 +214,24 @@ namespace ECommerceApplication.Infrastructure.Migrations
                     b.ToTable("Payments");
                 });
 
+            modelBuilder.Entity("ECommerceApplication.Domain.Entities.Photo", b =>
+                {
+                    b.Property<Guid>("PhotoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<byte[]>("ImageData")
+                        .IsRequired()
+                        .HasColumnType("bytea");
+
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("PhotoId");
+
+                    b.ToTable("Photos");
+                });
+
             modelBuilder.Entity("ECommerceApplication.Domain.Entities.Product", b =>
                 {
                     b.Property<Guid>("ProductId")

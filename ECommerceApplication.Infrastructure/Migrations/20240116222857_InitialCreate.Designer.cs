@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ECommerceApplication.Infrastructure.Migrations
 {
     [DbContext(typeof(ECommerceApplicationContext))]
-    [Migration("20240116151303_InitialCreate")]
+    [Migration("20240116222857_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -215,6 +215,24 @@ namespace ECommerceApplication.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("ECommerceApplication.Domain.Entities.Photo", b =>
+                {
+                    b.Property<Guid>("PhotoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<byte[]>("ImageData")
+                        .IsRequired()
+                        .HasColumnType("bytea");
+
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("PhotoId");
+
+                    b.ToTable("Photos");
                 });
 
             modelBuilder.Entity("ECommerceApplication.Domain.Entities.Product", b =>
