@@ -11,15 +11,17 @@
             <li class="custom-list-element"><NavLink href="productoverview">Products</NavLink></li>
             <li class="custom-list-element"><NavLink href="categoryoverview">Categories</NavLink></li>
             <li class="custom-list-element"><NavLink href="">Offers</NavLink></li>
-            @if (User != null && User.Role == "Company")
-            {
-	            <li class="custom-list-element"><NavLink href="addproduct">Add Products</NavLink></li>
-            }
-            <li class="custom-list-element"><div @onclick="OnLogout">Logout</div></li>
             <div style="text-align:right">
                 <li class="custom-list-element"><NavLink href="">ECommerce Help</NavLink></li>
             </div>
-            <!-- <li><NavLink href="addcategory">Add Category</NavLink></li>
+            <li class="custom-list-element"><div @onclick="OnLogout">Logout</div></li>
+            
+            <!--        
+            @if (User != null && User.Role == "Company")
+            {
+                <li class="custom-list-element"><NavLink href="addproduct">Add Products</NavLink></li>
+            }
+            <li><NavLink href="addcategory">Add Category</NavLink></li>
             <li><NavLink href="updatecategory">Update Category</NavLink></li>
             <li><NavLink href="addproduct">Add Product</NavLink></li>
             <li><NavLink href="updateproduct">Update Product</NavLink></li>
