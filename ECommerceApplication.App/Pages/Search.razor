@@ -78,6 +78,9 @@
     public IOrderItemDataService OrderItemDataService { get; set; }
 
     [Inject]
+    public IPhotoDataService PhotoDataService { get; set; }
+
+    [Inject]
     public NavigationManager NavigationManager { get; set; }
 
     public List<ProductViewModel> SearchResults { get; set; }
@@ -116,6 +119,17 @@
             SearchResults = (await ProductDataService.GetProductAsync())
                 .Where(prod => prod.ProductName != null && prod.ProductName.Contains(Query, StringComparison.OrdinalIgnoreCase))
                 .ToList();
+
+            foreach (var product in SearchResults)
+            {
+	            var photoResponse = await PhotoDataService.GetPhotoForOwnerAsync(product.ProductId);
+
+	            if (photoResponse.IsSuccess)
+	            {
+		            Console.WriteLine("S-a dat fetch");
+		            product.ImageUrl = $"data:image/png;base64,{photoResponse.Data[0].ImageData}";
+	            }
+            }
 
             switch (selectedSortOption)
             {
