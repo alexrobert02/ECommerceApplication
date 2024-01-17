@@ -67,10 +67,7 @@
 		</div>
 	</EditForm>
 }
-else
-{
-	<p>Loading...</p>
-}
+
 
 @code {
     [Inject]
@@ -113,6 +110,7 @@ else
 		var token = await TokenService.GetTokenAsync();
 		var email = await TokenService.DecodeEmailFromTokenAsync(token);
 
+		
 		if (!string.IsNullOrEmpty(email))
 		{
 			User = await UserDataService.GetUserByEmailAsync(email);

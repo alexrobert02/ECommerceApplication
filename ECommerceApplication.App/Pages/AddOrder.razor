@@ -1,82 +1,78 @@
-﻿ @page "/cart/{shoppingCartId:guid}/createOrder"
- @using ECommerceApplication.App.Contracts
+﻿@page "/cart/{shoppingCartId:guid}/createOrder"
+@using ECommerceApplication.App.Contracts
 @using ECommerceApplication.App.ViewModels
 @using System.Text.Json
 @inject IReviewDataService ReviewDataService
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<div>
+
+    <h3>AddOrder</h3>
+    <EditForm Model="@AddressId" OnValidSubmit="@CreateOrder">
+    <div class="row mb-3">
+        <label for="productCategory" class="col-sm-3 form-label">Category Id:</label>
+        <div class="col-sm-5">
+            <InputSelect @bind-Value="@AddressId" class="form-select" id="productCategory" placeholder="select a category">
+                <option value="">Select a category...</option>
+                @foreach (var address in addresses)
+                {
+                    <option value="@address.AddressId">@address.City / @address.State</option>
+                }
+            </InputSelect>
+        </div>
+            <button type="button" @onclick=@CreateOrder
+                class="btn btn-primary btn-lg btn-block">
+            Go to checkout
+        </button>
+    </div>
+    </EditForm>
+</div>
 
 
-<h3>AddOrder</h3>
 
 @code {
     [Inject]
     public NavigationManager NavigationManager { get; set; }
     [Inject]
-    public ITokenService TokenService { get; set; }
+    public IOrderDataService orderDataService { get; set; }
     [Inject]
-    public IShoppingCartDataService ShoppingCartDataService { get; set; }
-    [Inject]
-    public IOrderItemDataService OrderItemDataService { get; set; }
-    [Inject]
-    public IProductDataService ProductDataService { get; set; }
-    public List<ReviewViewModel> ProductReviews { get; set; }
-    private bool reviewSubmitted = false;
+    public IAddressDataService AddressDataService { get; set; }
     [Parameter]
     public Guid shoppingCartId { get; set; }
 
+
+    public List<AddressViewModel> addresses { get; set; }
+    public Guid AddressId { get; set; }
+
     [Parameter]
     public Guid productId { get; set; }
-
-    public string AddToCartMessage { get; set; }
-
     private OrderItemViewModel OrderItemViewModel { get; set; } = new OrderItemViewModel();
 
     private ProductViewModel Product { get; set; }
     private int userRating = 0;
     private string userReview = "";
     private Guid currentUserId;
+
 }
 
 @functions {
     protected override async Task OnInitializedAsync()
     {
-        AddToCartMessage = "";
-        currentUserId = await TokenService.DecodeUserIdFromTokenAsync(await TokenService.GetTokenAsync());
+        AddressId = Guid.Empty;
+        addresses = await AddressDataService.GetAddressesAsync();
+    }
 
-        if (productId == Guid.Empty)
-        {
-            Console.WriteLine("ProductId not provided or invalid");
-            return;
-        }
-
-        OrderItemViewModel.Quantity = 1;
-
-
-        Console.WriteLine($"Attempting to retrieve product with ID: {productId}");
-
+    protected async Task CreateOrder()
+    {
         try
         {
-            Product = await ProductDataService.GetProductByIdAsync(productId);
-
-            if (Product == null)
-            {
-                Console.WriteLine("Product not found or API response is null");
-                // Handle the null response more gracefully, e.g., redirect the user or show an error message.
-            }
-            else
-            {
-                Console.WriteLine($"Product found: {@Product.ProductName}, {Product.Description}, {Product.ImageUrl}, {Product.Price}");
-            }
+            orderDataService.Create(shoppingCartId, AddressId);
+            NavigationManager.NavigateTo($"/myorders");
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            Console.WriteLine($"Error retrieving product: {ex.Message}");
+            Console.WriteLine(e);
+            throw;
         }
-        Console.WriteLine($"Attempting to retrieve reviews for product with ID: {productId}");
-
-        ProductReviews = await ReviewDataService.GetReviewByProductId(productId);
-        Console.WriteLine($"Found {ProductReviews.Count} reviews for product with ID: {productId}");
-        Console.WriteLine($"Reviews:{ProductReviews}");
     }
 }

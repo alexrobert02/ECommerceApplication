@@ -8,5 +8,7 @@ namespace ECommerceApplication.Application.Features.ShoppingCarts.Queries
         public Guid UserId { get; set; }
         public List<OrderItem>? OrderItems { get; set; }
         public Product? Product { get; set; }
+        public decimal Total { get; set; }
+        
     }
 }
