@@ -131,11 +131,10 @@
                             </li>
                         </ul>
 
-                        <NavLink href="/cart/@ShoppingCart.ShoppingCartId">
-                            <button type="button" class="btn btn-primary btn-lg btn-block">
+                            <button type="button" @onclick = "()=> NavigateToCreateOrder()"
+                                class="btn btn-primary btn-lg btn-block">
                                 Go to checkout
                             </button>
-                        </NavLink>
                     </div>
                 </div>
             </div>
@@ -183,5 +182,10 @@
             Console.WriteLine(e);
             Console.WriteLine("Error while deleting the item");
         }
+    }
+
+    private void NavigateToCreateOrder()
+    {
+        NavigationManager.NavigateTo($"/cart/{ShoppingCart.ShoppingCartId}/createOrder");
     }
 }
