@@ -12,8 +12,8 @@
     {
         <div class="product-detail">
             <div class="category-and-title">
-                <h4>@Product.Category.CategoryName</h4>
-                <h1 class="category-text">@Product.ProductName</h1>
+                <p class="category-text">@Product.Category.CategoryName</p>
+                <h1>@Product.ProductName</h1>
             </div>
             <div class="product-info">
                 <div class="product-details-image-container">
@@ -304,10 +304,12 @@
                     </div>
                 </div>
             </div>
-            <div class="product-description">
-                <p>@Product.Description</p>
-            </div>
         </div>
+        <div class="product-description">
+            <h2 id="description-text">Description</h2>
+            <p>@Product.Description</p>
+        </div>
+        <ProductDetailsSuggestions ProductId="@productId" />
     }
 </div>
 
