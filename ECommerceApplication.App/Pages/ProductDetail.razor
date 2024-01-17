@@ -390,6 +390,9 @@
     public IOrderItemDataService OrderItemDataService { get; set; }
     [Inject]
     public IProductDataService ProductDataService { get; set; }
+
+    [Inject] public IPhotoDataService PhotoDataService { get; set; }
+
     public List<ReviewViewModel> ProductReviews { get; set; }
     private bool reviewSubmitted = false;
 
@@ -490,6 +493,14 @@
         try
         {
             Product = await ProductDataService.GetProductByIdAsync(productId);
+
+            var photoResponse = await PhotoDataService.GetPhotoForOwnerAsync(productId);
+
+            if (photoResponse.IsSuccess)
+            {
+	            Console.WriteLine("S-a dat fetch");
+	            Product.ImageUrl = $"data:image/png;base64,{photoResponse.Data[0].ImageData}";
+            }
 
             if (Product == null)
             {
