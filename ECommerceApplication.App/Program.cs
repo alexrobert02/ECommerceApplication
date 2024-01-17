@@ -53,6 +53,10 @@ builder.Services.AddHttpClient<IUserDataService, UserDataService>(client =>
 {
     client.BaseAddress = new Uri("https://localhost:7252/");
 });
+builder.Services.AddHttpClient<IReviewDataService, ReviewDataService>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7252/");
+});
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<CustomStateProvider>());
 builder.Services.AddHttpClient<IAuthenticationService, AuthenticationService>(client =>

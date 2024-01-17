@@ -6,6 +6,7 @@ using ECommerceApplication.Application.Features.Products.Commands.DeleteProduct;
 using ECommerceApplication.Application.Features.Products.Commands.UpdateProduct;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using ECommerceApplication.Application.Features.Products.Queries.GetProductByCategoryId;
 
 namespace ECommerceApplication.API.Controllers
 {
@@ -82,6 +83,19 @@ namespace ECommerceApplication.API.Controllers
         {
             var response = await Mediator.Send(updateProductCommand);
             return Ok(response);
+        }
+
+        [HttpGet("ByCategoryId/{categoryId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetProductByCategoryId(Guid categoryId)
+        {
+            var query = new GetProductByCategoryIdQuery() { CategoryId = categoryId };
+            var result = await Mediator.Send(query);
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
         }
     }
 }
