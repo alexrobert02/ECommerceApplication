@@ -24,6 +24,7 @@ namespace ECommerceApplication.Infrastructure
         public DbSet<Address> Addresses { get; set; }
         public DbSet<OrderItem> OrderItem { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<Photo> Photos { get; set; }
 
         public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {

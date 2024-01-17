@@ -27,14 +27,15 @@ namespace ECommerceApplication.App.Services
             this.tokenService = tokenService;
         }
 
-        public async Task<ApiResponse<ProductDto>> CreateProductAsync(ProductViewModel productViewModel)
+        public async Task<ApiResponseForProduct> CreateProductAsync(ProductViewModel productViewModel)
         {
             httpClient.DefaultRequestHeaders.Authorization= new AuthenticationHeaderValue("Bearer", await tokenService.GetTokenAsync());
             var result = await httpClient.PostAsJsonAsync(RequestUri, productViewModel);
             result.EnsureSuccessStatusCode();
-            var response = await result.Content.ReadFromJsonAsync<ApiResponse<ProductDto>>();
-            response!.IsSuccess = result.IsSuccessStatusCode;
-            Console.WriteLine(response);
+            var response = await result.Content.ReadFromJsonAsync<ApiResponseForProduct>();
+            response!.Success = result.IsSuccessStatusCode;
+            Console.Write("Product id: ");
+            Console.WriteLine(response.Product.ProductId);
             return response!;
         }
 

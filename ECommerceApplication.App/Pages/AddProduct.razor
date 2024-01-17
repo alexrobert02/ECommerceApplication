@@ -1,8 +1,9 @@
 ﻿@page "/addproduct"
 @using ECommerceApplication.App.Contracts
 @using ECommerceApplication.App.ViewModels
+@using System.Text.Json
 
-@if (User.Role == "Company")
+@if (User != null && User.Role == "Company")
 {
 	<h3>New Product</h3>
 	<EditForm Model="@ProductViewModel" OnValidSubmit="@HandleValidSubmit">
@@ -37,8 +38,8 @@
 			<div class="row mb-3">
 				<label for="productImage" class="col-sm-3 form-label">Image:</label>
 				<div class="col-sm-5">
-					<InputText id="productImage" class="form-control" @bind-Value="@ProductViewModel.ImageUrl" placeholder="Enter image"/>
-					<ValidationMessage For="@(() => ProductViewModel.ImageUrl)"/>
+					<InputFile id="productImage" class="form-control" OnChange="HandleSelectedFile" accept=".png" />
+					<ValidationMessage For="@(() => ProductViewModel.Photo)" />
 				</div>
 			</div>
 
@@ -84,16 +85,23 @@ else
 	[Inject]
 	public IUserDataService UserDataService { get; set; }
 
+	[Inject]
+	public IPhotoDataService PhotoDataService { get; set; }
+
     [Inject]
     public NavigationManager NavigationManager { get; set; }
 
     public UserViewModel User { get; set; }
 
-    public ProductViewModel ProductViewModel { get; set; } = new ProductViewModel();
+    public ProductViewModel ProductViewModel { get; set; }
 
     public string Message { get; set; }
 
+    public IBrowserFile selectedFile;
+
     public List<CategoryViewModel> Categories { get; set; }
+
+    public UploadPhotoDto UploadPhotoDto { get; set; } = new UploadPhotoDto();
 
 }
 
@@ -110,13 +118,17 @@ else
 			User = await UserDataService.GetUserByEmailAsync(email);
 		}
 
+		ProductViewModel = new ProductViewModel();
+
     }
 
     private async Task HandleValidSubmit()
     {
-        try
+	    try
         {
-            
+
+			
+
 	        var token = await TokenService.GetTokenAsync();
 	        Guid companyId = await TokenService.DecodeUserIdFromTokenAsync(token);
 	        if (companyId == null || companyId == Guid.Empty)
@@ -129,11 +141,23 @@ else
             {
                 ProductViewModel.CategoryId = categoryIdGuid;
                 ProductViewModel.CompanyId = companyId;
+                ProductViewModel.ImageUrl = "ddd";
 
                 var result = await ProductDataService.CreateProductAsync(ProductViewModel);
+                
+                UploadPhotoDto.OwnerId = result.Product.ProductId;
+                UploadPhotoDto.Photo = ProductViewModel.Photo;
+
+
+                Console.WriteLine("Upload photo: " + UploadPhotoDto.OwnerId);
+                Console.WriteLine("Serialized: " + JsonSerializer.Serialize(UploadPhotoDto));
+
+                UploadFile();
+
+                //var photo = await PhotoDataService.UploadPhotoAsync(UploadPhotoDto);
                 Console.WriteLine(result);
 
-                if (result.IsSuccess)
+                if (result.Success)
                 {
                     Message = "Product created successfully";
                     NavigationManager.NavigateTo("/productoverview");
@@ -141,9 +165,9 @@ else
                 else
                 {
                     Message = result.Message;
-                    if (!string.IsNullOrWhiteSpace(result.ValidationErrors))    
+                    if (result.ValidationsErrors.Count!= 0)  
                     {
-                        Message += result.ValidationErrors;
+                        Message += result.ValidationsErrors;
                     }
                 }
             }
@@ -164,4 +188,49 @@ else
     {
         NavigationManager.NavigateTo("/productoverview");
     }
+
+    private void HandleSelectedFile(InputFileChangeEventArgs e)
+    {
+	    var files = e.GetMultipleFiles();
+	    if (files.Count > 0)
+	    {
+		    selectedFile = files[0];
+	    }
+		Console.WriteLine($"NUMBER OF FILES: {files.Count}" );
+    }
+
+    private async Task UploadFile()
+    {
+	    if (selectedFile == null)
+	    {
+		    return;
+	    }
+
+	    try
+	    {
+		    using var stream = selectedFile.OpenReadStream();
+
+
+
+			var result = await PhotoDataService.UploadPhotoAsync(UploadPhotoDto.OwnerId, stream, "filename");
+
+		    if (result.IsSuccess)
+		    {
+			    Message = "Image uploaded successfully.";
+			    selectedFile = null;
+
+			    
+		    }
+		    else
+		    {
+			    return;
+		    }
+	    }
+	    catch (Exception ex)
+	    {
+		    return;
+	    }
+
+    }
+
 }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace ECommerceApplication.App.ViewModels
 {
@@ -18,6 +19,8 @@ namespace ECommerceApplication.App.ViewModels
         public CategoryViewModel Category { get; set; } = new CategoryViewModel();
 
         public bool IsAddingToCart { get; set; }
+
+        public IFormFile Photo { get; set; }
 
         public static ProductViewModel FromDto(ProductDto dto)
         {
