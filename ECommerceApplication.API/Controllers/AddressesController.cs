@@ -5,6 +5,7 @@ using ECommerceApplication.Application.Features.Addresses.Queries.GetAllAddress;
 using ECommerceApplication.Application.Features.Addresses.Commands.UpdateAddress;
 using ECommerceApplication.Application.Features.Addresses.Queries.GetAddressByUserId;
 using ECommerceApplication.Application.Features.Users.Queries.GetByIdUser;
+using ECommerceApplication.Application.Features.Addresses.Commands.DeleteAddress;
 
 namespace ECommerceApplication.API.Controllers
 {
@@ -67,6 +68,21 @@ namespace ECommerceApplication.API.Controllers
                 return NotFound(result);
             }
 
+            return Ok(result);
+        }
+
+        [HttpDelete("{addressId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult> Delete(Guid addressId)
+        {
+            var command = new DeleteAddressCommand { AddressId = addressId };
+            var result = await Mediator.Send(command);
+/*            if (!result.Success)
+            {
+                return NotFound(result);
+            }*/
             return Ok(result);
         }
     }

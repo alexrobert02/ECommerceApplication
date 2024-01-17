@@ -127,9 +127,9 @@
                 </svg>
             </div>
         </div>
-        <div class="second-row-card" @onclick="() => OpenAddressesWindow()">
+        <div class="second-row-card">
             <p class="second-row-text">My Addresses</p>
-            <svg class="svg-content" id="Flat_gradient" data-name="Flat gradient" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64">
+                    <svg class="svg-content" id="Flat_gradient" data-name="Flat gradient" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64" @onclick="() => OpenAddressesWindow()">
                 <defs>
                     <style>
                         .cls-1 {
@@ -286,7 +286,7 @@ else
 
     private void OpenAddressesWindow()
     {
-
+        NavigationManager.NavigateTo("/useraddresses");
     }
 
     private void GoToMyReviews()

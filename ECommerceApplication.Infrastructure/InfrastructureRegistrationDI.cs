@@ -35,6 +35,7 @@ namespace ECommerceApplication.Infrastructure
             services.AddScoped<IPaymentRepository, PaymentRepository>();
             services.AddScoped<IOrderRepository, OrderRepository> ();
             services.AddScoped<IReviewRepository, ReviewRepository>();
+            services.AddScoped<IPhotoRepository, PhotoRepository>();
             return services;
         }
     }

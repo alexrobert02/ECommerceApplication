@@ -1,4 +1,4 @@
-﻿@page "/cart/{shoppingCartId:guid}/createOrder"
+﻿@page "/{shoppingCartId:guid}/createOrder"
 @using ECommerceApplication.App.Contracts
 @using ECommerceApplication.App.ViewModels
 @using System.Text.Json
@@ -47,6 +47,8 @@
     public IOrderDataService orderDataService { get; set; }
     public List<ReviewViewModel> ProductReviews { get; set; }
     private bool reviewSubmitted = false;
+    [Parameter]
+    public Guid shoppingCartId { get; set; }
 
 
     public List<AddressViewModel> addresses { get; set; }
