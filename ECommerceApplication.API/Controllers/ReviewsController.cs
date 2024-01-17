@@ -65,7 +65,7 @@ namespace ECommerceApplication.API.Controllers
             {
                 return BadRequest(result);
             }
-            return NoContent();
+            return Ok(result);
         }
     }
 }
