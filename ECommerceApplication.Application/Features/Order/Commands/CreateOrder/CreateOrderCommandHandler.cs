@@ -5,6 +5,7 @@ using MediatR;
 using ECommerceApplication.Domain;
 using ECommerceApplication.Domain.Entities;
 using ECommerceApplication.Application.Features.OrderItems;
+using ECommerceApplication.Application.Features.Users.Queries;
 
 namespace ECommerceApplication.Application.Features.Order.Commands.CreateOrder
 {
@@ -48,6 +49,10 @@ namespace ECommerceApplication.Application.Features.Order.Commands.CreateOrder
                     ValidationsErrors = new List<string> { "Shopping Cart with the provided ID does not exist." }
                 };
             }
+            shoppingCartExists.Value.MarkAsUsed();
+
+            var result = await shoppingCartRepository.AddAsync(ShoppingCart.Create(shoppingCartExists.Value.UserId).Value);
+
 
             var orderItemsResult = await orderItemRepository.getOrderItemsByFilter(request.ShoppingCartId, null);
 
@@ -69,6 +74,7 @@ namespace ECommerceApplication.Application.Features.Order.Commands.CreateOrder
                     Success = false,
                     ValidationsErrors = new List<string> { order.Error }
                 };
+
             }
 
             await orderRepository.AddAsync(order.Value);
