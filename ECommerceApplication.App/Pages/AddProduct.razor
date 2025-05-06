@@ -5,68 +5,77 @@
 
 @if (User != null && User.Role == "Company")
 {
-	<h3>New Product</h3>
-	<EditForm Model="@ProductViewModel" OnValidSubmit="@HandleValidSubmit">
-		<DataAnnotationsValidator/>
-		<ValidationSummary/>
+    <div class="d-flex justify-content-center align-items-center min-vh-100">
+        <div class="card shadow-sm w-100" style="max-width: 600px;">
+            <div class="card-header">
+                <h3 class="mb-0">New Product</h3>
+            </div>
+            <div class="card-body">
+                <EditForm Model="@ProductViewModel" OnValidSubmit="@HandleValidSubmit">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
 
-		<div class="container mt-4">
-			<div class="row mb-3">
-				<label for="productName" class="col-sm-3 form-label">Product Name:</label>
-				<div class="col-sm-5">
-					<InputText id="productName" class="form-control" @bind-Value="@ProductViewModel.ProductName" placeholder="Enter product name"/>
-					<ValidationMessage For="@(() => ProductViewModel.ProductName)"/>
-				</div>
-			</div>
+                    <div class="mb-3 row">
+                        <label for="productName" class="col-sm-3 col-form-label">Product Name:</label>
+                        <div class="col-sm-9">
+                            <InputText id="productName" class="form-control" @bind-Value="@ProductViewModel.ProductName" placeholder="Enter product name" />
+                            <ValidationMessage For="@(() => ProductViewModel.ProductName)" />
+                        </div>
+                    </div>
 
-			<div class="row mb-3">
-				<label for="productPrice" class="col-sm-3 form-label">Price:</label>
-				<div class="col-sm-5">
-					<InputNumber id="productPrice" class="form-control" @bind-Value="@ProductViewModel.Price" placeholder="Enter price"/>
-					<ValidationMessage For="@(() => ProductViewModel.Price)"/>
-				</div>
-			</div>
+                    <div class="mb-3 row">
+                        <label for="productPrice" class="col-sm-3 col-form-label">Price:</label>
+                        <div class="col-sm-9">
+                            <InputNumber id="productPrice" class="form-control" @bind-Value="@ProductViewModel.Price" placeholder="Enter price" />
+                            <ValidationMessage For="@(() => ProductViewModel.Price)" />
+                        </div>
+                    </div>
 
-			<div class="row mb-3">
-				<label for="productDescription" class="col-sm-3 form-label">Description:</label>
-				<div class="col-sm-5">
-					<InputText id="productDescription" class="form-control" @bind-Value="@ProductViewModel.Description" placeholder="Enter description"/>
-					<ValidationMessage For="@(() => ProductViewModel.Description)"/>
-				</div>
-			</div>
+                    <div class="mb-3 row">
+                        <label for="productDescription" class="col-sm-3 col-form-label">Description:</label>
+                        <div class="col-sm-9">
+                            <InputText id="productDescription" class="form-control" @bind-Value="@ProductViewModel.Description" placeholder="Enter description" />
+                            <ValidationMessage For="@(() => ProductViewModel.Description)" />
+                        </div>
+                    </div>
 
-			<div class="row mb-3">
-				<label for="productImage" class="col-sm-3 form-label">Image:</label>
-				<div class="col-sm-5">
-					<InputFile id="productImage" class="form-control" OnChange="HandleSelectedFile" />
-					<ValidationMessage For="@(() => ProductViewModel.Photo)" />
-				</div>
-			</div>
+                    <div class="mb-3 row">
+                        <label for="productImage" class="col-sm-3 col-form-label">Image:</label>
+                        <div class="col-sm-9">
+                            <InputFile id="productImage" class="form-control" OnChange="HandleSelectedFile" />
+                            <ValidationMessage For="@(() => ProductViewModel.Photo)" />
+                        </div>
+                    </div>
 
-			<div class="row mb-3">
-				<label for="productCategory" class="col-sm-3 form-label">Category Id:</label>
-				<div class="col-sm-5">
-					<InputSelect @bind-Value="@ProductViewModel.StringCategoryId" class="form-select" id="productCategory" placeholder="select a category">
-						<option value="">Select a category...</option>
-						@foreach (var category in Categories)
-						{
-							<option value="@category.CategoryId">@category.CategoryName</option>
-						}
-					</InputSelect>
-					<ValidationMessage For="@(() => ProductViewModel.StringCategoryId)"/>
-				</div>
-			</div>
+                    <div class="mb-3 row">
+                        <label for="productCategory" class="col-sm-3 col-form-label">Category:</label>
+                        <div class="col-sm-9">
+                            <InputSelect @bind-Value="@ProductViewModel.StringCategoryId" class="form-select" id="productCategory">
+                                <option value="">Select a category...</option>
+                                @foreach (var category in Categories)
+                                {
+                                    <option value="@category.CategoryId">@category.CategoryName</option>
+                                }
+                            </InputSelect>
+                            <ValidationMessage For="@(() => ProductViewModel.StringCategoryId)" />
+                        </div>
+                    </div>
 
-			<div class="row">
-				<div class="col-sm-5">
-					<button type="submit" class="btn btn-primary">Save product</button>
-					<button class="btn btn-primary ms-3" @onclick="Cancel">Cancel</button>
-				</div>
-			</div>
-			<p class="mt-3">@Message</p>
-		</div>
-	</EditForm>
+                    <div class="d-flex justify-content-start mt-4">
+                        <button type="submit" class="btn btn-primary me-2">Save Product</button>
+                        <button type="button" class="btn btn-secondary" @onclick="Cancel">Cancel</button>
+                    </div>
+
+                    @if (!string.IsNullOrWhiteSpace(Message))
+                    {
+                        <p class="text-info mt-3">@Message</p>
+                    }
+                </EditForm>
+            </div>
+        </div>
+    </div>
 }
+
 
 
 @code {

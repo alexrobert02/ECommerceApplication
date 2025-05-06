@@ -66,7 +66,7 @@ builder.Services.AddSwaggerGen(c =>
     c.OperationFilter<FileResultContentTypeOperationFilter>();
 });
 
-StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
 
 var app = builder.Build();
 
